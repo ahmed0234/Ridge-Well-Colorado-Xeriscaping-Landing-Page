@@ -1,8 +1,12 @@
+import HeroSection from "./components/HeroSection";
+import TrustBar from "./components/Trustbar";
+
 const page = () => {
   return (
-    <div className="">
-      <h1></h1>
-    </div>
+    <>
+      <HeroSection />
+      <TrustBar />
+    </>
   );
 };
 

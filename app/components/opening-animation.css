@@ -1,0 +1,358 @@
+/* ============================================
+   Ridgewell — Cinematic Opening Animation
+   ============================================
+   Performance architecture:
+   - All animations use ONLY transform & opacity
+     (GPU compositor-layer rendering)
+   - will-change hints for layer promotion
+   - No layout/paint triggering properties
+   - Minimal DOM nodes (~15 elements total)
+   - Auto-removed from DOM after completion
+   ============================================ */
+
+/* ── Overlay Container ── */
+.opening-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Hide all website content during the opening animation, then smoothly fade in */
+body.opening-animation-active #main-content {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#main-content {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Layer 1: Warm Desert Background Wash ── */
+.opening-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 85% 75% at 50% 48%,
+    rgba(244, 222, 191, 0.97) 0%,
+    rgba(244, 222, 191, 1) 45%,
+    rgba(76, 39, 51, 0.32) 100%
+  );
+  will-change: opacity;
+  animation: wash-fade 1.1s cubic-bezier(0.4, 0, 0.2, 1) 1.6s forwards;
+}
+
+@keyframes wash-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ── Layer 2: Deep Atmospheric Leaf Layer ── */
+.leaf-deep {
+  position: absolute;
+  inset: -15%;
+  z-index: 2;
+  background: url('/Openingleafs.png') center / cover no-repeat;
+  filter: blur(6px) sepia(0.25) saturate(0.6) brightness(0.82);
+  opacity: 0.45;
+  will-change: transform, opacity;
+  animation: deep-dissolve 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
+}
+
+@keyframes deep-dissolve {
+  to {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* ── Layer 3: Leaf Quadrants (Primary Cover) ──
+   The Openingleafs.png is split into 4 clipped
+   quadrants that sweep outward like wind parting
+   dry foliage. Each has staggered timing for
+   organic desert-breeze feel.
+   ──────────────────────────────────────────── */
+.leaf-quad {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: url('/Openingleafs.png') center / cover no-repeat;
+  filter: sepia(0.1) saturate(0.88) brightness(0.96);
+  will-change: transform, opacity;
+}
+
+/* Top-left — sweeps northwest */
+.leaf-quad-tl {
+  clip-path: inset(0 50% 50% 0);
+  animation: sweep-tl 1.1s cubic-bezier(0.33, 0, 0.15, 1) 0.9s forwards;
+}
+
+/* Top-right — sweeps northeast */
+.leaf-quad-tr {
+  clip-path: inset(0 0 50% 50%);
+  animation: sweep-tr 1.1s cubic-bezier(0.33, 0, 0.15, 1) 1.0s forwards;
+}
+
+/* Bottom-left — sweeps southwest */
+.leaf-quad-bl {
+  clip-path: inset(50% 50% 0 0);
+  animation: sweep-bl 1.1s cubic-bezier(0.33, 0, 0.15, 1) 1.05s forwards;
+}
+
+/* Bottom-right — sweeps southeast */
+.leaf-quad-br {
+  clip-path: inset(50% 0 0 50%);
+  animation: sweep-br 1.1s cubic-bezier(0.33, 0, 0.15, 1) 0.95s forwards;
+}
+
+@keyframes sweep-tl {
+  to {
+    transform: translate3d(-115%, -115%, 0) rotate(-18deg) scale(1.08);
+    opacity: 0;
+  }
+}
+
+@keyframes sweep-tr {
+  to {
+    transform: translate3d(115%, -115%, 0) rotate(15deg) scale(1.08);
+    opacity: 0;
+  }
+}
+
+@keyframes sweep-bl {
+  to {
+    transform: translate3d(-115%, 115%, 0) rotate(12deg) scale(1.08);
+    opacity: 0;
+  }
+}
+
+@keyframes sweep-br {
+  to {
+    transform: translate3d(115%, 115%, 0) rotate(-14deg) scale(1.08);
+    opacity: 0;
+  }
+}
+
+/* ── Layer 4: Line-Art Botanical Accents ──
+   Individual leaf illustrations from the hand-drawn
+   artwork, blended with multiply to drop white bg.
+   Drift away like windblown sketches.
+   ──────────────────────────────────────── */
+.leaf-accent {
+  position: absolute;
+  z-index: 4;
+  background: url('/RealCactus.png') center / contain no-repeat;
+  mix-blend-mode: multiply;
+  filter: sepia(0.3) saturate(0.55) brightness(0.88);
+  will-change: transform, opacity;
+}
+
+.leaf-accent-1 {
+  width: 160px;
+  height: 220px;
+  top: 10%;
+  right: 10%;
+  animation: accent-drift-1 1.4s cubic-bezier(0.4, 0, 0.2, 1) 1.1s forwards;
+}
+
+.leaf-accent-2 {
+  width: 180px;
+  height: 240px;
+  bottom: 10%;
+  left: 10%;
+  animation: accent-drift-2 1.3s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+}
+
+.leaf-accent-3 {
+  width: 320px;
+  height: 420px;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  animation: accent-drift-3 1.8s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
+}
+
+@keyframes accent-drift-1 {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: translate3d(80px, -100px, 0) rotate(15deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes accent-drift-2 {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 0.5;
+  }
+  to {
+    transform: translate3d(-80px, 100px, 0) rotate(-15deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes accent-drift-3 {
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(1);
+    opacity: 0.85;
+  }
+  to {
+    transform: translate3d(-50%, -60%, 0) rotate(5deg) scale(1.1);
+    opacity: 0;
+  }
+}
+
+/* ── Layer 5: Warm Desert Tint ──
+   Unifies the white leaf backgrounds with the
+   champagne palette for cohesive warmth.
+   ────────────────────────────── */
+.opening-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: rgba(244, 222, 191, 0.28);
+  will-change: opacity;
+  animation: wash-fade 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+}
+
+/* ── Layer 6: Brand Text ── */
+.brand-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  will-change: opacity, transform;
+  animation: brand-reveal 2.2s cubic-bezier(0.4, 0, 0.2, 1) 0.05s forwards;
+}
+
+.brand-text span {
+  font-family: var(--font-clash);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 4.5vw, 3.4rem);
+  color: rgba(70, 30, 45, 1);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+@keyframes brand-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  42% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+}
+
+/* ── Layer 7: Desert Dust Particles ── */
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+}
+
+.particles span {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  background: rgba(244, 222, 191, 0.7);
+  will-change: transform, opacity;
+  opacity: 0;
+  animation: particle-drift 1.8s ease-out var(--delay, 1.2s) forwards;
+}
+
+.particles span:nth-child(1) { width: 3px; height: 3px; top: 20%; left: 25%; }
+.particles span:nth-child(2) { width: 2px; height: 2px; top: 35%; left: 72%; }
+.particles span:nth-child(3) { width: 4px; height: 4px; top: 55%; left: 40%; }
+.particles span:nth-child(4) { width: 2px; height: 2px; top: 72%; left: 62%; }
+.particles span:nth-child(5) { width: 3px; height: 3px; top: 14%; left: 56%; }
+.particles span:nth-child(6) { width: 2px; height: 2px; top: 82%; left: 28%; }
+.particles span:nth-child(7) { width: 3px; height: 3px; top: 46%; left: 14%; }
+.particles span:nth-child(8) { width: 2px; height: 2px; top: 62%; left: 82%; }
+
+@keyframes particle-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  18% {
+    opacity: 0.65;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--x, 0px), var(--y, -60px), 0) scale(0.15);
+  }
+}
+
+/* ── Layer 8: Skip Hint ── */
+.skip-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  font-family: var(--font-satoshi);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(42, 24, 30, 0.45);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  will-change: opacity;
+  animation: hint-pulse 2.6s ease 0.2s forwards;
+  text-align: center;
+}
+
+@keyframes hint-pulse {
+  0% { opacity: 0; }
+  12% { opacity: 0.55; }
+  55% { opacity: 0.55; }
+  100% { opacity: 0; }
+}
+
+/* ── Responsive Adjustments ── */
+@media (max-width: 768px) {
+  .leaf-accent-1 {
+    width: 170px;
+    height: 170px;
+  }
+
+  .leaf-accent-2 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .leaf-accent-3 {
+    width: 130px;
+    height: 130px;
+  }
+}
+
+/* ── Accessibility: Respect Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .opening-overlay,
+  .opening-overlay * {
+    animation-duration: 0.3s !important;
+    animation-delay: 0s !important;
+  }
+}
