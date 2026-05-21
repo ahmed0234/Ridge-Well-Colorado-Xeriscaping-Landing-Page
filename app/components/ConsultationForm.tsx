@@ -171,7 +171,7 @@ export default function ConsultationForm() {
           organically into the header area for a "garden trellis" effect.
       */}
       <motion.img
-        src="/Ctaform/Leafs_Strans.png"
+        src="/CtaForm/Leafs_Strans.png"
         alt=""
         className="absolute pointer-events-none select-none"
         style={{
@@ -192,7 +192,7 @@ export default function ConsultationForm() {
           leaf 3rd.png sweeps diagonally up from the bottom-left corner.
       */}
       <motion.img
-        src="/Ctaform/leaf_3rd.png"
+        src="/CtaForm/leaf_3rd.png"
         alt=""
         aria-hidden="true"
         className="absolute pointer-events-none select-none"
@@ -215,7 +215,7 @@ export default function ConsultationForm() {
           Leaf Stran.png runs vertically along the right edge as a draping accent.
       */}
       <motion.img
-        src="/Ctaform/Leaf_Stran.png"
+        src="/CtaForm/Leaf_Stran.png"
         alt=""
         className="absolute pointer-events-none select-none"
         style={{
@@ -241,7 +241,7 @@ export default function ConsultationForm() {
           greenfern.png rises up from outside the bottom-right card edge.
       */}
       <motion.img
-        src="/Ctaform/greenfern.png"
+        src="/CtaForm/greenfern.png"
         alt=""
         aria-hidden="true"
         className="absolute pointer-events-none select-none"
@@ -288,7 +288,7 @@ export default function ConsultationForm() {
             style={{ zIndex: 1 }}
           >
             <img
-              src="/Ctaform/Leafs_Strans.png"
+              src="/CtaForm/Leafs_Strans.png"
               alt=""
               className="absolute select-none"
               style={{
@@ -300,7 +300,7 @@ export default function ConsultationForm() {
               }}
             />
             <img
-              src="/Ctaform/leaf_3rd.png"
+              src="/CtaForm/leaf_3rd.png"
               alt=""
               aria-hidden="true"
               className="absolute select-none"
