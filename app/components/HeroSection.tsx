@@ -111,61 +111,66 @@ function InsightCard({
   );
 }
 
-// ─── Feature Item (Premium Strip) ──────────────────────────────────────────
 function FeatureItem({ icon: Icon, title, body, delay }) {
   return (
     <motion.div
-      className="flex flex-col items-start p-3 sm:p-4 md:p-5 rounded-2xl relative overflow-hidden cursor-default group"
-      style={{
-        background: "rgba(252, 223, 184, 0.7)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        border: "1px solid rgba(76, 39, 51, 0.12)",
-        boxShadow:
-          "0 8px 32px rgba(76, 39, 51, 0.04), inset 0 1px 0 rgba(255,255,255,0.4)",
-        transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-      }}
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{
-        y: -4,
-        background: "rgba(250, 240, 227, 0.7)",
-        boxShadow:
-          "0 14px 40px rgba(76, 39, 51, 0.08), inset 0 1px 0 rgba(255,255,255,0.6)",
-        borderColor: "rgba(232,98,64,0.3)",
-      }}
+      className="group relative flex flex-col items-start p-4 rounded-[2rem] transition-all duration-500"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -8 }}
     >
-      {/* Soft internal glow on hover */}
+      {/* Glass Background Layer */}
       <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        className="absolute inset-0 rounded-[2rem] border border-white/5 backdrop-blur-sm transition-all duration-500 group-hover:backdrop-blur-md"
         style={{
           background:
-            "radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 75%)",
+            "linear-gradient(145deg, rgba(70, 30, 45, 0.9) 0%, rgba(45, 20, 30, 0.95) 100%)",
+          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
         }}
       />
 
+      {/* Animated Accent Border (Glow effect) */}
       <div
-        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mb-2 sm:mb-4 transition-colors duration-400 group-hover:bg-opacity-25 relative z-10"
-        style={{ background: "rgba(232,98,64,0.12)" }}
-      >
-        <Icon
-          className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-400 group-hover:scale-110"
-          style={{ color: C.terra }}
-        />
+        className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+        style={{
+          padding: "1px",
+          background:
+            "linear-gradient(135deg, rgba(232, 98, 64, 0.5) 0%, transparent 40%, rgba(232, 98, 64, 0.1) 100%)",
+          WebkitMask:
+            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+
+      {/* Icon Container with Soft Glow */}
+      <div className="relative z-10 mb-6">
+        <div className="absolute inset-0 bg-[#E86240] blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center border border-[#E86240]/20 bg-[#E86240]/5 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+          <Icon
+            size={22}
+            className="text-[#E86240] transition-colors duration-300"
+          />
+        </div>
       </div>
-      <h4
-        className="text-[15px] sm:text-[17px] font-bold font-satoshi mb-1 sm:mb-1.5 leading-tight tracking-normal relative z-10"
-        style={{ color: C.deepPlum }}
-      >
-        {title}
-      </h4>
-      <p
-        className="text-[13px] sm:text-[14px] font-medium font-satoshi leading-[1.4] relative z-10"
-        style={{ color: "rgba(76, 39, 51, 0.85)" }}
-      >
-        {body}
-      </p>
+
+      {/* Content Block */}
+      <div className="relative z-10">
+        <h4 className="text-xl font-semibold tracking-tight text-[#F4DEBF] mb-3 group-hover:text-white transition-colors duration-300">
+          {title}
+        </h4>
+        <div className="h-px w-8 bg-[#E86240]/40 mb-4 transition-all duration-500 group-hover:w-16 group-hover:bg-[#E86240]" />
+        <p className="text-sm leading-relaxed text-[#F4DEBF]/60 group-hover:text-[#F4DEBF]/90 transition-colors duration-300">
+          {body}
+        </p>
+      </div>
+
+      {/* Decorative Corner Element */}
+      <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-10 transition-opacity duration-500">
+        <Icon size={40} className="text-[#F4DEBF]" />
+      </div>
     </motion.div>
   );
 }
@@ -314,14 +319,13 @@ export default function HeroSection() {
             transition={reveal(1)}
             style={{
               fontSize: "clamp(2.4rem, 6vw, 4.8rem)",
-              fontWeight: 700,
               lineHeight: 1,
               letterSpacing: "-0.03em",
               color: C.deepPlum,
               marginBottom: "1.1rem",
               maxWidth: "850px",
             }}
-            className="font-clash"
+            className="font-sans font-extrabold"
           >
             Beautiful Colorado{" "}
             <span style={{ color: C.terra }}>Landscaping</span> Without Constant
@@ -625,18 +629,12 @@ export default function HeroSection() {
 
           {/* Premium Feature Strip */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-4 w-full max-w-[720px] font-satoshi tracking-wide"
-            style={{ borderTop: "2px solid rgba(76,39,51,0.15)" }}
+            className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 pt-4 w-full max-w-[720px] font-satoshi tracking-wide"
+            style={{ borderTop: "3px solid rgba(76,39,51,0.3)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.1 }}
           >
-            <FeatureItem
-              icon={PiPlantLight}
-              title="Native Plants"
-              body="Colorado species that naturally thrive."
-              delay={1.15}
-            />
             <FeatureItem
               icon={PiDropLight}
               title="Water Smart Design"

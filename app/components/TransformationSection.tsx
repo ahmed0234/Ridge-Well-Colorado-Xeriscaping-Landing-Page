@@ -189,7 +189,7 @@ export default function TransformationSection() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={headInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.55, ease: [0.25, 0.8, 0.25, 1] }}
-                className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-[10.5px] uppercase tracking-[0.28em] font-semibold text-[#E86240] border border-[#E86240]/22 bg-[#E86240]/7 mb-6"
+                className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-[12px] uppercase tracking-[0.28em]  text-[#E86240] border border-[#E86240]/22 bg-[#E86240]/7 mb-6 font-sans font-bold"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#E86240] shrink-0" />
                 Visual Proof

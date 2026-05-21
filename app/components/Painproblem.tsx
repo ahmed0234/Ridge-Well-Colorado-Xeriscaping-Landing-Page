@@ -721,23 +721,23 @@ export default function PainProblemSection() {
           ].map((item, i) => (
             <span
               key={i}
-              className="flex items-center gap-2 text-xs font-medium text-[#461E2D]/60"
+              className="flex items-center gap-2 text-lg font-semibold text-[#461E2D]/85 font-sans"
             >
-              <span className="w-1 h-1 rounded-full bg-[#E86240] flex-shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-[#E86240] shrink-0" />
               {item}
             </span>
           ))}
         </motion.div>
 
         {/* ── CTA BUTTON INTERACTIVE ZONE ────────────────────── */}
-        <div ref={ctaRef} className="mt-16 text-center">
+        <div ref={ctaRef} className="mt-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={ctaInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="inline-flex flex-col items-center gap-4"
           >
-            <p className="text-xs font-bold text-[#E86240] uppercase tracking-[0.2em]">
+            <p className="text-sm font-bold text-[#E86240] uppercase tracking-wider font-sans ">
               Ready for the switch?
             </p>
 
@@ -760,7 +760,7 @@ export default function PainProblemSection() {
               <ArrowRight className="relative w-4 h-4 text-white/90 transition-transform duration-300 group-hover:translate-x-1" />
             </motion.a>
 
-            <p className="text-[11px] text-[#461E2D]/50 mt-1">
+            <p className="text-[15px] text-[#461E2D]/75 mt-1 font-sans font-semibold">
               No commitment &nbsp;·&nbsp; Property assessment included
               &nbsp;·&nbsp; Timeline 4–6 weeks
             </p>
