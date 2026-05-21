@@ -658,7 +658,8 @@ export default function HeroSection() {
 
         {/* ── RIGHT COLUMN — FORM ───────────────────────────────────────── */}
         <motion.div
-          className="flex items-center justify-center w-full pt-0 lg:pt-[clamp(10px,8vh,100px)]"
+          id="consultation"
+          className="flex items-center justify-center w-full pt-0 lg:pt-[clamp(10px,8vh,100px)] scroll-mt-24"
           style={{
             width: "clamp(340px, 36vw, 500px)",
             flexShrink: 0,

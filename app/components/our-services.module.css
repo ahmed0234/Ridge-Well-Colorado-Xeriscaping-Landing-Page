@@ -1,0 +1,465 @@
+/* Performance-first: CSS transitions on transform/opacity/border only */
+
+.featuredCard {
+  border: 1px solid rgba(244, 222, 191, 0.12);
+  background: linear-gradient(
+    145deg,
+    rgba(70, 30, 45, 0.97) 0%,
+    rgba(42, 16, 24, 0.98) 55%,
+    rgba(35, 14, 20, 1) 100%
+  );
+  box-shadow: 0 20px 44px -14px rgba(70, 30, 45, 0.35);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+@media (hover: hover) {
+  .featuredCard:hover {
+    border-color: rgba(232, 98, 64, 0.28);
+    box-shadow: 0 24px 48px -12px rgba(70, 30, 45, 0.4);
+  }
+}
+
+/* ── Service shell ─────────────────────────────────────────────────────── */
+.serviceCard {
+  color: rgba(70, 30, 45, 1);
+  border: 1px solid rgba(76, 39, 51, 0.14);
+  background: linear-gradient(
+    155deg,
+    rgba(228, 200, 168, 0.95) 0%,
+    rgba(244, 222, 191, 0.92) 50%,
+    rgba(232, 203, 170, 0.9) 100%
+  );
+  box-shadow: 0 4px 24px -8px rgba(70, 30, 45, 0.1);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.serviceCardClay {
+  background: linear-gradient(
+    155deg,
+    rgba(212, 184, 150, 0.92) 0%,
+    rgba(236, 210, 178, 0.9) 50%,
+    rgba(200, 168, 132, 0.88) 100%
+  );
+}
+
+.serviceCardSage {
+  background: linear-gradient(
+    155deg,
+    rgba(218, 198, 168, 0.94) 0%,
+    rgba(244, 222, 191, 0.9) 45%,
+    rgba(210, 195, 165, 0.9) 100%
+  );
+}
+
+@media (hover: hover) {
+  .serviceCard:hover {
+    border-color: rgba(232, 98, 64, 0.22);
+    box-shadow: 0 12px 36px -10px rgba(70, 30, 45, 0.14);
+  }
+}
+
+/* ── Images ────────────────────────────────────────────────────────────── */
+.imageBanner {
+  border: 1px solid rgba(76, 39, 51, 0.14);
+  box-shadow: 0 8px 28px -10px rgba(70, 30, 45, 0.14);
+}
+
+.imageBannerDark {
+  border: 1px solid rgba(244, 222, 191, 0.12);
+}
+
+.featuredImage {
+  aspect-ratio: 4 / 3;
+}
+
+@media (min-width: 1024px) {
+  .featuredImage {
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+}
+
+.serviceImageBanner {
+  aspect-ratio: 16 / 9;
+}
+
+@media (min-width: 768px) {
+  .serviceImageBanner {
+    aspect-ratio: 21 / 9;
+  }
+}
+
+.imageOverlay {
+  background: linear-gradient(
+    180deg,
+    transparent 50%,
+    rgba(70, 30, 45, 0.35) 100%
+  );
+}
+
+.imageOverlayDark {
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    rgba(42, 16, 24, 0.55) 100%
+  );
+}
+
+.imageCaption {
+  background: rgba(42, 16, 24, 0.65);
+  border: 1px solid rgba(244, 222, 191, 0.12);
+  color: rgba(244, 222, 191, 0.88);
+}
+
+.imageZoomWrap {
+  overflow: hidden;
+}
+
+/* GPU-friendly image zoom — CSS only */
+.imageZoom {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .imageZoomWrap:hover .imageZoom {
+    transform: scale(1.03);
+  }
+}
+
+/* ── Xeriscaping inclusion suite (redesigned) ─────────────────────────── */
+.inclusionsSuite {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(244, 222, 191, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0.16) 100%
+  );
+  border-radius: 0 0 1.25rem 1.25rem;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+  margin-bottom: -1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .inclusionsSuite {
+    margin-left: -2rem;
+    margin-right: -2rem;
+    margin-bottom: -2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .inclusionsSuite {
+    margin-left: -2.5rem;
+    margin-right: -2.5rem;
+    margin-bottom: -2.5rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+.inclusionGridFeatured {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .inclusionGridFeatured {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .inclusionGridFeatured {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.inclusionGridStandard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .inclusionGridStandard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+  }
+}
+
+/* Premium inclusion card — dark */
+.inclusionCardDark {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.125rem 1.25rem 1.25rem;
+  border-radius: 1rem;
+  background: rgba(244, 222, 191, 0.05);
+  border: 1px solid rgba(244, 222, 191, 0.12);
+  border-top: 2px solid rgba(232, 98, 64, 0.45);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+@media (hover: hover) {
+  .inclusionCardDark:hover {
+    background: rgba(244, 222, 191, 0.08);
+    border-color: rgba(232, 98, 64, 0.35);
+  }
+}
+
+/* Premium inclusion card — light */
+.inclusionCardLight {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.125rem 1.25rem 1.25rem;
+  border-radius: 1rem;
+  background: rgba(252, 235, 210, 0.75);
+  border: 1px solid rgba(76, 39, 51, 0.12);
+  border-left: 3px solid rgba(232, 98, 64, 0.5);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .inclusionCardLight:hover {
+    border-left-color: #e86240;
+    box-shadow: 0 6px 20px -8px rgba(70, 30, 45, 0.12);
+  }
+}
+
+.inclusionCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.875rem;
+  margin-bottom: 0.875rem;
+  border-bottom: 1px solid rgba(76, 39, 51, 0.08);
+}
+
+.inclusionCardHeaderDark {
+  border-bottom-color: rgba(244, 222, 191, 0.1);
+}
+
+.inclusionIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(232, 98, 64, 0.12);
+  border: 1px solid rgba(232, 98, 64, 0.25);
+  color: #e86240;
+}
+
+.inclusionIconDark {
+  background: rgba(232, 98, 64, 0.16);
+  border-color: rgba(232, 98, 64, 0.35);
+  color: #f2a07a;
+}
+
+/* Benefit rows — high readability */
+.benefitList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.benefitRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  background: rgba(76, 39, 51, 0.04);
+  transition: background 0.2s ease;
+}
+
+.benefitRowDark {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+@media (hover: hover) {
+  .inclusionCardLight:hover .benefitRow,
+  .inclusionCardDark:hover .benefitRowDark {
+    background: rgba(232, 98, 64, 0.08);
+  }
+}
+
+.benefitCheck {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  color: #e86240;
+}
+
+.benefitCheckDark {
+  color: #f2a07a;
+}
+
+.benefitText {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: rgba(70, 30, 45, 0.92);
+}
+
+.benefitTextDark {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: rgba(244, 222, 191, 0.88);
+}
+
+@media (min-width: 640px) {
+  .benefitText,
+  .benefitTextDark {
+    font-size: 1rem;
+  }
+}
+
+/* Plain English */
+.plainEnglish {
+  border-left: 3px solid rgba(232, 98, 64, 0.55);
+  padding-left: 1rem;
+}
+
+.plainEnglishDark {
+  border-left: 3px solid rgba(232, 98, 64, 0.65);
+  background: rgba(232, 98, 64, 0.06);
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding: 0.75rem 1rem;
+}
+
+/* Value strip */
+.valueStrip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.875rem;
+  background: rgba(232, 98, 64, 0.09);
+  border: 1px solid rgba(232, 98, 64, 0.2);
+}
+
+.valueStripDark {
+  background: rgba(232, 98, 64, 0.12);
+  border-color: rgba(232, 98, 64, 0.28);
+}
+
+/* Chips */
+.scanChip {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(76, 39, 51, 0.14);
+  background: rgba(228, 203, 170, 0.55);
+  color: rgba(70, 30, 45, 0.8);
+}
+
+.scanChipDark {
+  border-color: rgba(244, 222, 191, 0.14);
+  background: rgba(244, 222, 191, 0.08);
+  color: rgba(244, 222, 191, 0.75);
+}
+
+.capabilityPill {
+  color: rgba(76, 39, 51, 0.75);
+  background: rgba(228, 203, 170, 0.55);
+  border: 1px solid rgba(76, 39, 51, 0.12);
+}
+
+.iconWell {
+  background: rgba(232, 98, 64, 0.1);
+  border: 1px solid rgba(232, 98, 64, 0.22);
+}
+
+.featuredBadge {
+  background: rgba(232, 98, 64, 0.14);
+  border: 1px solid rgba(232, 98, 64, 0.32);
+  color: #f4debf;
+}
+
+.ctaPrimary {
+  background: linear-gradient(135deg, #d94f2b 0%, #e86240 45%, #c63e1d 100%);
+  box-shadow: 0 10px 28px rgba(232, 98, 64, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .ctaPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(232, 98, 64, 0.34);
+  }
+}
+
+.ctaLink {
+  transition: color 0.2s ease;
+}
+
+.ctaLinkIcon {
+  transition: transform 0.2s ease;
+}
+
+@media (hover: hover) {
+  .ctaLink:hover .ctaLinkIcon {
+    transform: translateX(3px);
+  }
+}
+
+/* Stat block on featured */
+.statBlock {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: rgba(232, 98, 64, 0.1);
+  border: 1px solid rgba(232, 98, 64, 0.2);
+}
+
+/* Reveal animation target */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.revealVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .imageZoomWrap:hover .imageZoom {
+    transform: none;
+  }
+
+  .ctaPrimary:hover {
+    transform: none;
+  }
+}
