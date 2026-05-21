@@ -329,7 +329,7 @@ export default function PainProblemSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#F4DEBF] py-24 lg:py-36 text-[#461E2D]"
+      className="relative overflow-hidden bg-[#F4DEBF] py-12 lg:py-8 text-[#461E2D]"
     >
       {/* ── Ambient depth blobs ─────────────────────────────── */}
       <motion.div
@@ -505,8 +505,7 @@ export default function PainProblemSection() {
                 }`}
               >
                 <div
-                  className="font-bold leading-none mb-1 text-[#461E2D]"
-                  style={{ fontSize: "clamp(1.5rem, 3.8vw, 2.6rem)" }}
+                  className="font-bold leading-none mb-1 text-[#461E2D] text-3xl md:text-7xl font-mono"
                 >
                   <CountUp
                     end={s.val}
@@ -515,10 +514,10 @@ export default function PainProblemSection() {
                     delay={0.2 + i * 0.15}
                   />
                 </div>
-                <div className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.12em] text-[#E86240] mb-0.5">
+                <div className="text-xs sm:text-lg font-bold uppercase tracking-[0.12em] text-[#E86240] mb-0.5 font-sans ">
                   {s.unit}
                 </div>
-                <div className="text-[9px] sm:text-[11px] text-[#461E2D]/50 tracking-wide hidden sm:block">
+                <div className=" sm:text-base text-[#461E2D]/95 tracking-wide hidden sm:block font-sans font-semibold">
                   {s.label}
                 </div>
               </div>
@@ -535,210 +534,176 @@ export default function PainProblemSection() {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-4 mb-12"
           >
-            <div className="flex-1 h-px bg-gradient-to-r from-[#461E2D]/20 to-transparent" />
-            <span className="text-[10px] uppercase tracking-[0.24em] text-[#461E2D]/40 font-bold whitespace-nowrap">
+            <div className="flex-1 h-px bg-linear-to-r from-[#461E2D]/50 to-transparent" />
+            <span className="text-lg uppercase tracking-wider text-[#461E2D]/70 font-bold whitespace-nowrap font-sans">
               The Before &amp; After Comparison
             </span>
-            <div className="flex-1 h-px bg-gradient-to-l from-[#461E2D]/20 to-transparent" />
+            <div className="flex-1 h-px bg-linear-to-l from-[#461E2D]/20 to-transparent" />
           </motion.div>
 
           {/* Cards container wrapper holding structural elements */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 relative">
-            {/* ── PAIN CARD ─────────────────────────────────── */}
-            <TiltCard intensity={4}>
-              <motion.div
-                initial={{ opacity: 0, x: -40, rotateY: -8 }}
-                animate={gridInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
-                transition={{
-                  duration: 0.85,
-                  delay: 0.1,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="h-full rounded-2xl overflow-hidden border border-[#461E2D]/15 flex flex-col justify-between
-                           shadow-[0_12px_40px_rgba(70,30,45,0.04),0_2px_8px_rgba(70,30,45,0.02)] bg-gradient-to-br from-[#461E2D]/[0.02] to-[#4C2733]/[0.05]"
-              >
-                <div>
-                  {/* Card header */}
-                  <div className="px-6 py-5 border-b border-[#461E2D]/10 bg-[#461E2D]/[0.03]">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-[#461E2D]/10 flex-shrink-0">
-                        <svg viewBox="0 0 20 20" className="w-4 h-4">
-                          <line
-                            x1="4"
-                            y1="4"
-                            x2="16"
-                            y2="16"
-                            stroke="#461E2D"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                          />
-                          <line
-                            x1="16"
-                            y1="4"
-                            x2="4"
-                            y2="16"
-                            stroke="#461E2D"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                          />
+<div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch relative mt-16">
+            
+            {/* ── PAIN CARD (4.5 Columns Width - Intentionally Smaller & Heavier) ─────────────────── */}
+            <div className="lg:col-span-5 h-full">
+              <TiltCard intensity={3}>
+                <motion.div
+                  initial={{ opacity: 0, x: -30, y: 15 }}
+                  animate={gridInView ? { opacity: 1, x: 0, y: 0 } : {}}
+                  transition={{ duration: 0.85, delay: 0.1, ease: [0.25, 1, 0.5, 1] }}
+                  className="group relative h-full rounded-3xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden
+                             border border-[#461E2D]/15 bg-gradient-to-b from-[#461E2D]/[0.04] to-[#4C2733]/[0.08]
+                             shadow-[inset_0_2px_4px_rgba(70,30,45,0.02),0_10px_30px_rgba(70,30,45,0.03)]"
+                >
+                  {/* Conceptual Background Texture for the Pain Card (Arid/Cracked feel) */}
+                  <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
+                       style={{ backgroundImage: `radial-gradient(#461E2D 1px, transparent 1px)`, backgroundSize: '16px 16px' }} />
+
+                  <div>
+                    {/* Header */}
+                    <div className="flex items-center gap-4 mb-8 pb-6 border-b border-[#461E2D]/10">
+                      <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-[#461E2D]/10 border border-[#461E2D]/10 text-[#461E2D]/80">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
+                          <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-[#461E2D]/50 font-bold mb-0.5">
-                          Sound familiar?
-                        </p>
-                        <h3 className="text-xl font-extrabold text-[#461E2D] tracking-tight">
-                          The Traditional Way
-                        </h3>
+                        <span className="text-sm font-sans uppercase font-black text-[#461E2D]/65 block mb-0.5">Current State</span>
+                        <h3 className="text-xl font-black text-[#461E2D] tracking-normal font-sans">The Traditional Problem</h3>
                       </div>
                     </div>
+
+                    {/* Content List */}
+                    <ul className="space-y-6 relative z-10">
+                      {pain.map((item, i) => (
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, x: -15 }}
+                          animate={gridInView ? { opacity: 1, x: 0 } : {}}
+                          transition={{ duration: 0.45, delay: 0.2 + i * 0.08 }}
+                          className="flex items-start gap-4 group/item"
+                        >
+                          <PainX inView={gridInView} delay={0.25 + i * 0.08} />
+                          <div className="min-w-0">
+                            <h4 className="text-sm sm:text-xl font-sans font-extrabold text-[#461E2D] tracking-tight transition-colors group-hover/item:text-[#E86240]">
+                              {item.text}
+                            </h4>
+                            <p className="text-xs sm:text-lg font-semibold text-[#461E2D]/60 mt-0.5 leading-tight font-sans">
+                              {item.subtext}
+                            </p>
+                          </div>
+                        </motion.li>
+                      ))}
+                    </ul>
                   </div>
 
-                  {/* Pain items list */}
-                  <ul className="px-6 py-6 space-y-5">
-                    {pain.map((item, i) => (
-                      <motion.li
-                        key={i}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={gridInView ? { opacity: 1, x: 0 } : {}}
-                        transition={{
-                          duration: 0.55,
-                          delay: 0.28 + i * 0.08,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
-                        className="flex items-start gap-4"
-                      >
-                        <PainX inView={gridInView} delay={0.3 + i * 0.08} />
-                        <div className="min-w-0">
-                          <span className="text-sm sm:text-base font-bold text-[#461E2D] block leading-snug ">
-                            {item.text}
-                          </span>
-                          <span className="text-xs text-[#461E2D]/60 mt-0.5 block leading-normal">
-                            {item.subtext}
-                          </span>
-                        </div>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Distress decorative graphical element container */}
-                <div className="px-6 pb-6 mt-4">
-                  <svg
-                    viewBox="0 0 300 28"
-                    className="w-full h-5 opacity-[0.15]"
-                    aria-hidden
-                  >
-                    <path
-                      d="M0 14 C20 6, 50 20, 80 10 C110 2, 130 18, 160 12 C190 6, 220 20, 250 8 C270 2, 285 16, 300 14"
-                      fill="none"
-                      stroke="#461E2D"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </div>
-              </motion.div>
-            </TiltCard>
-
-            {/* ── SOLUTION CARD ─────────────────────────────── */}
-            <TiltCard intensity={4}>
-              <motion.div
-                initial={{ opacity: 0, x: 40, rotateY: 8 }}
-                animate={gridInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
-                transition={{
-                  duration: 0.85,
-                  delay: 0.22,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="h-full rounded-2xl overflow-hidden border border-[#E86240]/25 flex flex-col justify-between
-                           shadow-[0_12px_40px_rgba(232,98,64,0.05),0_2px_8px_rgba(232,98,64,0.02)] bg-gradient-to-br from-[#E86240]/[0.03] to-[#E86240]/[0.07]"
-              >
-                <div>
-                  <div className="h-px bg-gradient-to-r from-transparent via-[#E86240]/40 to-transparent" />
-
-                  {/* Card header */}
-                  <div className="px-6 py-5 border-b border-[#E86240]/15 bg-[#E86240]/[0.04]">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-[#E86240]/15 flex-shrink-0">
-                        <svg viewBox="0 0 20 20" className="w-4 h-4">
-                          <polyline
-                            points="3.5,10.5 8,15 16.5,5.5"
-                            fill="none"
-                            stroke="#E86240"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-[#E86240]/70 font-bold mb-0.5">
-                          The Ridgewell difference
-                        </p>
-                        <h3 className="text-xl font-extrabold text-[#461E2D] tracking-tight">
-                          The Modern Solution
-                        </h3>
-                      </div>
-                    </div>
+                  {/* Micro Footer Badge */}
+                  <div className="mt-8 pt-4 border-t border-[#461E2D]/25 flex items-center justify-between text-[11px] font-bold text-[#461E2D]/40 uppercase tracking-wider  font-sans">
+                    <span>High Friction</span>
+                    <span>Loss Vector</span>
                   </div>
+                </motion.div>
+              </TiltCard>
+            </div>
 
-                  {/* Solution items list */}
-                  <ul className="px-6 py-6 space-y-5">
-                    {solution.map((item, i) => (
-                      <motion.li
-                        key={i}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={gridInView ? { opacity: 1, x: 0 } : {}}
-                        transition={{
-                          duration: 0.55,
-                          delay: 0.38 + i * 0.08,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
-                        className="flex items-start gap-4"
-                      >
-                        <SolutionCheck
-                          inView={gridInView}
-                          delay={0.4 + i * 0.08}
-                        />
-                        <div className="min-w-0">
-                          <span className="text-sm sm:text-base font-bold text-[#461E2D] block leading-snug">
-                            {item.text}
-                          </span>
-                          <span className="text-xs text-[#461E2D]/60 mt-0.5 block leading-normal">
-                            {item.subtext}
-                          </span>
-                        </div>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Bottom elegant micro line spacer structure */}
-                <div className="px-6 pb-6 mt-4">
-                  <div className="h-px bg-gradient-to-r from-[#E86240]/30 via-[#E86240]/10 to-transparent rounded-full" />
-                </div>
-              </motion.div>
-            </TiltCard>
-
-            {/* ── ARROW CONNECTOR DESKTOP OVERLAY ── */}
-            <div className="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-30">
+            {/* ── ARROW CONNECTOR OVERLAY (Perfectly Weighted Layout Centerpiece) ────────────────── */}
+            <div className="hidden lg:block absolute left-[41.666%] top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-30">
               <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
+                initial={{ opacity: 0, scale: 0.7 }}
                 animate={gridInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.6,
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 20,
-                }}
-                className="w-11 h-11 rounded-full border-2 border-[#E86240]/40 bg-[#F4DEBF]
-                           flex items-center justify-center shadow-md"
+                transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.5 }}
+                className="w-14 h-14 rounded-full border border-[#E86240]/30 bg-[#F4DEBF] flex items-center justify-center 
+                           shadow-[0_8px_24px_rgba(232,98,64,0.15)] relative group"
               >
-                <ArrowRight className="w-5 h-5 text-[#E86240]" />
+                {/* Pulse Aura ring */}
+                <span className="absolute inset-0 rounded-full bg-[#E86240]/10 animate-ping opacity-75" />
+                <div className="w-10 h-10 rounded-full bg-[#E86240] flex items-center justify-center shadow-sm text-white">
+                  <ArrowRight className="w-5 h-5 transform group-hover:translate-x-0.5 transition-transform" strokeWidth={2.5} />
+                </div>
               </motion.div>
             </div>
+
+            {/* ── SOLUTION CARD (7 Columns Width - Visually Premium, Hero Status) ───────────────── */}
+            <div className="lg:col-span-7 h-full lg:-mt-4 lg:mb-4">
+              <TiltCard intensity={2}>
+                <motion.div
+                  initial={{ opacity: 0, x: 30, y: -10 }}
+                  animate={gridInView ? { opacity: 1, x: 0, y: 0 } : {}}
+                  transition={{ duration: 0.85, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
+                  className="relative h-full rounded-3xl p-6 sm:p-10 flex flex-col justify-between overflow-hidden
+                             border-2 border-[#E86240] bg-gradient-to-br from-[#4C2733] via-[#461E2D] to-[#4C2733]
+                             shadow-[0_20px_50px_rgba(70,30,45,0.22)] text-[#F4DEBF]"
+                >
+                  {/* Abstract Premium Gradient Organic Glow Overlay */}
+                  <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-[#E86240]/20 blur-[60px] pointer-events-none" />
+                  <div className="absolute -left-20 -bottom-20 w-60 h-60 rounded-full bg-[#4C2733]/80 blur-[50px] pointer-events-none" />
+
+                  {/* Contextual Top Label Floating Pill */}
+                  <div className="absolute top-6 right-6 hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E86240]/15 border border-[#E86240]/30 backdrop-blur-md">
+                    <span className="w-2 h-2 rounded-full bg-[#E86240] animate-pulse" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#E86240]">Colorado Optimal</span>
+                  </div>
+
+                  <div>
+                    {/* Header */}
+                    <div className="flex items-center gap-4 mb-10 pb-6 border-b border-white/10">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[#E86240] text-white shadow-lg shadow-[#E86240]/20 flex-shrink-0">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-6 h-6">
+                          <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="text-[10px] uppercase  tracking-[0.25em] font-black text-[#E86240] block mb-0.5">The Ridgewell Landscape Blueprint</span>
+                        <h3 className="text-3xl  font-black text-background tracking-tight font-sans">The Modern Solution</h3>
+                      </div>
+                    </div>
+
+                    {/* Content Grid (Splits into 2 structural columns on wide screens for peak scannability) */}
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 relative z-10">
+                      {solution.map((item, i) => (
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={gridInView ? { opacity: 1, y: 0 } : {}}
+                          transition={{ duration: 0.5, delay: 0.35 + i * 0.08 }}
+                          className="flex items-start gap-3.5 group/sol"
+                        >
+                          <div className="mt-0.5 flex-shrink-0">
+                            <SolutionCheck inView={gridInView} delay={0.4 + i * 0.08} />
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="text-lg font-black text-background font-semibold font-sans tracking-tight group-hover/sol:text-[#E86240] transition-colors duration-200">
+                              {item.text}
+                            </h4>
+                            <p className="text-xs sm:text-sm text-[#F4DEBF]/70 mt-1 leading-relaxed font-sans font-semibold">
+                              {item.subtext}
+                            </p>
+                          </div>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Lower Trust-Building Footer Bar */}
+                  <div className="mt-12 pt-6 border-t border-white/5 flex flex-wrap items-center justify-between gap-4">
+                    <div className="flex items-center gap-2">
+                      <div className="flex -space-x-2">
+                        {[1, 2, 3].map((n) => (
+                          <div key={n} className="w-6 h-6 rounded-full bg-[#F4DEBF]/10 border-2 border-[#461E2D] flex items-center justify-center text-[8px] font-bold">
+                            ✓
+                          </div>
+                        ))}
+                      </div>
+                      <span className="text-sm text-[#F4DEBF]/85 font-medium font-sans ">Engineered for zero waste metrics</span>
+                    </div>
+                    <span className="text-sm font-black uppercase tracking-widest text-[#E86240] bg-[#E86240]/10 px-3 py-1 rounded-lg font-sans ">
+                      100% Sustainable
+                    </span>
+                  </div>
+                </motion.div>
+              </TiltCard>
+            </div>
+
           </div>
         </div>
 
