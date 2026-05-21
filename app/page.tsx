@@ -6,6 +6,7 @@ import HowItWorksSection from "./components/HowItWorksSection";
 import PainProblemSection from "./components/Painproblem";
 import TransformationSection from "./components/TransformationSection";
 import TrustBar from "./components/Trustbar";
+import AreasServed from "./components/Areasserved";
 
 const page = () => {
   return (
@@ -17,6 +18,7 @@ const page = () => {
       <TransformationSection />
       <HowItWorksSection />
       <PainProblemSection />
+      <AreasServed />
       <TrustBar />
     </>
   );

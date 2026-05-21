@@ -100,13 +100,13 @@ export const SERVICES: ServiceItem[] = [
     number: "01",
     title: "Xeriscaping",
     plainEnglish:
-      "We replace high-water grass with drought-smart plants, gravel, and stone — so your yard looks intentional, uses far less water, and needs minimal upkeep.",
+      "We replace high-water grass with drought-smart plants, gravel, and stone so your yard looks intentional, uses far less water, and needs minimal upkeep.",
     tagline:
-      "Colorado-ready landscapes that use dramatically less water — without looking sparse.",
+      "Colorado-ready landscapes that use dramatically less water without looking sparse.",
     description:
-      "Our core specialty. Every xeriscape is custom-designed for your lot, soil, sun exposure, and style — then built with materials that thrive in dry climates.",
+      "Our core specialty. Every xeriscape is custom-designed for your lot, soil, sun exposure, and style then built with materials that thrive in dry climates.",
     outcome:
-      "Lower water bills, less weekend maintenance, and a yard that looks designed — not neglected.",
+      "Lower water bills, less weekend maintenance, and a yard that looks designed not neglected.",
     scanChips: [
       "Less water",
       "Native plants",
@@ -366,7 +366,7 @@ function WhatsIncluded({
             dark ? "text-[#F4DEBF]/55" : "text-[#4C2733]/65"
           }`}
         >
-          Typical scope — tailored to your property at your free consultation.
+          Typical scope tailored to your property at your free consultation.
         </p>
       </div>
 
@@ -626,12 +626,12 @@ function ServiceDetailSection({
               <p className="font-satoshi text-[11px] uppercase tracking-[0.18em] text-[#E86240] font-bold mb-1.5">
                 In plain English
               </p>
-              <p className="font-satoshi text-base sm:text-lg text-[#461E2D] leading-relaxed font-semibold">
+              <p className="font-sans  text-base sm:text-xl text-[#461E2D] leading-relaxed font-semibold">
                 {service.plainEnglish}
               </p>
             </div>
 
-            <p className="font-satoshi text-sm sm:text-[15px] text-[#4C2733]/70 leading-relaxed max-w-2xl mb-4">
+            <p className="font-satoshi text-sm sm:text-[16px] text-[#4C2733]/70 leading-relaxed max-w-2xl mb-4">
               {service.description}
             </p>
 
@@ -687,7 +687,7 @@ function SectionHeader() {
             id="services-heading"
             className="font-sans font-bold text-[clamp(2rem,5vw,3.25rem)] text-[#461E2D] tracking-tight leading-[1.08]"
           >
-            Three services.{" "}
+            Our services.{" "}
             <span className="text-[#E86240]">One clear explanation</span> of
             what you get.
           </h2>
