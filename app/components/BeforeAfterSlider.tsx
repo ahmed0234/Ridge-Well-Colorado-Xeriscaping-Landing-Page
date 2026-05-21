@@ -1,6 +1,11 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+} from "react";
 import { motion, useInView } from "motion/react";
 import Image from "next/image";
 
@@ -23,7 +28,7 @@ export default function BeforeAfterSlider({
   location,
   waterSaved,
 }: BeforeAfterSliderProps) {
-  const [position, setPosition] = useState(80);
+  const [position, setPosition] = useState(78);
   const [isDragging, setIsDragging] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -31,25 +36,22 @@ export default function BeforeAfterSlider({
   const sliderRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-80px" });
 
-  
+  /* Auto-reveal animation on scroll into view */
   useEffect(() => {
     if (isInView && !hasAnimated) {
       setHasAnimated(true);
-      const start = 80;
-      const end = 50;
-      const duration = 1400;
+      const start = 78;
+      const end = 48;
+      const duration = 1600;
       const startTime = performance.now();
-
       const animate = (now: number) => {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
+        const eased = 1 - Math.pow(1 - progress, 4);
         setPosition(start + (end - start) * eased);
         if (progress < 1) requestAnimationFrame(animate);
       };
-
-    
-      setTimeout(() => requestAnimationFrame(animate), 300);
+      setTimeout(() => requestAnimationFrame(animate), 400);
     }
   }, [isInView, hasAnimated]);
 
@@ -57,8 +59,8 @@ export default function BeforeAfterSlider({
     if (!sliderRef.current) return;
     const rect = sliderRef.current.getBoundingClientRect();
     const x = clientX - rect.left;
-    const percentage = Math.max(2, Math.min(98, (x / rect.width) * 100));
-    setPosition(percentage);
+    const pct = Math.max(3, Math.min(97, (x / rect.width) * 100));
+    setPosition(pct);
   }, []);
 
   const handleStart = useCallback(
@@ -71,202 +73,152 @@ export default function BeforeAfterSlider({
   );
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const onMove = (e: MouseEvent) => {
       if (!isDragging) return;
       e.preventDefault();
       updatePosition(e.clientX);
     };
-    const handleTouchMove = (e: TouchEvent) => {
+    const onTouch = (e: TouchEvent) => {
       if (!isDragging) return;
       updatePosition(e.touches[0].clientX);
     };
-    const handleEnd = () => setIsDragging(false);
+    const onEnd = () => setIsDragging(false);
 
     if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleEnd);
-      window.addEventListener("touchmove", handleTouchMove, { passive: true });
-      window.addEventListener("touchend", handleEnd);
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onEnd);
+      window.addEventListener("touchmove", onTouch, { passive: true });
+      window.addEventListener("touchend", onEnd);
     }
-
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleEnd);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("touchend", handleEnd);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onEnd);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onEnd);
     };
   }, [isDragging, updatePosition]);
 
   return (
-    <div ref={containerRef} className="group relative">
-      <motion.div
-        whileHover={{ y: -6 }}
-        transition={{ duration: 0.35, ease: [0.25, 0.8, 0.25, 1] }}
-        className="relative"
+    <div ref={containerRef} className="w-full">
+      {/* ── Image arena ─────────────────────────────────── */}
+      <div
+        ref={sliderRef}
+        className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden cursor-ew-resize select-none ring-1 ring-foreground/8 shadow-2xl shadow-foreground/10"
+        onMouseDown={(e) => { e.preventDefault(); handleStart(e.clientX); }}
+        onTouchStart={(e) => handleStart(e.touches[0].clientX)}
       >
-      
+        {/* BEFORE layer */}
+        <Image
+          src={beforeImage}
+          alt={beforeAlt}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          draggable={false}
+          priority
+        />
+
+        {/* AFTER layer — clipped */}
         <div
-          ref={sliderRef}
-          className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-xl shadow-black/8 cursor-ew-resize select-none ring-1 ring-black/5"
-          onMouseDown={(e) => {
-            e.preventDefault();
-            handleStart(e.clientX);
-          }}
-          onTouchStart={(e) => handleStart(e.touches[0].clientX)}
+          className="absolute inset-0 will-change-[clip-path] transition-none"
+          style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         >
-     
           <Image
-            src={beforeImage}
-            alt={beforeAlt}
+            src={afterImage}
+            alt={afterAlt}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, 50vw"
             draggable={false}
+            priority
           />
+          {/* Subtle color warmth over 'after' */}
+          <div className="absolute inset-0 bg-gradient-to-br from-background/10 via-transparent to-transparent pointer-events-none" />
+        </div>
 
-      
-          <div
-            className="absolute inset-0 will-change-[clip-path]"
-            style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
+        {/* Bottom cinematic scrim */}
+        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-foreground/50 to-transparent z-10 pointer-events-none" />
+
+        {/* BEFORE label */}
+        <div className="absolute top-4 left-4 z-20">
+          <span className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.22em] font-semibold bg-foreground/70 text-background/90 backdrop-blur-md border border-white/10">
+            Before
+          </span>
+        </div>
+
+        {/* AFTER label */}
+        <div className="absolute top-4 right-4 z-20">
+          <span
+            className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.22em] font-semibold backdrop-blur-md"
+            style={{ background: "#E86240", color: "#fff" }}
           >
-            <Image
-              src={afterImage}
-              alt={afterAlt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              draggable={false}
-            />
-          </div>
+            After
+          </span>
+        </div>
 
-
-          <div className="absolute top-4 left-4 z-10">
-            <span className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] font-body font-semibold bg-night-desert/60 text-warm-white/90 backdrop-blur-md border border-white/10">
-              Before
-            </span>
-          </div>
-
- 
-          <div className="absolute top-4 right-4 z-10">
-            <span className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] font-body font-semibold bg-sunset-gold/85 text-night-desert backdrop-blur-md">
-              After
-            </span>
-          </div>
-
-  
-          {!hasInteracted && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ delay: 1.8, duration: 0.6 }}
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10"
-            >
-              <span className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.15em] font-body font-medium bg-white/80 text-night-desert/70 backdrop-blur-md shadow-lg">
-                ← Drag to compare →
-              </span>
-            </motion.div>
-          )}
-
- 
-          <div
-            className="absolute top-0 bottom-0 z-20 pointer-events-none will-change-[left]"
-            style={{ left: `${position}%`, transform: "translateX(-50%)" }}
+        {/* Drag hint */}
+        {!hasInteracted && (
+          <motion.div
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2, duration: 0.5 }}
+            className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20"
           >
-  
-            <div className="w-px h-full bg-white/90 shadow-[0_0_10px_rgba(255,255,255,0.3)]" />
+            <span className="px-4 py-2 rounded-full text-[10px] uppercase tracking-[0.18em] font-semibold bg-background/85 text-foreground/70 backdrop-blur-md shadow-lg border border-foreground/8 whitespace-nowrap">
+              ← Drag to compare →
+            </span>
+          </motion.div>
+        )}
 
+        {/* Divider line */}
+        <div
+          className="absolute top-0 bottom-0 z-20 pointer-events-none will-change-[left]"
+          style={{ left: `${position}%`, transform: "translateX(-50%)" }}
+        >
+          <div className="w-px h-full bg-white/80 shadow-[0_0_12px_rgba(255,255,255,0.35)]" />
 
-            <motion.div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-ew-resize"
-              animate={
-                !isDragging && !hasInteracted
-                  ? { scale: [1, 1.08, 1] }
-                  : {}
-              }
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+          {/* Handle */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-ew-resize"
+            animate={!isDragging && !hasInteracted ? { scale: [1, 1.1, 1] } : {}}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <div
+              className={`w-12 h-12 rounded-full bg-white flex items-center justify-center border-2 transition-all duration-200 ${
+                isDragging
+                  ? "scale-110 shadow-2xl shadow-black/40 border-[#E86240]/50"
+                  : "shadow-xl shadow-black/20 border-white/70"
+              }`}
             >
-              <div
-                className={`w-11 h-11 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center border-2 transition-shadow duration-300 ${
-                  isDragging
-                    ? "shadow-2xl shadow-black/40 border-sunset-gold/40"
-                    : "shadow-xl shadow-black/20 border-white/60"
-                }`}
-              >
-                <div className="flex items-center gap-0.5">
-                  <svg
-                    width="7"
-                    height="12"
-                    viewBox="0 0 7 12"
-                    fill="none"
-                  >
-                    <path
-                      d="M6 1L1.5 6L6 11"
-                      stroke="#1C1A17"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <div className="w-px h-4 bg-night-desert/20 mx-0.5 rounded-full" />
-                  <svg
-                    width="7"
-                    height="12"
-                    viewBox="0 0 7 12"
-                    fill="none"
-                  >
-                    <path
-                      d="M1 1L5.5 6L1 11"
-                      stroke="#1C1A17"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
+              <div className="flex items-center gap-0.5">
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+                  <path d="M6 1L1.5 6L6 11" stroke="#461E2D" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <div className="w-px h-4 bg-foreground/20 mx-0.5 rounded-full" />
+                <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+                  <path d="M1 1L5.5 6L1 11" stroke="#461E2D" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
-            </motion.div>
-          </div>
-
- 
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-night-desert/40 to-transparent z-[5] pointer-events-none" />
-        </div>
-
-
-        <div className="mt-4 px-1">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-heading text-lg font-semibold text-night-desert">
-                {title}
-              </h3>
-              <p className="text-xs text-stone-gray font-body mt-0.5">
-                {location}
-              </p>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sage/10 border border-sage/20">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#7A8F7A"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-              </svg>
-              <span className="text-xs font-body font-semibold text-cactus">
-                {waterSaved}
-              </span>
-            </div>
-          </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
+
+      {/* ── Card footer ──────────────────────────────────── */}
+      <div className="mt-5 flex items-start justify-between gap-4 px-1">
+        <div>
+          <h3 className="text-lg font-semibold text-foreground tracking-tight leading-snug">
+            {title}
+          </h3>
+          <p className="text-sm text-foreground/50 mt-0.5 font-medium">{location}</p>
+        </div>
+        <div className="flex-shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-full bg-foreground/6 border border-foreground/10">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E86240" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+          </svg>
+          <span className="text-xs font-bold text-foreground/70 tabular-nums">{waterSaved}</span>
+        </div>
+      </div>
     </div>
   );
 }

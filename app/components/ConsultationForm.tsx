@@ -6,13 +6,13 @@ import { PiCheckCircle, PiLeafLight } from "react-icons/pi";
 
 // ─── Color Palette ──────────────────────────────────────────────────────────
 const C = {
-  sand:       "#F4DEBF",
-  sandLight:  "#FAF0E3",
-  plum:       "#4C2733",
-  deepPlum:   "#461E2D",
-  terra:      "#e04f2b",
-  terraGlow:  "rgba(224, 79, 43, 0.13)",
-  white:      "#FFFFFF",
+  sand: "#F4DEBF",
+  sandLight: "#FAF0E3",
+  plum: "#4C2733",
+  deepPlum: "#461E2D",
+  terra: "#E86240",
+  terraGlow: "rgba(232, 98, 64, 0.15)",
+  white: "#FFFFFF",
 };
 
 const SERVICES = [
@@ -23,41 +23,23 @@ const SERVICES = [
   "Not Sure Yet",
 ];
 
-// ─── Input Styles ────────────────────────────────────────────────────────────
-const inputBase: React.CSSProperties = {
-  background: "rgba(255,255,255,0.82)",
-  border: "1.5px solid rgba(70,30,45,0.11)",
-  borderRadius: "11px",
-  color: C.deepPlum,
-  fontFamily: "'Satoshi', sans-serif",
-  fontSize: "13.5px",
-  padding: "11px 13px",
-  outline: "none",
-  width: "100%",
-  transition: "border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease",
-};
-const focusStyle: React.CSSProperties = {
-  borderColor: C.terra,
-  background: C.white,
-  boxShadow: `0 0 0 4px ${C.terraGlow}`,
-};
-
 // ─── Field Wrapper ────────────────────────────────────────────────────────────
-function Field({ label, id, error, children }: {
-  label: string; id: string; error?: string; children: React.ReactNode;
+function Field({
+  label,
+  id,
+  error,
+  children,
+}: {
+  label: string;
+  id: string;
+  error?: string;
+  children: React.ReactNode;
 }) {
   return (
     <div className="flex flex-col gap-1.5 w-full">
       <label
         htmlFor={id}
-        style={{
-          fontSize: 10.5,
-          fontWeight: 700,
-          letterSpacing: "0.09em",
-          color: "rgba(70,30,45,0.58)",
-          fontFamily: "'Satoshi', sans-serif",
-          textTransform: "uppercase",
-        }}
+        className="font-satoshi text-[12.5px] font-bold tracking-wider text-foreground/85 uppercase"
       >
         {label}
       </label>
@@ -65,7 +47,7 @@ function Field({ label, id, error, children }: {
       <AnimatePresence>
         {error && (
           <motion.span
-            style={{ fontSize: 11, color: C.terra, fontFamily: "'Satoshi', sans-serif", fontWeight: 500 }}
+            className="font-satoshi text-xs font-semibold text-[#E86240] mt-1.5 block"
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
@@ -79,12 +61,26 @@ function Field({ label, id, error, children }: {
 }
 
 // ─── Input ────────────────────────────────────────────────────────────────────
-function Input({ id, type = "text", placeholder, value, onChange, onFocus, onBlur, focused, ...rest }: any) {
+function Input({
+  id,
+  type = "text",
+  placeholder,
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+  ...rest
+}: any) {
   return (
     <input
-      id={id} type={type} placeholder={placeholder} value={value}
-      onChange={onChange} onFocus={onFocus} onBlur={onBlur}
-      style={{ ...inputBase, ...(focused ? focusStyle : {}) }}
+      id={id}
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      className="w-full bg-background/40 hover:bg-background/60 focus:bg-background/80 text-foreground placeholder:text-foreground/45 border border-foreground/15 hover:border-foreground/30 focus:border-[#E86240] focus:ring-4 focus:ring-[#E86240]/15 transition-all duration-200 rounded-xl px-4 py-3.5 outline-none font-satoshi text-[13.5px] shadow-[inset_0_1.5px_3px_rgba(70,30,45,0.04)]"
       autoComplete="off"
       {...rest}
     />
@@ -92,25 +88,29 @@ function Input({ id, type = "text", placeholder, value, onChange, onFocus, onBlu
 }
 
 // ─── Select ───────────────────────────────────────────────────────────────────
-function Select({ id, value, onChange, onFocus, onBlur, focused }: any) {
+function Select({ id, value, onChange, onFocus, onBlur, ...rest }: any) {
   return (
     <select
-      id={id} value={value} onChange={onChange} onFocus={onFocus} onBlur={onBlur}
+      id={id}
+      value={value}
+      onChange={onChange}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      className="w-full bg-background/40 hover:bg-background/60 focus:bg-background/80 text-foreground border border-foreground/15 hover:border-foreground/30 focus:border-[#E86240] focus:ring-4 focus:ring-[#E86240]/15 transition-all duration-200 rounded-xl px-4 py-3.5 pr-9 outline-none font-satoshi text-[13.5px] shadow-[inset_0_1.5px_3px_rgba(70,30,45,0.04)] appearance-none cursor-pointer"
       style={{
-        ...inputBase,
-        ...(focused ? focusStyle : {}),
-        appearance: "none",
-        WebkitAppearance: "none",
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='rgba(70,30,45,0.38)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='rgba(70,30,45,0.55)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "calc(100% - 13px) center",
-        paddingRight: "36px",
-        cursor: "pointer",
       }}
+      {...rest}
     >
-      <option value="" disabled style={{ color: "rgba(70,30,45,0.38)" }}>Select a service…</option>
+      <option value="" disabled className="text-foreground/45 bg-[#FAF0E3]">
+        Select a service…
+      </option>
       {SERVICES.map((s) => (
-        <option key={s} value={s}>{s}</option>
+        <option key={s} value={s} className="text-foreground bg-[#FAF0E3]">
+          {s}
+        </option>
       ))}
     </select>
   );
@@ -119,30 +119,40 @@ function Select({ id, value, onChange, onFocus, onBlur, focused }: any) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function ConsultationForm() {
   const uid = useId();
-  const [form, setForm] = useState({ name: "", phone: "", email: "", zip: "", service: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    zip: "",
+    service: "",
+  });
   const [focused, setFocused] = useState<Record<string, boolean>>({});
-  const [errors, setErrors]   = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading]     = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const set = (k: string) => (e: any) => setForm((f) => ({ ...f, [k]: e.target.value }));
-  const on  = (k: string) => ()      => setFocused((f) => ({ ...f, [k]: true }));
-  const off = (k: string) => ()      => setFocused((f) => ({ ...f, [k]: false }));
+  const set = (k: string) => (e: any) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+  const on = (k: string) => () => setFocused((f) => ({ ...f, [k]: true }));
+  const off = (k: string) => () => setFocused((f) => ({ ...f, [k]: false }));
 
   const validate = () => {
     const e: Record<string, string> = {};
-    if (!form.name.trim())                           e.name    = "Name is required";
-    if (!form.phone.trim())                          e.phone   = "Phone number is required";
-    if (!form.email.includes("@"))                   e.email   = "Valid email required";
-    if (!form.zip.trim() || form.zip.length < 5)    e.zip     = "Valid ZIP required";
-    if (!form.service)                               e.service = "Please select a service";
+    if (!form.name.trim()) e.name = "Name is required";
+    if (!form.phone.trim()) e.phone = "Phone number is required";
+    if (!form.email.includes("@")) e.email = "Valid email required";
+    if (!form.zip.trim() || form.zip.length < 5) e.zip = "Valid ZIP required";
+    if (!form.service) e.service = "Please select a service";
     return e;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
     setErrors({});
     setLoading(true);
     await new Promise((r) => setTimeout(r, 1200));
@@ -156,7 +166,6 @@ export default function ConsultationForm() {
      * Plants are z-20+ to float visually over the card without clipping.
      */
     <div className="relative w-full" style={{ isolation: "isolate" }}>
-
       {/* ══ BOTANICAL LAYER 1 — Cascading string vines from top ══════════
           Leafs Strans.png hangs from the very top of the card, draping
           organically into the header area for a "garden trellis" effect.
@@ -215,14 +224,19 @@ export default function ConsultationForm() {
           top: "25%",
           right: "-28px",
           width: "52px",
-          opacity: 0.60,
+          opacity: 0.6,
           zIndex: 29,
           filter: "drop-shadow(0 2px 8px rgba(40,80,40,0.08))",
           transformOrigin: "top center",
           willChange: "transform",
         }}
         animate={{ rotate: [2, -1, 2], y: [0, 6, 0] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        transition={{
+          duration: 14,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
       />
 
       {/* ══ BOTANICAL LAYER 4 — Fern growing from bottom-right ══════════
@@ -244,39 +258,15 @@ export default function ConsultationForm() {
           willChange: "transform",
         }}
         animate={{ rotate: [-2, 2, -2], y: [0, -3, 0] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        transition={{
+          duration: 11,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
       />
 
-      {/* ══ ANIMATED GLOW BORDER SHELL ════════════════════════════════════
-          A rotating conic-gradient sits BEHIND the card (z-0) and bleeds
-          through the 1.5px transparent padding ring, creating an organic
-          sweeping terra-green glow. GPU-only (transform: rotate).
-      */}
-      <div
-        className="relative rounded-[22px] p-[1.5px]"
-        style={{ zIndex: 10 }}
-      >
-        {/* Rotating conic light-ray — GPU composited via rotate transform */}
-        <motion.div
-          className="absolute inset-0 rounded-[22px]"
-          style={{
-            background: `conic-gradient(
-              from 0deg,
-              transparent 0%,
-              transparent 38%,
-              rgba(224,79,43,0.55) 48%,
-              rgba(244,160,90,0.35) 52%,
-              transparent 62%,
-              transparent 100%
-            )`,
-            filter: "blur(5px)",
-            zIndex: 0,
-            willChange: "transform",
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
-        />
-
+      <div className="relative" style={{ zIndex: 10 }}>
         {/* ══ INNER GLASS CARD ════════════════════════════════════════════
             Sits on top of the rotating border (z-10), isolates blur so
             the backdrop-filter only applies inside the card.
@@ -284,18 +274,21 @@ export default function ConsultationForm() {
         <div
           className="relative overflow-hidden rounded-[21px]"
           style={{
-            background: "rgba(255,255,255,0.74)",
+            background: "rgba(244, 222, 191, 0.88)",
             backdropFilter: "blur(26px) saturate(1.45)",
             WebkitBackdropFilter: "blur(26px) saturate(1.45)",
             zIndex: 10,
             boxShadow:
-              "0 2px 0 rgba(255,255,255,0.9) inset," +
-              "0 24px 56px rgba(70,30,45,0.10)," +
-              "0 4px 14px rgba(70,30,45,0.05)",
+              "0 2px 0 rgba(255,255,255,0.6) inset," +
+              "0 24px 56px rgba(76,39,51,0.12)," +
+              "0 4px 14px rgba(76,39,51,0.06)",
           }}
         >
           {/* Subtle interior ghost plants — blurred through glass layer */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 1 }}>
+          <div
+            className="absolute inset-0 pointer-events-none overflow-hidden"
+            style={{ zIndex: 1 }}
+          >
             <img
               src="/Ctaform/Leafs Strans.png"
               alt=""
@@ -338,9 +331,14 @@ export default function ConsultationForm() {
                 <motion.div
                   initial={{ scale: 0, rotate: -20 }}
                   animate={{ scale: 1, rotate: 0 }}
-                  transition={{ delay: 0.12, type: "spring", stiffness: 220, damping: 14 }}
+                  transition={{
+                    delay: 0.12,
+                    type: "spring",
+                    stiffness: 220,
+                    damping: 14,
+                  }}
                   className="flex items-center justify-center w-16 h-16 rounded-full"
-                  style={{ background: "rgba(224,79,43,0.10)" }}
+                  style={{ background: "rgba(232,98,64,0.10)" }}
                 >
                   <PiCheckCircle size={40} style={{ color: C.terra }} />
                 </motion.div>
@@ -360,20 +358,25 @@ export default function ConsultationForm() {
                     style={{
                       fontSize: 13,
                       lineHeight: 1.7,
-                      color: "rgba(70,30,45,0.62)",
+                      color: "rgba(76,39,51,0.75)",
                       fontFamily: "'Satoshi', sans-serif",
                       maxWidth: 268,
                       margin: "0 auto",
                     }}
                   >
-                    We'll reach out within 1 business day to schedule your free xeriscape design consultation.
+                    We'll reach out within 1 business day to schedule your free
+                    xeriscape design consultation.
                   </p>
                 </div>
               </motion.div>
             ) : (
               /* ── FORM STATE ── */
-              <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ zIndex: 2, position: "relative" }}>
-
+              <motion.div
+                key="form"
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                style={{ zIndex: 2, position: "relative" }}
+              >
                 {/* ── HEADER ──────────────────────────────────────────── */}
                 <div
                   className="px-7 pt-8 pb-5"
@@ -383,7 +386,7 @@ export default function ConsultationForm() {
                   <div className="flex items-center gap-2 mb-3.5">
                     <div
                       className="flex items-center justify-center w-5 h-5 rounded-full"
-                      style={{ background: "rgba(224,79,43,0.12)" }}
+                      style={{ background: "rgba(232,98,64,0.12)" }}
                     >
                       <PiLeafLight size={11} style={{ color: C.terra }} />
                     </div>
@@ -404,113 +407,208 @@ export default function ConsultationForm() {
                   {/* Heading */}
                   <h2
                     style={{
-                      fontFamily: "'Clash Display', sans-serif",
-                      fontSize: "clamp(1.3rem, 2.2vw, 1.65rem)",
+                      fontSize: "clamp(1.5rem, 2.2vw, 1.65rem)",
                       fontWeight: 700,
                       lineHeight: 1.2,
-                      letterSpacing: "-0.024em",
                       color: C.deepPlum,
                     }}
+                    className="font-clash "
                   >
-                    Get Your Free<br />Design Consultation
+                    Get Your Free
+                    <br />
+                    Design Consultation
                   </h2>
                 </div>
 
                 {/* ── FORM FIELDS ──────────────────────────────────────── */}
                 <form onSubmit={handleSubmit} noValidate>
-                  <div className="px-7 py-5 flex flex-col gap-4">
-                    <div className="grid grid-cols-2 gap-3">
-                      <Field label="Full Name" id={`${uid}-name`} error={errors.name}>
+                  <div className="px-7 py-5 flex flex-col gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <Field
+                        label="Full Name"
+                        id={`${uid}-name`}
+                        error={errors.name}
+                      >
                         <Input
-                          id={`${uid}-name`} placeholder="Jane Smith"
-                          value={form.name} onChange={set("name")}
-                          onFocus={on("name")} onBlur={off("name")} focused={focused.name}
+                          id={`${uid}-name`}
+                          placeholder="Jane Smith"
+                          value={form.name}
+                          onChange={set("name")}
+                          onFocus={on("name")}
+                          onBlur={off("name")}
                         />
                       </Field>
-                      <Field label="Phone" id={`${uid}-phone`} error={errors.phone}>
+                      <Field
+                        label="Phone"
+                        id={`${uid}-phone`}
+                        error={errors.phone}
+                      >
                         <Input
-                          id={`${uid}-phone`} type="tel" placeholder="(720) 555-0100"
-                          value={form.phone} onChange={set("phone")}
-                          onFocus={on("phone")} onBlur={off("phone")} focused={focused.phone}
+                          id={`${uid}-phone`}
+                          type="tel"
+                          placeholder="(720) 555-0100"
+                          value={form.phone}
+                          onChange={set("phone")}
+                          onFocus={on("phone")}
+                          onBlur={off("phone")}
                         />
                       </Field>
                     </div>
 
-                    <Field label="Email Address" id={`${uid}-email`} error={errors.email}>
+                    <Field
+                      label="Email Address"
+                      id={`${uid}-email`}
+                      error={errors.email}
+                    >
                       <Input
-                        id={`${uid}-email`} type="email" placeholder="jane@example.com"
-                        value={form.email} onChange={set("email")}
-                        onFocus={on("email")} onBlur={off("email")} focused={focused.email}
+                        id={`${uid}-email`}
+                        type="email"
+                        placeholder="jane@example.com"
+                        value={form.email}
+                        onChange={set("email")}
+                        onFocus={on("email")}
+                        onBlur={off("email")}
                       />
                     </Field>
 
-                    <Field label="ZIP Code" id={`${uid}-zip`} error={errors.zip}>
+                    <Field
+                      label="ZIP Code"
+                      id={`${uid}-zip`}
+                      error={errors.zip}
+                    >
                       <Input
-                        id={`${uid}-zip`} placeholder="80202" maxLength={5}
-                        value={form.zip} onChange={set("zip")}
-                        onFocus={on("zip")} onBlur={off("zip")} focused={focused.zip}
+                        id={`${uid}-zip`}
+                        placeholder="80202"
+                        maxLength={5}
+                        value={form.zip}
+                        onChange={set("zip")}
+                        onFocus={on("zip")}
+                        onBlur={off("zip")}
                       />
                     </Field>
 
-                    <Field label="What Are You Looking For?" id={`${uid}-service`} error={errors.service}>
+                    <Field
+                      label="What Are You Looking For?"
+                      id={`${uid}-service`}
+                      error={errors.service}
+                    >
                       <Select
-                        id={`${uid}-service`} value={form.service} onChange={set("service")}
-                        onFocus={on("service")} onBlur={off("service")} focused={focused.service}
+                        id={`${uid}-service`}
+                        value={form.service}
+                        onChange={set("service")}
+                        onFocus={on("service")}
+                        onBlur={off("service")}
                       />
                     </Field>
                   </div>
 
                   {/* ── FOOTER / CTA ──────────────────────────────────── */}
                   <div className="px-7 pb-7 flex flex-col gap-4">
-                    <motion.button
+                    <motion.a
                       type="submit"
-                      disabled={loading}
-                      className="w-full py-4 rounded-xl text-sm font-bold tracking-wide"
-                      style={{
-                        background: loading ? "rgba(224,79,43,0.6)" : C.terra,
-                        color: C.white,
-                        fontFamily: "'Satoshi', sans-serif",
-                        fontWeight: 700,
-                        letterSpacing: "0.025em",
-                        cursor: loading ? "wait" : "pointer",
-                        border: "none",
-                        boxShadow: loading
-                          ? "none"
-                          : "0 6px 22px rgba(224,79,43,0.30), 0 2px 6px rgba(224,79,43,0.18)",
-                      }}
-                      whileHover={loading ? {} : {
-                        scale: 1.025,
+                      href="#consultation"
+                      whileHover={{
+                        scale: 1.04,
                         y: -2,
-                        boxShadow: "0 12px 32px rgba(224,79,43,0.38), 0 3px 10px rgba(224,79,43,0.2)",
                       }}
-                      whileTap={loading ? {} : { scale: 0.97, y: 0 }}
-                      transition={{ type: "spring", stiffness: 440, damping: 22 }}
+                      whileTap={{ scale: 0.96 }}
+                      className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl px-8 py-4.5"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, #D94F2B 0%, #E86240 45%, #C63E1D 100%)",
+                        boxShadow:
+                          "0 12px 35px rgba(232,98,64,0.28), inset 0 1px 0 rgba(255,255,255,0.08)",
+                      }}
                     >
-                      {loading ? (
-                        <span className="flex items-center justify-center gap-2.5">
-                          <motion.span
-                            className="inline-block w-4 h-4 rounded-full border-2"
-                            style={{ borderColor: "rgba(255,255,255,0.28)", borderTopColor: "#fff" }}
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 0.72, repeat: Infinity, ease: "linear" }}
-                          />
-                          Sending…
-                        </span>
-                      ) : (
-                        "Get My Free Consultation →"
-                      )}
-                    </motion.button>
+                      {/* deep inner gloss */}
+                      <div
+                        className="absolute inset-0 rounded-2xl"
+                        style={{
+                          background:
+                            "linear-gradient(to bottom, rgba(255,255,255,0.10), transparent 35%, transparent 65%, rgba(0,0,0,0.12))",
+                        }}
+                      />
+
+                      {/* razor sharp moving glaze */}
+                      <motion.div
+                        className="absolute top-0 bottom-0 w-20"
+                        animate={{
+                          x: ["-150%", "420%"],
+                        }}
+                        transition={{
+                          duration: 2.2,
+                          repeat: Infinity,
+                          ease: "linear",
+                          repeatDelay: 0.6,
+                        }}
+                        style={{
+                          background:
+                            "linear-gradient(90deg, transparent 0%, rgba(252, 223, 184, 0.2) 10%, rgba(252, 223, 184, 0.75) 50%, rgba(252, 223, 184, 0.2) 70%, transparent 100%)",
+                          transform: "skewX(-24deg)",
+                          filter: "blur(0.5px)",
+                          mixBlendMode: "screen",
+                        }}
+                      />
+
+                      {/* subtle animated glow */}
+                      <motion.div
+                        className="absolute inset-0 rounded-2xl"
+                        animate={{
+                          opacity: [0.15, 0.3, 0.15],
+                        }}
+                        transition={{
+                          duration: 2.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                        style={{
+                          background:
+                            "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.16), transparent 45%)",
+                        }}
+                      />
+
+                      {/* edge highlight */}
+                      <div
+                        className="absolute inset-[1px] rounded-[15px] pointer-events-none"
+                        style={{
+                          border: "1px solid rgba(255,255,255,0.08)",
+                        }}
+                      />
+
+                      {/* text */}
+                      <span
+                        className="relative z-10 flex items-center gap-3 text-base font-bold tracking-[0.03em]"
+                        style={{
+                          color: "#fff",
+                          fontFamily: "Satoshi, sans-serif",
+                        }}
+                      >
+                        Get Your Free Design Consultation
+                        <motion.span
+                          animate={{ x: [0, 4, 0] }}
+                          transition={{
+                            duration: 1.2,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }}
+                          className="text-lg"
+                        >
+                          →
+                        </motion.span>
+                      </span>
+                    </motion.a>
 
                     <p
                       className="text-center"
                       style={{
                         fontSize: 11,
                         lineHeight: 1.65,
-                        color: "rgba(70,30,45,0.42)",
+                        color: "rgba(76,39,51,0.65)",
                         fontFamily: "'Satoshi', sans-serif",
                       }}
                     >
-                      No pressure. We'll learn about your space, goals, and what makes sense for your property.
+                      No pressure. We'll learn about your space, goals, and what
+                      makes sense for your property.
                     </p>
                   </div>
                 </form>

@@ -32,7 +32,7 @@ const C = {
   sandDark: "#E8CBAA", // dividers, borders
   plum: "#4C2733", // headings, body text
   deepPlum: "#461E2D", // darkest text, overlays
-  terra: "#e04f2b", // CTA, accent, highlights
+  terra: "#E86240", // CTA, accent, highlights
   terraLight: "#F2A07A", // softer accent
   white: "#FFFFFF",
 };
@@ -70,26 +70,26 @@ function InsightCard({
         }}
         className="relative flex items-start gap-3 px-4 py-3.5 rounded-2xl"
         style={{
-          background: "rgba(255,255,255,0.9)",
-          backdropFilter: "blur(1px) saturate(1.6)",
-          WebkitBackdropFilter: "blur(1px) saturate(1.6)",
-          border: "1px solid rgba(232,98,64,0.14)",
+          background: "rgba(252, 223, 184, 0.7)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          border: "1px solid rgba(76, 39, 51, 0.12)",
           boxShadow:
-            "0 8px 32px rgba(70,30,45,0.10), 0 2px 8px rgba(70,30,45,0.06), 0 0 0 0.5px rgba(255,255,255,0.7) inset",
+            "0 8px 32px rgba(76, 39, 51, 0.08), 0 2px 8px rgba(76, 39, 51, 0.04), 0 0 0 1px rgba(255,255,255,0.5) inset",
           minWidth: 200,
-          maxWidth: 230,
+          maxWidth: 240,
         }}
       >
         {/* Icon dot */}
         <div
           className="flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center mt-0.5"
-          style={{ background: "rgba(232,98,64,0.10)" }}
+          style={{ background: "rgba(232,98,64,0.12)" }}
         >
           <Icon size={15} style={{ color: C.terra }} />
         </div>
         <div className="flex flex-col">
           <span
-            className="text-[12px] font-semibold leading-tight mb-0.5 font-satoshi"
+            className="text-[12.5px] font-bold leading-tight mb-0.5 font-satoshi"
             style={{
               color: C.deepPlum,
               letterSpacing: "0.01em",
@@ -98,9 +98,9 @@ function InsightCard({
             {title}
           </span>
           <span
-            className="text-[11px] leading-snug font-satoshi"
+            className="text-[11px] leading-snug font-satoshi font-medium"
             style={{
-              color: "rgba(70,30,45,0.7)",
+              color: "rgba(76, 39, 51, 0.8)",
             }}
           >
             {body}
@@ -117,12 +117,12 @@ function FeatureItem({ icon: Icon, title, body, delay }) {
     <motion.div
       className="flex flex-col items-start p-3 sm:p-4 md:p-5 rounded-2xl relative overflow-hidden cursor-default group"
       style={{
-        background: "rgba(255, 255, 255, 0.25)",
-        backdropFilter: "blur(20px) saturate(1.6)",
-        WebkitBackdropFilter: "blur(20px) saturate(1.6)",
-        border: "1px solid rgba(255, 255, 255, 0.4)",
-        borderBottomColor: "rgba(70,30,45,0.1)",
-        boxShadow: "0 8px 32px rgba(70,30,45,0.05), inset 0 1px 0 rgba(255,255,255,0.6)",
+        background: "rgba(252, 223, 184, 0.7)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        border: "1px solid rgba(76, 39, 51, 0.12)",
+        boxShadow:
+          "0 8px 32px rgba(76, 39, 51, 0.04), inset 0 1px 0 rgba(255,255,255,0.4)",
         transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
       }}
       initial={{ opacity: 0, y: 16 }}
@@ -130,24 +130,40 @@ function FeatureItem({ icon: Icon, title, body, delay }) {
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{
         y: -4,
-        background: "rgba(255, 255, 255, 0.4)",
-        boxShadow: "0 14px 40px rgba(70,30,45,0.1), inset 0 1px 0 rgba(255,255,255,0.9)",
-        borderColor: "rgba(232,98,64,0.25)",
+        background: "rgba(250, 240, 227, 0.7)",
+        boxShadow:
+          "0 14px 40px rgba(76, 39, 51, 0.08), inset 0 1px 0 rgba(255,255,255,0.6)",
+        borderColor: "rgba(232,98,64,0.3)",
       }}
     >
       {/* Soft internal glow on hover */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 75%)" }} />
-      
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 75%)",
+        }}
+      />
+
       <div
         className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mb-2 sm:mb-4 transition-colors duration-400 group-hover:bg-opacity-25 relative z-10"
-        style={{ background: "rgba(232,98,64,0.15)" }}
+        style={{ background: "rgba(232,98,64,0.12)" }}
       >
-        <Icon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-400 group-hover:scale-110" style={{ color: C.terra }} />
+        <Icon
+          className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-400 group-hover:scale-110"
+          style={{ color: C.terra }}
+        />
       </div>
-      <h4 className="text-[11.5px] sm:text-[13.5px] font-bold font-satoshi mb-1 sm:mb-1.5 leading-tight tracking-normal relative z-10" style={{ color: C.deepPlum }}>
+      <h4
+        className="text-[15px] sm:text-[17px] font-bold font-satoshi mb-1 sm:mb-1.5 leading-tight tracking-normal relative z-10"
+        style={{ color: C.deepPlum }}
+      >
         {title}
       </h4>
-      <p className="text-[9.5px] sm:text-[11.5px] font-medium font-satoshi opacity-90 leading-[1.4] relative z-10 tracking" style={{ color: C.plum }}>
+      <p
+        className="text-[13px] sm:text-[14px] font-medium font-satoshi leading-[1.4] relative z-10"
+        style={{ color: "rgba(76, 39, 51, 0.85)" }}
+      >
         {body}
       </p>
     </motion.div>
@@ -199,26 +215,25 @@ export default function HeroSection() {
           style={{
             background: `linear-gradient(
               108deg,
-              rgba(225,198,168,0.8) 0%,
-              rgba(244,222,191,0.7) 15%,
-              rgba(244,222,191,0.40) 50%,
-              rgba(244,222,191,0.4) 75%,
-              rgba(225,198,168,0.4) 100%
+              rgba(252, 223, 184, 0.88) 0%,
+              rgba(252, 223, 184, 0.9) 10%,
+              rgba(252, 223, 184, 0.40) 65%,
+              rgba(252, 223, 184, 0.15) 100%
             )`,
           }}
         />
         {/* Bottom fade into sand */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-48"
+          className="absolute bottom-0 left-0 right-0 h-36"
           style={{
-            background: `linear-gradient(to top, rgba(250, 240, 227, 0.2), transparent)`,
+            background: `linear-gradient(to top, rgba(250, 240, 227, 0.4), transparent)`,
           }}
         />
         {/* Top vignette */}
         <div
           className="absolute top-0 left-0 right-0 h-28"
           style={{
-            background: `linear-gradient(to bottom, rgba(250,240,227,0.1), transparent)`,
+            background: `linear-gradient(to bottom, rgba(250,240,227,0.15), transparent)`,
           }}
         />
       </motion.div>
@@ -233,15 +248,8 @@ export default function HeroSection() {
         }}
       />
 
-      {/* ══ FLOATING INSIGHT CARDS ════════════════════════════════════════
-          Positioned intentionally: 3 cards in the visual mid-field
-          – Left of form (credibility anchor near CTA)
-          – Above form top-right (reinforces trust)
-          – Lower left area (supporting left copy)
-      ════════════════════════════════════════════════════════════════════ */}
-
-      {/* Card A — sits bottom-left of hero, near stats area */}
-      <div className="absolute left-[2%] bottom-[18%] z-20 hidden xl:block">
+      {/* ══ FLOATING INSIGHT CARDS ════════════════════════════════════════ */}
+      <div className="absolute left-[1%] bottom-[25%] z-20 hidden xl:block">
         <InsightCard
           icon={PiDropLight}
           title="Up to 60% less water usage"
@@ -252,7 +260,6 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* Card B — floats in center-right, above the form */}
       <div className="absolute right-[5%] top-[8%] z-20 hidden lg:block">
         <InsightCard
           icon={PiSunLight}
@@ -261,30 +268,6 @@ export default function HeroSection() {
           delay={1.3}
           floatAmp={8}
           floatDuration={11}
-        />
-      </div>
-
-      {/* Card C — floats lower-right near form bottom edge */}
-      <div className="absolute right-[2%] bottom-[7%] z-20 hidden lg:block">
-        <InsightCard
-          icon={PiPlantLight}
-          title="Low maintenance year-round"
-          body="No weekly mowing. No monthly watering bills."
-          delay={1.55}
-          floatAmp={11}
-          floatDuration={10}
-        />
-      </div>
-
-      {/* Card D — mid-left floating (optional depth layer) */}
-      <div className="absolute left-[2%] top-[30%] z-20 hidden 2xl:block">
-        <InsightCard
-          icon={PiLeafLight}
-          title="Native Colorado plant selection"
-          body="Curated species that thrive without extra care"
-          delay={1.75}
-          floatAmp={7}
-          floatDuration={13}
         />
       </div>
 
@@ -306,18 +289,18 @@ export default function HeroSection() {
         >
           {/* Eyebrow pill */}
           <motion.div
-            className="inline-flex items-center gap-2 self-start mb-7 px-3.5 py-1.5 rounded-full"
+            className="inline-flex items-center gap-2 self-start mb-6 px-4 py-2 rounded-full"
             style={{
-              background: "rgba(232,98,64,0.09)",
-              border: "1px solid rgba(232,98,64,0.22)",
+              background: "rgba(232,98,64,0.12)",
+              border: "1px solid rgba(232,98,64,0.25)",
             }}
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={reveal(0)}
           >
-            <PiLeafLight size={13} style={{ color: C.terra }} />
+            <PiLeafLight size={14} style={{ color: C.terra }} />
             <span
-              className="text-[11px] font-bold tracking-[0.16em] uppercase font-satoshi"
+              className="text-[11.5px] font-bold tracking-[0.18em] uppercase font-satoshi"
               style={{ color: C.deepPlum }}
             >
               Colorado's Premier Xeriscaping Studio
@@ -330,13 +313,13 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={reveal(1)}
             style={{
-              fontSize: "clamp(2.8rem, 5.8vw, 4.6rem)",
-              fontWeight: 600,
-              lineHeight: 1.06,
-              letterSpacing: "-0.028em",
+              fontSize: "clamp(2.4rem, 6vw, 4.8rem)",
+              fontWeight: 700,
+              lineHeight: 1,
+              letterSpacing: "-0.03em",
               color: C.deepPlum,
-              marginBottom: "1.4rem",
-              maxWidth: "800px",
+              marginBottom: "1.1rem",
+              maxWidth: "850px",
             }}
             className="font-clash"
           >
@@ -351,14 +334,12 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={reveal(2)}
             style={{
-              fontSize: "clamp(1.1rem, 1.6vw, 1.25rem)",
-              lineHeight: 1.6,
+              lineHeight: 1.2,
               color: C.deepPlum,
-              opacity: 1,
-              marginBottom: "0.85rem",
+              marginBottom: "1rem",
               maxWidth: "48ch",
             }}
-            className="font-satoshi font-medium"
+            className="font-satoshi font-bold text-lg lg:text-2xl"
           >
             Lower water bills, less upkeep, and a yard that actually looks good
             year round.
@@ -370,116 +351,282 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={reveal(3)}
             style={{
-              fontSize: "clamp(1rem, 1.3vw, 1.125rem)",
-              lineHeight: 1.65,
-              color: "rgba(70,30,45,0.85)",
-              marginBottom: "2.5rem",
-              maxWidth: "46ch",
+              lineHeight: 1.6,
+              color: C.plum,
+              marginBottom: "1rem",
+              maxWidth: "48ch",
             }}
-            className="font-satoshi font-medium"
+            className="font-satoshi font-bold italic text-lg lg:text-2xl"
           >
             Ridgewell Landscape &amp; Design creates custom xeriscapes built
             specifically for Colorado homes and climate.
           </motion.p>
 
           {/* CTA Row */}
-         <motion.div
-  className="flex flex-col sm:flex-row gap-4 mb-6"
-  initial={{ opacity: 0, y: 16 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={reveal(4)}
->
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 mb-4"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reveal(4)}
+          >
+            {/* PRIMARY CTA */}
 
-  {/* PRIMARY CTA */}
-  <motion.a
-    href="#consultation"
-    className="relative inline-flex items-center justify-center px-8 py-4 rounded-2xl text-sm font-satoshi overflow-hidden"
-    style={{
-      background: C.terra,
-      color: C.white,
-      fontWeight: 700,
-      letterSpacing: "0.02em",
-      textDecoration: "none",
-      boxShadow: "0 10px 30px rgba(232,98,64,0.25)",
-    }}
-    whileHover={{
-      scale: 1.04,
-      y: -2,
-      boxShadow: "0 18px 50px rgba(232,98,64,0.38)",
-    }}
-    whileTap={{ scale: 0.97 }}
-    transition={{ type: "spring", stiffness: 420, damping: 22 }}
-  >
-    {/* subtle glow layer */}
-    <span
-      className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
-      style={{
-        background:
-          "radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 55%)",
-      }}
-    />
+            <motion.a
+              href="#consultation"
+              whileHover={{
+                scale: 1.04,
+                y: -2,
+              }}
+              whileTap={{ scale: 0.96 }}
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl px-8 py-4.5"
+              style={{
+                background:
+                  "linear-gradient(135deg, #D94F2B 0%, #E86240 45%, #C63E1D 100%)",
+                boxShadow:
+                  "0 12px 35px rgba(232,98,64,0.28), inset 0 1px 0 rgba(255,255,255,0.08)",
+              }}
+            >
+              {/* deep inner gloss */}
+              <div
+                className="absolute inset-0 rounded-2xl"
+                style={{
+                  background:
+                    "linear-gradient(to bottom, rgba(255,255,255,0.10), transparent 35%, transparent 65%, rgba(0,0,0,0.12))",
+                }}
+              />
 
-    <span className="relative z-10 font-satoshi font-semibold text-white tracking-wider">
-      Get Your Free Design Consultation
-    </span>
-  </motion.a>
+              {/* razor sharp moving glaze */}
+              <motion.div
+                className="absolute top-0 bottom-0 w-20"
+                animate={{
+                  x: ["-150%", "420%"],
+                }}
+                transition={{
+                  duration: 2.2,
+                  repeat: Infinity,
+                  ease: "linear",
+                  repeatDelay: 0.6,
+                }}
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent 0%, rgba(252, 223, 184, 0.2) 10%, rgba(252, 223, 184, 0.75) 50%, rgba(252, 223, 184, 0.2) 70%, transparent 100%)",
+                  transform: "skewX(-24deg)",
+                  filter: "blur(0.5px)",
+                  mixBlendMode: "screen",
+                }}
+              />
 
-  {/* SECONDARY CTA */}
-  <motion.a
-    href="tel:+1"
-    className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl text-sm font-satoshi"
-    style={{
-      background: "rgba(255,255,255,0.04)",
-      border: "1px solid rgba(70,30,45,0.18)",
-      color: C.deepPlum,
-      backdropFilter: "blur(10px)",
-      textDecoration: "none",
-    }}
-    whileHover={{
-      scale: 1.02,
-      borderColor: "rgba(232,98,64,0.35)",
-      background: "rgba(255,255,255,0.07)",
-    }}
-    whileTap={{ scale: 0.97 }}
-    transition={{ type: "spring", stiffness: 380, damping: 24 }}
-  >
-    <motion.span
-      animate={{ rotate: [0, 6, -6, 0] }}
-      transition={{
-        repeat: Infinity,
-        repeatDelay: 4,
-        duration: 0.6,
-      }}
-      style={{ display: "flex" }}
-    >
-      <FiPhone size={15} style={{ color: C.terra }} />
-    </motion.span>
+              {/* subtle animated glow */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl"
+                animate={{
+                  opacity: [0.15, 0.3, 0.15],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                style={{
+                  background:
+                    "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.16), transparent 45%)",
+                }}
+              />
 
-    <span className="flex flex-col leading-tight">
-      <span
-        style={{
-          fontSize: 10,
-          fontWeight: 700,
-          opacity: 1,
-          color: C.terra,
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-        }}
-      >
-        Prefer to talk?
-      </span>
+              {/* edge highlight */}
+              <div
+                className="absolute inset-[1px] rounded-[15px] pointer-events-none"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
+              />
 
-      <span style={{ color: C.deepPlum, fontWeight: 600 }}>
-        Call Ridgewell Landscape & Design
-      </span>
-    </span>
-  </motion.a>
-</motion.div>
+              {/* text */}
+              <span
+                className="relative z-10 flex items-center gap-3 text-base font-bold tracking-[0.03em]"
+                style={{
+                  color: "#fff",
+                  fontFamily: "Satoshi, sans-serif",
+                }}
+              >
+                Get Your Free Design Consultation
+                <motion.span
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{
+                    duration: 1.2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="text-lg"
+                >
+                  →
+                </motion.span>
+              </span>
+            </motion.a>
+
+            {/* SECONDARY CTA */}
+            <motion.a
+              href="tel:+1"
+              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl px-7 py-4.5"
+              whileHover={{
+                y: -4,
+                scale: 1.02,
+              }}
+              whileTap={{
+                y: 1,
+                scale: 0.985,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 320,
+                damping: 18,
+              }}
+              style={{
+                textDecoration: "none",
+
+                /* premium layered background */
+                background: `
+      linear-gradient(
+        180deg,
+        rgba(255,245,232,0.95) 0%,
+        rgba(252,223,184,0.92) 48%,
+        rgba(236,201,160,0.95) 100%
+      )
+    `,
+
+                border: "1px solid rgba(76,39,51,0.16)",
+
+                /* REAL 3D DEPTH */
+                boxShadow: `
+      inset 0 1px 0 rgba(255,255,255,0.85),
+      inset 0 -2px 4px rgba(76,39,51,0.08),
+      0 3px 0 rgba(180,140,105,0.95),
+      0 10px 24px rgba(76,39,51,0.10),
+      0 18px 45px rgba(76,39,51,0.06)
+    `,
+
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              {/* moving razor glaze */}
+              <motion.div
+                className="absolute inset-y-0 w-24"
+                animate={{
+                  x: ["-180%", "420%"],
+                }}
+                transition={{
+                  duration: 2.8,
+                  repeat: Infinity,
+                  ease: "linear",
+                  repeatDelay: 1.2,
+                }}
+                style={{
+                  background: `
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(70,30,45,0.04),
+          rgba(255,255,255,0.75),
+          rgba(255,255,255,0.04),
+          transparent
+        )
+      `,
+                  transform: "skewX(-22deg)",
+                  filter: "blur(0.4px)",
+                  mixBlendMode: "screen",
+                }}
+              />
+
+              {/* top gloss */}
+              <div
+                className="absolute inset-x-0 top-0 h-[48%] rounded-t-2xl"
+                style={{
+                  background: `
+        linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.45),
+          rgba(255,255,255,0.08),
+          transparent
+        )
+      `,
+                }}
+              />
+
+              {/* subtle inner edge */}
+              <div
+                className="absolute inset-[1px] rounded-[15px]"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.35)",
+                }}
+              />
+
+              {/* icon container */}
+              <motion.div
+                animate={{
+                  rotate: [0, 8, -8, 0],
+                }}
+                transition={{
+                  repeat: Infinity,
+                  repeatDelay: 4,
+                  duration: 0.7,
+                }}
+                className="relative z-10 flex h-11 w-11 items-center justify-center rounded-xl"
+                style={{
+                  background: `
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,0.95),
+          rgba(252,223,184,0.75)
+        )
+      `,
+                  boxShadow: `
+        inset 0 1px 0 rgba(255,255,255,0.8),
+        0 4px 10px rgba(76,39,51,0.08)
+      `,
+                  border: "1px solid rgba(76,39,51,0.08)",
+                }}
+              >
+                <FiPhone
+                  size={16}
+                  style={{
+                    color: C.terra,
+                  }}
+                />
+              </motion.div>
+
+              {/* text */}
+              <span className="relative z-10 flex flex-col leading-tight">
+                <span
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 800,
+                    color: C.terra,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                  }}
+                  className="font-satoshi"
+                >
+                  Prefer to talk?
+                </span>
+
+                <span
+                  className="text-base"
+                  style={{
+                    color: C.deepPlum,
+                    fontWeight: 700,
+                    textShadow: "0 1px 0 rgba(255,255,255,0.45)",
+                  }}
+                >
+                  Call Ridgewell Landscape & Design
+                </span>
+              </span>
+            </motion.a>
+          </motion.div>
 
           {/* Premium Feature Strip */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-8 mt-2 w-full max-w-[720px] font-satoshi tracking-wide"
-            style={{ borderTop: "2px solid rgba(70,30,45,0.2)" }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-4 w-full max-w-[720px] font-satoshi tracking-wide"
+            style={{ borderTop: "2px solid rgba(76,39,51,0.15)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.1 }}

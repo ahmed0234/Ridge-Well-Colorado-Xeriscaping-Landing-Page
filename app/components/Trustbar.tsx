@@ -17,13 +17,13 @@ import { HiSparkles } from "react-icons/hi2";
 const TRUST_ITEMS = [
   {
     id: "01", icon: FaStar,
-    label: "5-Star Rated", sub: "on Google Reviews",
+    label: "5-Star Rated on Google", sub: "Google Reviews",
     pill: "500+ Clients", pillAccent: true, stars: true,
   },
   {
     id: "02", icon: GiMountains,
-    label: "15+ Years", labelSup: true,
-    sub: "of Colorado Experience",
+    label: "15+ Years of Experience", labelSup: true,
+    sub: "in Colorado",
     pill: "Est. 2009",
   },
   {
@@ -46,7 +46,7 @@ const TRUST_ITEMS = [
   },
   {
     id: "06", icon: GiWateringCan,
-    label: "60% Less Water",
+    label: "60% Less Water Usage",
     sub: "Guaranteed xeriscaping results",
     pill: "Guaranteed", pillAccent: true,
   },
@@ -124,13 +124,14 @@ function TrustCard({ item, index }) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex flex-col gap-2.5 px-5 py-6
+      className={`group relative flex flex-col gap-3 lg:gap-4 px-5 py-7 lg:py-10 lg:px-9
                  bg-[#2c1219] hover:bg-[#381a22]
-                 transition-colors duration-300 cursor-default overflow-hidden cursor-pointer"
+                 transition-colors duration-300 cursor-default overflow-hidden cursor-pointer
+                 ${index >= 3 ? "lg:border-t-[2px] lg:border-t-[#E86240]/20" : ""}`}
     >
       {/* ghost watermark number */}
       <span
-        className="absolute -top-2 right-2 font-serif text-[68px] font-black italic leading-none
+        className="absolute -top-2 lg:-top-4 right-2 lg:right-4 font-serif text-[68px] lg:text-[100px] font-black italic leading-none
                    pointer-events-none select-none transition-all duration-300
                    text-transparent"
         style={{ WebkitTextStroke: "1px rgba(244,222,191,0.05)" }}
@@ -140,52 +141,55 @@ function TrustCard({ item, index }) {
       </span>
 
       {/* bottom terracotta line reveal */}
-      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E86240] to-transparent
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] lg:h-[3px] bg-gradient-to-r from-transparent via-[#E86240] to-transparent
                       scale-x-0 group-hover:scale-x-100 origin-center transition-transform duration-[380ms] ease-out" />
 
       {/* icon */}
       <Icon
-        className="text-[36px] text-[#F4DEBF]/55 transition-all duration-300
+        className="text-[36px] lg:text-[48px] text-[#F4DEBF]/55 transition-all duration-300
                    group-hover:text-[#E86240] group-hover:scale-110 group-hover:-rotate-3"
       />
 
       {/* text */}
-      <div>
-        <p className="text-[19px] font-semibold text-[#F4DEBF] leading-relaxed tracking-wide font-clash">
+      <div className="mt-1 lg:mt-2">
+        <p className="text-[19px] lg:text-[24px] font-semibold text-[#F4DEBF] leading-relaxed tracking-wide font-clash">
           {item.label}
-          {item.labelSup && <sup className="text-[#E86240] text-[11px] ml-0.5">+</sup>}
+          {item.labelSup && <sup className="text-[#E86240] text-[11px] lg:text-[14px] ml-0.5">+</sup>}
         </p>
-        <p className="text-[11.5px] font-light text-[#F4DEBF]/45 leading-snug mt-0.5 tracking-[0.03em]">
+        <p className="text-[11.5px] lg:text-[14px] font-light text-[#F4DEBF]/50 leading-snug mt-0.5 lg:mt-1.5 tracking-[0.03em]">
           {item.sub}
         </p>
       </div>
 
-      {/* stars */}
-      {item.stars && (
-        <div className="flex gap-0.5">
-          {[0,1,2,3,4].map(i => (
-            <motion.span
-              key={i}
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.7 + i * 0.08, type: "spring", stiffness: 300 }}
-              className="text-[#E86240] text-[18px]"
-            >★</motion.span>
-          ))}
-        </div>
-      )}
+      {/* bottom elements (stars & pill) */}
+      <div className="mt-auto flex flex-col items-start gap-2 lg:gap-3 pt-2 lg:pt-4">
+        {/* stars */}
+        {item.stars && (
+          <div className="flex gap-1 lg:gap-1.5">
+            {[0,1,2,3,4].map(i => (
+              <motion.span
+                key={i}
+                initial={{ scale: 0, rotate: -20 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.7 + i * 0.08, type: "spring", stiffness: 300 }}
+                className="text-[#E86240] text-[18px] lg:text-[22px]"
+              >★</motion.span>
+            ))}
+          </div>
+        )}
 
-      {/* pill */}
-      <span
-        className={`self-start text-[12px] font-semibold tracking-[0.14em] uppercase
-                    px-2.5 py-1 rounded-full border
-                    ${item.pillAccent
-                      ? "bg-[#E86240]/15 text-[#E86240] border-[#E86240]/25"
-                      : "bg-[#F4DEBF]/7 text-[#F4DEBF]/55 border-[#F4DEBF]/12"
-                    }`}
-      >
-        {item.pill}
-      </span>
+        {/* pill */}
+        <span
+          className={`text-[12px] lg:text-[13px] font-bold tracking-[0.16em] uppercase
+                      px-2.5 py-1 lg:px-4 lg:py-1.5 rounded-full border
+                      ${item.pillAccent
+                        ? "bg-[#E86240]/15 text-[#E86240] border-[#E86240]/30"
+                        : "bg-[#F4DEBF]/10 text-[#F4DEBF]/70 border-[#F4DEBF]/20"
+                      }`}
+        >
+          {item.pill}
+        </span>
+      </div>
     </motion.div>
   );
 }
@@ -223,20 +227,20 @@ export default function TrustBar() {
       <LeafBorderSVG />
 
       {/* content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20 lg:pt-24 lg:pb-32">
 
         {/* eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.05 }}
-          className="flex items-center justify-center gap-2.5 mb-3.5"
+          className="flex items-center justify-center gap-3 lg:gap-5 mb-5 lg:mb-8"
         >
-          <span className="block w-20 h-px bg-gradient-to-r from-transparent to-[#E86240]/50" />
-          <span className="text-[13px] font-semibold tracking-[0.28em] uppercase text-[#E86240]">
+          <span className="block w-20 lg:w-32 h-px bg-gradient-to-r from-transparent to-[#E86240]/50" />
+          <span className="text-[13px] lg:text-[15px] font-semibold tracking-[0.28em] uppercase text-[#E86240]">
             Why Ridgewell
           </span>
-          <span className="block w-20 h-px bg-gradient-to-l from-transparent to-[#E86240]/50" />
+          <span className="block w-20 lg:w-32 h-px bg-gradient-to-l from-transparent to-[#E86240]/50" />
         </motion.div>
 
         {/* headline */}
@@ -244,12 +248,12 @@ export default function TrustBar() {
           initial={{ opacity: 0, y: 18 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-12"
+          className="text-center mb-14 lg:mb-20"
         >
-          <h2 className="font-clash text-[clamp(2rem,5vw,3rem)] font-semibold leading-[1.1] tracking-wide text-[#F4DEBF]">
+          <h2 className="font-clash text-[clamp(2.5rem,6vw,4rem)] font-semibold leading-[1.1] tracking-wide text-[#F4DEBF]">
             Colorado's Most Trusted{" "}
             <em
-              className="not-italic"
+              className="not-italic block lg:inline-block"
               style={{
                 background: "linear-gradient(90deg,#E86240,#c8431e 50%,#E86240)",
                 WebkitBackgroundClip: "text",
@@ -262,13 +266,13 @@ export default function TrustBar() {
               Xeriscape Studio
             </em>
           </h2>
-          <p className="mt-2.5 text-[13px] font-light text-[#F4DEBF]/42 tracking-[0.06em]">
+          <p className="mt-4 lg:mt-6 text-[14px] lg:text-[18px] font-light text-[#F4DEBF]/60 tracking-[0.06em]">
             Drought-resilient landscapes as beautiful as the Rockies
           </p>
         </motion.div>
 
         {/* trust grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[1px] border border-[#F4DEBF]/[0.08] rounded-2xl overflow-hidden bg-[#F4DEBF]/[0.08]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[1px] border border-[#F4DEBF]/[0.1] rounded-2xl lg:rounded-3xl overflow-hidden bg-[#F4DEBF]/[0.08]">
           {TRUST_ITEMS.map((item, i) => (
             <TrustCard key={item.id} item={item} index={i} />
           ))}
@@ -279,7 +283,7 @@ export default function TrustBar() {
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.82 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-y-4 sm:gap-x-0"
+          className="mt-12 lg:mt-20 flex flex-wrap items-center justify-center gap-3 lg:gap-8 sm:gap-y-4 sm:gap-x-0"
         >
           {[
             { icon: FaShieldAlt, text: "Licensed & Insured" },
@@ -292,13 +296,13 @@ export default function TrustBar() {
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ delay: 0.9 + i * 0.06 }}
-              className="flex items-center gap-2 text-[10px] sm:text-[10.5px] font-semibold tracking-[0.12em] sm:tracking-[0.18em]
-                         uppercase text-[#F4DEBF]/50 px-3 py-2 sm:py-0 sm:px-5 
+              className="flex items-center gap-2 lg:gap-3 text-[10px] sm:text-[11px] lg:text-[13px] font-semibold tracking-[0.12em] lg:tracking-[0.2em]
+                         uppercase text-[#F4DEBF]/50 px-3 py-2 sm:py-0 sm:px-6 lg:px-8 
                          bg-[#F4DEBF]/[0.04] sm:bg-transparent rounded-lg sm:rounded-none
                          sm:border-r border-[#F4DEBF]/[0.1]
                          last:border-r-0 hover:text-[#F4DEBF]/80 transition-colors duration-200"
             >
-              <Icon className="text-[#E86240] text-sm shrink-0" />
+              <Icon className="text-[#E86240] text-sm lg:text-lg shrink-0" />
               <span>{text}</span>
             </motion.span>
           ))}
@@ -309,13 +313,13 @@ export default function TrustBar() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 1.1 }}
-          className="mt-7 flex items-center justify-center gap-2.5"
+          className="mt-8 lg:mt-12 flex items-center justify-center gap-3 lg:gap-4"
         >
-          <span className="relative flex h-2 w-2">
+          <span className="relative flex h-2 w-2 lg:h-3 lg:w-3">
             <span className="absolute inline-flex h-full w-full rounded-full bg-[#E86240] opacity-75 animate-ping" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E86240]" />
+            <span className="relative inline-flex rounded-full h-2 w-2 lg:h-3 lg:w-3 bg-[#E86240]" />
           </span>
-          <span className="text-[10.5px] font-medium tracking-[0.16em] uppercase text-[#F4DEBF]/42">
+          <span className="text-[10.5px] lg:text-[13px] font-bold tracking-[0.16em] lg:tracking-[0.2em] uppercase text-[#F4DEBF]/60">
             Now accepting new clients Denver &amp; Front Range
           </span>
         </motion.div>
