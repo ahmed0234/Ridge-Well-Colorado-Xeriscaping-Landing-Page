@@ -1,564 +1,1008 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useReducedMotion } from "motion/react";
-import { ArrowRight } from "lucide-react";
-import { PiDropHalfBottomLight } from "react-icons/pi";
-import styles from "./whats-included.module.css";
+/**
+ * ServicesSection.jsx — Ridgewell Landscape & Design
+ *
+ * IMAGE PROPS GUIDE
+ * -----------------
+ * Every <img> uses a named `src` prop so you can drop in real photography
+ * without touching layout logic. Pass paths via the `images` prop at the
+ * top of the file, or replace the placeholder strings directly.
+ *
+ * Default images (public/services — override via `images` prop if needed):
+ *   design        → /services/xeriscaping_land.png
+ *   beforeLawn    → /services/Before_xesriscape_image.png
+ *   afterXeri     → /services/After_xeriscape_image.png
+ *   rockGravel    → /services/Decorative_rock_gravel.png
+ *   plants        → /services/Drought_resistant_plants.png
+ *   irrigation    → /services/Smart_irrigation_system.png
+ *   walkway       → /services/Walkways_outdoor_features.png
+ *
+ * Recommended image dimensions:
+ *   design / plants → minimum 1400 × 900 px
+ *   rock / irrigation / walkway → minimum 900 × 700 px
+ *   before / after → minimum 900 × 640 px each, same aspect ratio
+ */
 
-/* ── Reveal (IntersectionObserver + CSS — no Framer per-card) ─────────── */
-function Reveal({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: React.ReactNode;
+import { useRef, useState, useCallback, useEffect } from "react";
+import { motion, useInView } from "motion/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import DesertHorizonEdge from "./Deserthorizon";
+
+/** Default service images — paths match public/services filenames exactly */
+const DEFAULT_IMAGES = {
+  design: "/services/xeriscaping_land.png",
+  beforeLawn: "/services/After_xeriscape_image.png",
+  afterXeri: "/services/Before_xesriscape_image.png",
+  rockGravel: "/services/Decorative_rock_gravel.png",
+  plants: "/services/Drought_resistant_plants.png",
+  irrigation: "/services/Smart_irrigation_system.png",
+  walkway: "/services/Walkways_outdoor_features.png",
+} as const;
+
+// ─── Topo background lines (decorative only, no illustrations) ───────────────
+
+const TopoLines = () => (
+  <svg
+    aria-hidden="true"
+    className="absolute inset-0 w-full h-full pointer-events-none select-none"
+    preserveAspectRatio="xMidYMid slice"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {[
+      "M-200,80  Q400,30  900,100 Q1400,170 1900,60  Q2200,0   2600,80",
+      "M-200,160 Q350,110 850,180 Q1350,250 1850,140 Q2150,80  2600,160",
+      "M-200,240 Q370,190 870,255 Q1370,320 1870,210 Q2170,150 2600,240",
+      "M-200,320 Q390,270 890,335 Q1390,400 1890,285 Q2190,225 2600,320",
+      "M-200,400 Q360,350 860,415 Q1360,480 1860,365 Q2160,305 2600,400",
+      "M-200,480 Q380,430 880,495 Q1380,560 1880,440 Q2180,380 2600,480",
+      "M-200,30  Q420,−20 920,50  Q1420,120 1920,10  Q2220,−50 2600,30",
+    ].map((d, i) => (
+      <path
+        key={i}
+        d={d}
+        fill="none"
+        stroke="#F4DEBF"
+        strokeWidth="0.65"
+        strokeOpacity={0.038}
+      />
+    ))}
+  </svg>
+);
+
+// ─── Shared overlay gradient for images ──────────────────────────────────────
+
+const IMG_OVERLAY =
+  "linear-gradient(to top, rgba(70,30,45,0.82) 0%, rgba(70,30,45,0.28) 50%, rgba(70,30,45,0.06) 100%)";
+
+const IMG_OVERLAY_SIDE =
+  "linear-gradient(to right, rgba(70,30,45,0.75) 0%, rgba(70,30,45,0.1) 60%, transparent 100%)";
+
+// ─── Accent pill ─────────────────────────────────────────────────────────────
+
+const AccentPill = ({ children }) => (
+  <span
+    className="inline-flex items-center gap-1.5 font-satoshi text-xs font-bold tracking-widest uppercase px-3 py-1.5 rounded-full w-fit"
+    style={{
+      color: "#E86240",
+      background: "rgba(232,98,64,0.13)",
+      border: "1px solid rgba(232,98,64,0.28)",
+    }}
+  >
+    <span
+      className="block w-1.5 h-1.5 rounded-full shrink-0"
+      style={{ background: "#E86240" }}
+    />
+    {children}
+  </span>
+);
+
+// ─── Image placeholder (replace src with real photo path) ────────────────────
+
+type PhotoProps = {
+  src: string;
+  alt: string;
   className?: string;
-  delay?: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion() === true;
-  const [visible, setVisible] = useState(reduceMotion);
+  style?: React.CSSProperties;
+  priority?: boolean;
+};
+
+const Photo = ({
+  src,
+  alt,
+  className = "",
+  style = {},
+  priority = false,
+}: PhotoProps) => (
+  <img
+    src={src}
+    alt={alt}
+    className={`block w-full h-full min-h-full min-w-full object-cover object-center ${className}`}
+    style={style}
+    loading={priority ? "eager" : "lazy"}
+    fetchPriority={priority ? "high" : "auto"}
+    decoding="async"
+    draggable={false}
+  />
+);
+
+// ─── BLOCK 1 — Full-width hero service (Custom Design) ───────────────────────
+
+const HeroServiceBlock = ({ service, index }) => {
+  const photoSrc = service.image?.src ?? DEFAULT_IMAGES.design;
+  const photoAlt = service.image?.alt ?? "Custom Xeriscape Design";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="group relative w-full overflow-hidden rounded-3xl"
+      style={{
+        height: "clamp(380px, 55vw, 620px)",
+        boxShadow: "0 24px 80px rgba(0,0,0,0.45)",
+      }}
+    >
+      {/* Real photo */}
+      <div className="absolute inset-0 z-0 transition-transform duration-700 ease-out group-hover:scale-[1.03]">
+        <Photo src={photoSrc} alt={photoAlt} priority />
+      </div>
+
+      {/* Gradient overlay */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{ background: IMG_OVERLAY }}
+      />
+
+      {/* Side vignette */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to right, rgba(70,30,45,0.35) 0%, transparent 45%, rgba(70,30,45,0.35) 100%)",
+        }}
+      />
+
+      {/* Content — bottom left */}
+      <div className="absolute bottom-0 left-0 right-0 z-[2] p-8 lg:p-12 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+        <div className="flex flex-col gap-4 max-w-xl">
+          <AccentPill>{service.accent}</AccentPill>
+          <h3
+            className="font-sans font-black leading-tight"
+            style={{
+              color: "#F4DEBF",
+              fontSize: "clamp(1.85rem, 3.8vw, 2.8rem)",
+              letterSpacing: "-0.025em",
+              textShadow: "0 2px 24px rgba(0,0,0,0.5)",
+            }}
+          >
+            {service.title}
+          </h3>
+          <p
+            className="font-satoshi font-medium leading-relaxed max-w-md"
+            style={{
+              color: "rgba(244,222,191,0.72)",
+              fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)",
+              textShadow: "0 1px 8px rgba(0,0,0,0.4)",
+            }}
+          >
+            {service.body}
+          </p>
+        </div>
+
+        {/* Service number */}
+        <div
+          className="font-sans font-black self-end lg:self-auto flex-shrink-0"
+          style={{
+            color: "rgba(244,222,191,0.08)",
+            fontSize: "clamp(5rem, 10vw, 9rem)",
+            lineHeight: 1,
+            letterSpacing: "-0.04em",
+            userSelect: "none",
+          }}
+        >
+          {service.number}
+        </div>
+      </div>
+
+      {/* Hover accent line */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"
+        style={{ background: "linear-gradient(90deg, #E86240, transparent)" }}
+      />
+    </motion.div>
+  );
+};
+
+// ─── Before / After drag compare slider ──────────────────────────────────────
+
+type CompareImage = { src: string; alt: string };
+
+const BeforeAfterCompareSlider = ({
+  beforeImage,
+  afterImage,
+}: {
+  beforeImage: CompareImage;
+  afterImage: CompareImage;
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const updateFromClientX = useCallback((clientX: number) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const { left, width } = el.getBoundingClientRect();
+    const pct = Math.min(100, Math.max(0, ((clientX - left) / width) * 100));
+    setPosition(pct);
+  }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "-48px", threshold: 0.06 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [reduceMotion]);
+    if (!isDragging) return;
+
+    const onMove = (e: MouseEvent | TouchEvent) => {
+      const clientX =
+        "touches" in e ? e.touches[0]?.clientX : (e as MouseEvent).clientX;
+      if (clientX != null) updateFromClientX(clientX);
+    };
+
+    const onEnd = () => setIsDragging(false);
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onEnd);
+    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("touchend", onEnd);
+    window.addEventListener("touchcancel", onEnd);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onEnd);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onEnd);
+      window.removeEventListener("touchcancel", onEnd);
+    };
+  }, [isDragging, updateFromClientX]);
+
+  const startDrag = (clientX: number) => {
+    setIsDragging(true);
+    updateFromClientX(clientX);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setPosition((p) => Math.max(0, p - 4));
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setPosition((p) => Math.min(100, p + 4));
+    }
+  };
 
   return (
     <div
-      ref={ref}
-      className={`${styles.reveal} ${visible ? styles.revealVisible : ""} ${className}`}
-      style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
+      ref={containerRef}
+      className="relative w-full overflow-hidden rounded-2xl select-none touch-none"
+      style={{
+        height: "clamp(280px, 42vw, 520px)",
+        boxShadow: "0 12px 48px rgba(0,0,0,0.4)",
+        cursor: isDragging ? "ew-resize" : "col-resize",
+      }}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        startDrag(e.clientX);
+      }}
+      onTouchStart={(e) => {
+        startDrag(e.touches[0].clientX);
+      }}
+      role="slider"
+      aria-label="Compare before and after xeriscape transformation. Drag or use arrow keys."
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(position)}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
     >
-      {children}
-    </div>
-  );
-}
+      {/* Before — full width base layer */}
+      <div className="absolute inset-0 z-0">
+        <Photo src={beforeImage.src} alt={beforeImage.alt} priority />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(70,30,45,0.55) 0%, rgba(70,30,45,0.08) 45%, transparent 100%)",
+          }}
+        />
+      </div>
 
-/* ── Content data ─────────────────────────────────────────────────────── */
-type CardVariant = "hero" | "heroAlt" | "standard" | "compact";
-
-interface IncludedItem {
-  id: string;
-  title: string;
-  description: string;
-  hook?: string;
-  tag?: string;
-  variant: CardVariant;
-  image?: string;
-  imageAlt?: string;
-  splitImages?: { before: string; after: string; beforeAlt: string; afterAlt: string };
-  graphic?: boolean;
-}
-
-const INCLUDED_ITEMS: IncludedItem[] = [
-  {
-    id: "design",
-    title: "Custom Xeriscape Design",
-    description:
-      "We create low-water landscape designs built specifically for your property, style, and Colorado climate.",
-    tag: "Core service",
-    variant: "hero",
-    image: "/beforeandafter/after_1.png",
-    imageAlt: "Beautiful finished xeriscape with gravel and native plants",
-  },
-  {
-    id: "conversion",
-    title: "Lawn To Xeriscape Conversion",
-    hook: "Still paying to water grass you barely use?",
-    description:
-      "We replace traditional lawns with beautiful low-maintenance landscapes designed to thrive in Colorado.",
-    tag: "Most popular",
-    variant: "heroAlt",
-    splitImages: {
-      before: "/beforeandafter/before_1.png",
-      after: "/beforeandafter/after_1.png",
-      beforeAlt: "Patchy lawn before xeriscape conversion",
-      afterAlt: "Low-water landscape after lawn replacement",
-    },
-  },
-  {
-    id: "rock",
-    title: "Decorative Rock & Gravel Landscaping",
-    description:
-      "Replace patchy grass with decorative stone and clean, modern landscaping that stays beautiful year-round.",
-    variant: "standard",
-    image: "/beforeandafter/after_1.png",
-    imageAlt: "River rock and decorative gravel in a modern yard",
-  },
-  {
-    id: "plants",
-    title: "Drought-Resistant Plants",
-    hook: "A low-water yard doesn't have to look boring.",
-    description:
-      "We install Colorado-friendly plants that thrive with less water while keeping your landscaping beautiful.",
-    variant: "standard",
-    image: "/hero-bg.png",
-    imageAlt: "Premium drought-resistant plants integrated in landscape",
-  },
-  {
-    id: "irrigation",
-    title: "Smart Irrigation Systems",
-    description:
-      "Use less water without sacrificing healthy plants. Efficient drip systems help reduce waste and simplify maintenance.",
-    variant: "standard",
-    graphic: true,
-  },
-  {
-    id: "walkways",
-    title: "Walkways & Outdoor Features",
-    hook: "Want to take things further?",
-    description:
-      "We can incorporate walkways, patios, edging, and outdoor features that blend naturally into your xeriscape — without shifting focus away from water-smart design.",
-    tag: "Optional add-on",
-    variant: "compact",
-    image: "/beforeandafter/before_1.png",
-    imageAlt: "Stone pathway blending into xeriscape design",
-  },
-];
-
-const SLOT_CLASS: Record<CardVariant, string> = {
-  hero: styles.slotHero,
-  heroAlt: styles.slotHeroAlt,
-  standard: styles.slotStandard,
-  compact: styles.slotCompact,
-};
-
-/* ── Organic desert horizon — premium top edge (SVG, no clipart) ───────── */
-function DesertHorizonEdge() {
-  return (
-    <div className={`${styles.topEdge} ${styles.topEdgeFade}`} aria-hidden="true">
-      <svg
-        className={styles.topEdgeSvg}
-        viewBox="0 0 1440 108"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
+      {/* After — clipped from the left */}
+      <div
+        className="absolute inset-0 z-[1] overflow-hidden"
+        style={{
+          clipPath: `inset(0 ${100 - position}% 0 0)`,
+          WebkitClipPath: `inset(0 ${100 - position}% 0 0)`,
+          transition: isDragging ? "none" : "clip-path 0.08s ease-out",
+        }}
       >
-        <defs>
-          <linearGradient id="wi-sky" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#F4DEBF" />
-            <stop offset="100%" stopColor="#ECD4B0" />
-          </linearGradient>
-          <linearGradient id="wi-dune-a" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#E8CBAA" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#ECD4B0" />
-          </linearGradient>
-          <linearGradient id="wi-dune-b" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#D4B896" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#F4DEBF" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="wi-rock" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#4C2733" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#4C2733" stopOpacity="0.08" />
-          </linearGradient>
-        </defs>
-
-        {/* Base — blends with Our Services section above */}
-        <rect width="1440" height="108" fill="url(#wi-sky)" />
-
-        {/* Topographic contours — architectural, subtle */}
-        <g className={styles.contourDrift} opacity="0.45">
-          <path
-            d="M0 52 Q180 44 360 50 Q540 56 720 48 Q900 40 1080 52 Q1260 64 1440 46"
-            fill="none"
-            stroke="#4C2733"
-            strokeOpacity="0.08"
-            strokeWidth="0.8"
-          />
-          <path
-            d="M0 58 Q200 50 400 56 Q600 62 800 54 Q1000 46 1200 58 Q1320 64 1440 52"
-            fill="none"
-            stroke="#4C2733"
-            strokeOpacity="0.06"
-            strokeWidth="0.6"
-          />
-          <path
-            d="M0 64 Q240 58 480 62 Q720 66 960 60 Q1200 54 1440 62"
-            fill="none"
-            stroke="#E86240"
-            strokeOpacity="0.12"
-            strokeWidth="0.5"
-          />
-        </g>
-
-        {/* Layered dune terrain */}
-        <g className={styles.duneDrift}>
-          <path
-            d="M0 72 C120 58 240 68 360 54 C480 40 600 62 720 48 C840 34 960 56 1080 44 C1200 32 1320 52 1440 40 L1440 108 L0 108 Z"
-            fill="url(#wi-dune-a)"
-          />
-          <path
-            d="M0 82 C160 70 320 78 480 66 C640 54 800 74 960 62 C1120 50 1280 68 1440 58 L1440 108 L0 108 Z"
-            fill="#ECD4B0"
-            opacity="0.92"
-          />
-          <path
-            d="M0 90 C200 82 400 88 600 80 C800 72 1000 86 1200 78 C1320 74 1440 80 1440 108 L0 108 Z"
-            fill="url(#wi-dune-b)"
-          />
-        </g>
-
-        {/* Rock formations — ground line */}
-        <g opacity="0.5">
-          <ellipse cx="120" cy="86" rx="28" ry="7" fill="url(#wi-rock)" />
-          <ellipse cx="380" cy="88" rx="22" ry="5" fill="url(#wi-rock)" />
-          <ellipse cx="620" cy="84" rx="34" ry="8" fill="url(#wi-rock)" />
-          <ellipse cx="900" cy="87" rx="26" ry="6" fill="url(#wi-rock)" />
-          <ellipse cx="1180" cy="85" rx="30" ry="7" fill="url(#wi-rock)" />
-          <ellipse cx="1320" cy="89" rx="18" ry="4" fill="#461E2D" fillOpacity="0.06" />
-        </g>
-
-        {/* Minimal agave silhouettes — geometric, not cartoon */}
-        <g fill="#461E2D" opacity="0.2">
-          <g transform="translate(200, 52)">
-            <path d="M0 28 L-6 0 L0 10 L6 0 Z" />
-            <path d="M0 28 L-14 8 L-4 12 L0 10 Z" opacity="0.85" />
-            <path d="M0 28 L14 8 L4 12 L0 10 Z" opacity="0.85" />
-          </g>
-          <g transform="translate(520, 48) scale(0.9)">
-            <path d="M0 30 L-7 0 L0 11 L7 0 Z" />
-            <path d="M0 30 L-15 10 L-5 13 L0 11 Z" opacity="0.8" />
-            <path d="M0 30 L15 10 L5 13 L0 11 Z" opacity="0.8" />
-          </g>
-          <g transform="translate(1080, 50) scale(1.05)">
-            <path d="M0 28 L-6 0 L0 10 L6 0 Z" />
-            <path d="M0 28 L-14 8 L-4 12 L0 10 Z" opacity="0.85" />
-            <path d="M0 28 L14 8 L4 12 L0 10 Z" opacity="0.85" />
-          </g>
-        </g>
-
-        {/* Columnar cactus — matches site language (Transformation border) */}
-        <g fill="#4C2733" opacity="0.18">
-          <g transform="translate(340, 38)">
-            <rect x="-3" y="0" width="6" height="36" rx="3" />
-            <path d="M-3 14 C-12 14 -14 6 -14 6 L-11 6 C-11 6 -10 12 -3 12" />
-            <rect x="-13" y="2" width="5" height="10" rx="2.5" />
-            <path d="M3 18 C12 18 14 10 14 10 L11 10 C11 10 10 16 3 16" />
-            <rect x="8" y="4" width="5" height="9" rx="2.5" />
-          </g>
-          <g transform="translate(760, 42) scale(0.85)">
-            <rect x="-3" y="0" width="6" height="32" rx="3" />
-            <path d="M3 16 C11 16 13 8 13 8 L10 8 C10 8 9 14 3 14" />
-          </g>
-          <g transform="translate(1240, 40) scale(0.75)">
-            <rect x="-3" y="0" width="6" height="30" rx="3" />
-            <path d="M-3 12 C-11 12 -13 5 -13 5 L-10 5 C-10 5 -9 11 -3 11" />
-          </g>
-        </g>
-
-        {/* Barrel cactus accents */}
-        <g fill="#4C2733" opacity="0.14">
-          <ellipse cx="450" cy="78" rx="9" ry="12" />
-          <ellipse cx="442" cy="66" rx="7" ry="9" transform="rotate(-12 442 66)" />
-          <ellipse cx="458" cy="64" rx="7" ry="9" transform="rotate(12 458 64)" />
-          <ellipse cx="950" cy="76" rx="8" ry="11" />
-          <ellipse cx="944" cy="66" rx="6" ry="8" transform="rotate(-10 944 66)" />
-          <ellipse cx="956" cy="65" rx="6" ry="8" transform="rotate(10 956 65)" />
-        </g>
-
-        {/* Gravel scatter — subtle dots */}
-        <g fill="#4C2733" opacity="0.12">
-          {[80, 160, 280, 410, 550, 680, 820, 1010, 1150, 1280, 1380].map(
-            (x, i) => (
-              <circle
-                key={x}
-                cx={x}
-                cy={92 + (i % 3)}
-                r={1.2 + (i % 2) * 0.4}
-              />
-            )
-          )}
-        </g>
-
-        {/* Luxury horizon accent */}
-        <path
-          d="M0 78 Q240 68 480 74 Q720 80 960 70 Q1200 60 1440 72"
-          fill="none"
-          stroke="#E86240"
-          strokeOpacity="0.22"
-          strokeWidth="1"
+        <Photo src={afterImage.src} alt={afterImage.alt} priority />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(70,30,45,0.5) 0%, rgba(70,30,45,0.06) 45%, transparent 100%)",
+          }}
         />
-        <path
-          d="M0 80 Q360 72 720 76 Q1080 80 1440 74"
-          fill="none"
-          stroke="#F4DEBF"
-          strokeOpacity="0.35"
-          strokeWidth="0.5"
-        />
+      </div>
 
-        {/* Soft crest highlight */}
-        <path
-          d="M0 68 Q360 52 720 58 Q1080 64 1440 50 L1440 78 Q1080 72 720 66 Q360 60 0 68 Z"
-          fill="#F4DEBF"
-          fillOpacity="0.12"
+      {/* Divider line + handle */}
+      <div
+        className="absolute top-0 bottom-0 z-20 flex items-center justify-center pointer-events-none"
+        style={{
+          left: `${position}%`,
+          transform: "translateX(-50%)",
+          transition: isDragging ? "none" : "left 0.08s ease-out",
+        }}
+      >
+        <div
+          className="absolute top-0 bottom-0 w-0.5"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent, #F4DEBF 15%, #F4DEBF 85%, transparent)",
+            boxShadow: "0 0 12px rgba(70,30,45,0.65)",
+          }}
         />
-      </svg>
-    </div>
-  );
-}
-
-/* ── Media block ────────────────────────────────────────────────────────── */
-function CardMedia({ item }: { item: IncludedItem }) {
-  if (item.graphic) {
-    return (
-      <div className={`${styles.media} ${styles.mediaGraphic}`} aria-hidden="true">
-        <div className={styles.graphicIcon}>
-          <PiDropHalfBottomLight size={32} />
+        <div
+          className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full pointer-events-auto"
+          style={{
+            background: "rgba(70,30,45,0.88)",
+            border: "2px solid rgba(244,222,191,0.35)",
+            boxShadow:
+              "0 4px 24px rgba(70,30,45,0.55), 0 0 0 4px rgba(232,98,64,0.15)",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+          }}
+        >
+          <ChevronLeft
+            className="w-4 h-4 text-[#F4DEBF] -mr-1"
+            strokeWidth={2.5}
+            aria-hidden
+          />
+          <ChevronRight
+            className="w-4 h-4 text-[#F4DEBF] -ml-1"
+            strokeWidth={2.5}
+            aria-hidden
+          />
         </div>
       </div>
-    );
-  }
 
-  if (item.splitImages) {
-    return (
-      <div className={`${styles.media} ${styles.mediaSplit}`}>
-        <span className={styles.beforeAfterBadge}>Before → After</span>
-        <div className="relative h-full overflow-hidden">
-          <Image
-            src={item.splitImages.before}
-            alt={item.splitImages.beforeAlt}
-            fill
-            sizes="(max-width: 1024px) 50vw, 25vw"
-            className={`object-cover ${styles.imageZoom}`}
+      {/* Before badge */}
+      <div className="absolute top-5 left-5 z-10 pointer-events-none">
+        <div
+          className="flex items-center gap-2 px-4 py-2 rounded-full"
+          style={{
+            background: "rgba(70,30,45,0.75)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            border: "1px solid rgba(244,222,191,0.12)",
+          }}
+        >
+          <span
+            className="block w-2 h-2 rounded-full shrink-0"
+            style={{ background: "rgba(244,222,191,0.5)" }}
           />
-          <span className={`${styles.splitLabel} ${styles.splitLabelBefore}`}>
+          <span
+            className="font-satoshi font-bold text-xs tracking-widest uppercase"
+            style={{ color: "rgba(244,222,191,0.75)" }}
+          >
             Before
           </span>
         </div>
-        <div className="relative h-full overflow-hidden border-l border-[#461E2D]/15">
-          <Image
-            src={item.splitImages.after}
-            alt={item.splitImages.afterAlt}
-            fill
-            sizes="(max-width: 1024px) 50vw, 25vw"
-            className={`object-cover ${styles.imageZoom}`}
+      </div>
+
+      {/* After badge */}
+      <div className="absolute top-5 right-5 z-10 pointer-events-none">
+        <div
+          className="flex items-center gap-2 px-4 py-2 rounded-full"
+          style={{
+            background: "rgba(232,98,64,0.18)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            border: "1px solid rgba(232,98,64,0.4)",
+          }}
+        >
+          <span
+            className="block w-2 h-2 rounded-full shrink-0"
+            style={{ background: "#E86240" }}
           />
-          <span className={`${styles.splitLabel} ${styles.splitLabelAfter}`}>
+          <span
+            className="font-satoshi font-bold text-xs tracking-widest uppercase"
+            style={{ color: "#E86240" }}
+          >
             After
           </span>
         </div>
-        <div className={styles.mediaOverlay} aria-hidden="true" />
       </div>
-    );
-  }
 
-  const isFeatured = item.variant === "hero" || item.variant === "heroAlt";
-  const isCompact = item.variant === "compact";
-
-  return (
-    <div
-      className={`${styles.media} ${
-        isFeatured
-          ? styles.mediaFeatured
-          : isCompact
-            ? styles.mediaCompact
-            : styles.mediaStandard
-      }`}
-    >
-      <Image
-        src={item.image!}
-        alt={item.imageAlt!}
-        fill
-        sizes={
-          isFeatured
-            ? "(max-width: 1024px) 100vw, 55vw"
-            : isCompact
-              ? "(max-width: 1024px) 100vw, 50vw"
-              : "(max-width: 1024px) 100vw, 33vw"
-        }
-        className={`object-cover ${styles.imageZoom}`}
-      />
-      <div
-        className={isCompact ? styles.mediaOverlayLight : styles.mediaOverlay}
-        aria-hidden="true"
-      />
+      {/* Drag hint */}
+      <p
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 font-satoshi text-[10px] sm:text-xs font-semibold tracking-[0.14em] uppercase pointer-events-none px-4 py-1.5 rounded-full"
+        style={{
+          color: "rgba(244,222,191,0.7)",
+          background: "rgba(70,30,45,0.55)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          border: "1px solid rgba(244,222,191,0.1)",
+        }}
+      >
+        Drag to compare
+      </p>
     </div>
   );
-}
+};
 
-/* ── Bento card ─────────────────────────────────────────────────────────── */
-function BentoCard({ item, delay }: { item: IncludedItem; delay: number }) {
-  const isFeatured = item.variant === "hero" || item.variant === "heroAlt";
-  const isCompact = item.variant === "compact";
+// ─── BLOCK 2 — Before / After Conversion (Signature Block) ───────────────────
 
+const BeforeAfterBlock = ({ beforeImage, afterImage, index }) => {
   return (
-    <Reveal delay={delay} className={SLOT_CLASS[item.variant]}>
-      <article
-        className={`${styles.card} h-full ${
-          isFeatured ? styles.cardFeatured : ""
-        } ${isCompact ? styles.cardCompact : ""}`}
-        aria-labelledby={`included-${item.id}-title`}
-      >
-        <CardMedia item={item} />
-
-        <div
-          className={`${styles.body} ${
-            isFeatured ? styles.bodyFeatured : isCompact ? styles.bodyCompact : ""
-          }`}
+    <motion.div
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.85, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full"
+    >
+      {/* Section label above */}
+      <div className="flex items-center gap-4 mb-7">
+        <div className="h-px w-8" style={{ background: "#E86240", opacity: 0.5 }} />
+        <span
+          className="font-satoshi text-xs font-bold tracking-[0.2em] uppercase"
+          style={{ color: "rgba(232,98,64,0.8)" }}
         >
-          {item.tag && (
-            <span
-              className={`font-satoshi ${styles.tag} ${
-                isCompact ? styles.tagMuted : ""
-              }`}
-            >
-              {item.tag}
-            </span>
-          )}
+          Service 02
+        </span>
+        <div className="h-px flex-1" style={{ background: "rgba(244,222,191,0.07)" }} />
+      </div>
 
-          {item.hook && (
-            <p className={`font-satoshi ${styles.hook}`}>{item.hook}</p>
-          )}
-
+      {/* Title row */}
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <div>
           <h3
-            id={`included-${item.id}-title`}
-            className={`font-sans ${styles.title} ${
-              isFeatured
-                ? styles.titleFeatured
-                : isCompact
-                  ? styles.titleCompact
-                  : styles.titleStandard
-            }`}
+            className="font-sans font-black leading-tight mb-3"
+            style={{
+              color: "#F4DEBF",
+              fontSize: "clamp(1.65rem, 3.2vw, 2.45rem)",
+              letterSpacing: "-0.02em",
+            }}
           >
-            {item.title}
+            Lawn to Xeriscape Conversion
           </h3>
-
           <p
-            className={`font-satoshi ${
-              isCompact ? styles.descCompact : styles.desc
-            }`}
+            className="font-satoshi font-medium leading-relaxed max-w-lg"
+            style={{
+              color: "rgba(244,222,191,0.55)",
+              fontSize: "clamp(0.88rem, 1.5vw, 1rem)",
+            }}
           >
-            {item.description}
+            Still paying to water grass you barely use? We replace traditional lawns with
+            beautiful low-maintenance landscapes designed to thrive in Colorado.
           </p>
+        </div>
+        <AccentPill>Before → After</AccentPill>
+      </div>
 
-          {!isCompact && (
-            <div className={styles.cardFooter}>
+      {/* Interactive before / after compare slider */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.75, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <BeforeAfterCompareSlider
+          beforeImage={{
+            src: beforeImage.src,
+            alt: beforeImage.alt ?? "Before: traditional grass lawn",
+          }}
+          afterImage={{
+            src: afterImage.src,
+            alt: afterImage.alt ?? "After: completed xeriscape conversion",
+          }}
+        />
+      </motion.div>
+
+      {/* Captions below slider */}
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+        <p
+          className="font-satoshi font-semibold text-sm leading-snug"
+          style={{ color: "rgba(244,222,191,0.6)" }}
+        >
+          <span className="text-[#F4DEBF]/45 uppercase text-xs tracking-widest font-bold mr-2">
+            Before
+          </span>
+          High-water grass lawn — ongoing cost, seasonal maintenance, patchy results.
+        </p>
+        <p
+          className="font-satoshi font-semibold text-sm leading-snug sm:text-right"
+          style={{ color: "rgba(244,222,191,0.75)" }}
+        >
+          <span className="text-[#E86240] uppercase text-xs tracking-widest font-bold mr-2">
+            After
+          </span>
+          Water-smart xeriscape — beautiful year-round, low maintenance, built for Colorado.
+        </p>
+      </div>
+
+      {/* Transformation callout strip */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.35 }}
+        className="mt-5 flex flex-wrap items-center justify-center sm:justify-between gap-4 px-6 py-4 rounded-2xl"
+        style={{
+          background: "rgba(76,39,51,0.35)",
+          border: "1px solid rgba(244,222,191,0.07)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+        }}
+      >
+        {[
+          { stat: "Up to 60%", label: "Less Water" },
+          { stat: "Zero", label: "Seasonal Reseeding" },
+          { stat: "Year-Round", label: "Curb Appeal" },
+          { stat: "One Time", label: "Professional Install" },
+        ].map(({ stat, label }, i) => (
+          <div key={i} className="flex items-center gap-3">
+            {i !== 0 && (
+              <div
+                className="hidden sm:block w-px h-6 self-center"
+                style={{ background: "rgba(244,222,191,0.1)" }}
+              />
+            )}
+            <div className="flex flex-col items-center sm:items-start gap-0.5">
               <span
-                className={`font-satoshi ${styles.learnMore}`}
-                aria-hidden="true"
+                className="font-sans font-black leading-none"
+                style={{ color: "#E86240", fontSize: "clamp(1rem, 2vw, 1.2rem)" }}
               >
-                Learn more
-                <ArrowRight className={`w-3.5 h-3.5 ${styles.learnArrow}`} />
+                {stat}
+              </span>
+              <span
+                className="font-satoshi text-xs font-semibold tracking-widest uppercase"
+                style={{ color: "rgba(244,222,191,0.38)" }}
+              >
+                {label}
               </span>
             </div>
-          )}
-        </div>
-      </article>
-    </Reveal>
+          </div>
+        ))}
+      </motion.div>
+    </motion.div>
   );
-}
+};
 
-/* ── Section ────────────────────────────────────────────────────────────── */
-export default function WhatsIncludedSection() {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [headerVisible, setHeaderVisible] = useState(false);
-  const reduceMotion = useReducedMotion() === true;
+// ─── BLOCK 3 — Standard image card (medium) ──────────────────────────────────
 
-  useEffect(() => {
-    if (reduceMotion) {
-      setHeaderVisible(true);
-      return;
-    }
-    const el = headerRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setHeaderVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "-40px", threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [reduceMotion]);
+const StandardServiceCard = ({ service, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 32 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-70px" }}
+    transition={{ duration: 0.72, delay: index * 0.09, ease: [0.22, 1, 0.36, 1] }}
+    className="group relative overflow-hidden rounded-2xl flex flex-col"
+    style={{
+      boxShadow: "0 12px 48px rgba(0,0,0,0.38)",
+      border: "1px solid rgba(244,222,191,0.06)",
+    }}
+  >
+    {/* Photo */}
+    <div
+      className="relative overflow-hidden"
+      style={{ height: "clamp(200px, 26vw, 320px)" }}
+    >
+      <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]">
+        <Photo src={service.image.src} alt={service.image.alt} />
+      </div>
+      <div className="absolute inset-0" style={{ background: IMG_OVERLAY }} />
+
+      {/* Number watermark */}
+      <div
+        className="absolute top-4 right-5 font-sans font-black leading-none select-none"
+        style={{
+          color: "rgba(244,222,191,0.07)",
+          fontSize: "4.5rem",
+          letterSpacing: "-0.04em",
+        }}
+      >
+        {service.number}
+      </div>
+
+      {/* Accent pill bottom-left of image */}
+      <div className="absolute bottom-4 left-4">
+        <AccentPill>{service.accent}</AccentPill>
+      </div>
+
+      {/* Hover glow line */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"
+        style={{ background: "linear-gradient(90deg, #E86240, transparent)" }}
+      />
+    </div>
+
+    {/* Text content */}
+    <div
+      className="flex flex-col gap-3 p-6 flex-1"
+      style={{
+        background: "rgba(76,39,51,0.5)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+      }}
+    >
+      <h3
+        className="font-sans font-bold leading-tight"
+        style={{
+          color: "#F4DEBF",
+          fontSize: "clamp(1.15rem, 2vw, 1.6rem)",
+        }}
+      >
+        {service.title}
+      </h3>
+
+      <div className="w-8 h-px" style={{ background: "rgba(232,98,64,0.45)" }} />
+
+      <p
+        className="font-satoshi font-medium leading-relaxed"
+        style={{
+          color: "rgba(244,222,191,0.58)",
+          fontSize: "clamp(0.83rem, 1.4vw, 0.93rem)",
+        }}
+      >
+        {service.body}
+      </p>
+    </div>
+
+    {/* Hover border */}
+    <div
+      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+      style={{ border: "1px solid rgba(232,98,64,0.32)" }}
+    />
+  </motion.div>
+);
+
+// ─── BLOCK 4 — Wide landscape card (full-width single service) ───────────────
+
+const WideServiceCard = ({ service, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 32 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-70px" }}
+    transition={{ duration: 0.78, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+    className="group relative w-full overflow-hidden rounded-2xl grid grid-cols-1 lg:grid-cols-2"
+    style={{
+      background: "rgba(76,39,51,0.45)",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      border: "1px solid rgba(244,222,191,0.07)",
+      boxShadow: "0 16px 56px rgba(0,0,0,0.38)",
+      minHeight: "clamp(200px, 24vw, 300px)",
+    }}
+  >
+    {/* Image — right side on desktop, top on mobile */}
+    <div className="order-1 lg:order-2 relative overflow-hidden" style={{ minHeight: "220px" }}>
+      <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]">
+        <Photo src={service.image.src} alt={service.image.alt} />
+      </div>
+      <div
+        className="absolute inset-0 lg:hidden"
+        style={{ background: "linear-gradient(to top, rgba(76,39,51,1) 0%, rgba(76,39,51,0.1) 100%)" }}
+      />
+      {/* Desktop: fade left into content panel */}
+      <div
+        className="absolute inset-0 hidden lg:block"
+        style={{ background: IMG_OVERLAY_SIDE }}
+      />
+      {/* Number */}
+      <div
+        className="absolute bottom-4 right-5 font-sans font-black leading-none select-none"
+        style={{
+          color: "rgba(244,222,191,0.06)",
+          fontSize: "5.5rem",
+          letterSpacing: "-0.04em",
+        }}
+      >
+        {service.number}
+      </div>
+    </div>
+
+    {/* Text — left on desktop, bottom on mobile */}
+    <div className="order-2 lg:order-1 flex flex-col justify-center gap-4 p-7 lg:p-10">
+      <AccentPill>{service.accent}</AccentPill>
+      <h3
+        className="font-sans font-bold leading-tight"
+        style={{
+          color: "#F4DEBF",
+          fontSize: "clamp(1.28rem, 2.2vw, 2rem)",
+          letterSpacing: "-0.015em",
+        }}
+      >
+        {service.title}
+      </h3>
+      <div className="w-8 h-px" style={{ background: "rgba(232,98,64,0.45)" }} />
+      <p
+        className="font-satoshi font-medium leading-relaxed max-w-sm"
+        style={{
+          color: "rgba(244,222,191,0.58)",
+          fontSize: "clamp(0.85rem, 1.5vw, 0.96rem)",
+        }}
+      >
+        {service.body}
+      </p>
+    </div>
+
+    {/* Hover border */}
+    <div
+      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+      style={{ border: "1px solid rgba(232,98,64,0.3)" }}
+    />
+  </motion.div>
+);
+
+// ─── Section header ───────────────────────────────────────────────────────────
+
+const SectionDivider = ({ label, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    className="flex items-center gap-4"
+  >
+    <div className="h-px w-8" style={{ background: "#E86240", opacity: 0.5 }} />
+    <span
+      className="font-satoshi text-xs font-bold tracking-[0.2em] uppercase"
+      style={{ color: "rgba(232,98,64,0.8)" }}
+    >
+      {label}
+    </span>
+    <div className="h-px flex-1" style={{ background: "rgba(244,222,191,0.07)" }} />
+  </motion.div>
+);
+
+// ─── Main export ──────────────────────────────────────────────────────────────
+
+/**
+ * Usage:
+ *   import ServicesSection from "@/components/ServicesSection";
+ *
+ *   <ServicesSection
+ *     images={{
+ *       design:     "/images/xeriscape-design.jpg",
+ *       rockGravel: "/images/rock-gravel.jpg",
+ *       plants:     "/images/drought-plants.jpg",
+ *       irrigation: "/images/drip-irrigation.jpg",
+ *       walkway:    "/images/walkway-outdoor.jpg",
+ *       beforeLawn: "/images/before-lawn.jpg",
+ *       afterXeri:  "/images/after-xeriscape.jpg",
+ *     }}
+ *   />
+ */
+
+export default function ServicesSection({
+  images = {},
+}: {
+  images?: Partial<typeof DEFAULT_IMAGES>;
+} = {}) {
+  const headerRef = useRef(null);
+  const isHeaderInView = useInView(headerRef, { once: true, margin: "-60px" });
+
+  const img = (key: keyof typeof DEFAULT_IMAGES, alt: string) => ({
+    src: images[key] || DEFAULT_IMAGES[key],
+    alt,
+  });
+
+  const heroService = {
+    number: "01",
+    title: "Custom Xeriscape Design",
+    body: "We create low-water landscape designs built specifically for your property, style, and Colorado climate.",
+    accent: "Design + Planning",
+    image: img("design", "Custom Xeriscape Design"),
+  };
+
+  const standardServices = [
+    {
+      number: "03",
+      title: "Decorative Rock & Gravel Landscaping",
+      body: "Replace patchy grass with decorative stone and clean, modern landscaping that stays beautiful year-round.",
+      accent: "Permanent Beauty",
+      image: img("rockGravel", "Decorative Rock and Gravel"),
+    },
+    {
+      number: "04",
+      title: "Drought Resistant Plants",
+      body: "A low-water yard doesn't have to look boring. We install Colorado-friendly plants that thrive with less water while keeping your landscaping beautiful.",
+      accent: "Native + Thriving",
+      image: img("plants", "Drought Resistant Native Plants"),
+    },
+  ];
+
+  const wideServices = [
+    {
+      number: "05",
+      title: "Smart Irrigation Systems",
+      body: "Use less water without sacrificing healthy plants. Efficient drip systems help reduce waste and simplify maintenance.",
+      accent: "Water Smart",
+      image: img("irrigation", "Smart Drip Irrigation System"),
+    },
+    {
+      number: "06",
+      title: "Walkways & Outdoor Features",
+      body: "We can incorporate walkways, patios, edging, and outdoor features that blend naturally into your xeriscape.",
+      accent: "Finishing Touch",
+      image: img("walkway", "Walkway and Outdoor Features"),
+    },
+  ];
 
   return (
     <section
-      id="whats-included"
-      aria-labelledby="whats-included-heading"
-      className={`relative overflow-hidden ${styles.section}`}
+      className="relative w-full overflow-hidden"
+      style={{
+        background: "linear-gradient(155deg, #4C2733 0%, #461E2D 45%, #3a1825 100%)",
+      }}
     >
-      <DesertHorizonEdge />
+      <TopoLines />
 
+      {/* Ambient top glow */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.35]"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 45% at 80% 10%, rgba(232,98,64,0.08), transparent 55%), radial-gradient(ellipse 50% 40% at 10% 90%, rgba(76,39,51,0.05), transparent 50%)",
-        }}
         aria-hidden="true"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[420px] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse, rgba(232,98,64,0.09) 0%, transparent 65%)",
+          filter: "blur(40px)",
+        }}
       />
 
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-12 sm:pt-14 lg:pt-16 pb-20 lg:pb-28">
-        {/* Header */}
-        <div
-          ref={headerRef}
-          className={`max-w-3xl mb-10 lg:mb-14 ${styles.reveal} ${
-            headerVisible ? styles.revealVisible : ""
-          }`}
-        >
-          <span className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-[12px] uppercase tracking-[0.28em] text-[#E86240] border border-[#E86240]/22 bg-[#E86240]/7 mb-6 font-sans font-bold">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#E86240] shrink-0" />
-            Project scope
-          </span>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-28 lg:py-22">
 
-          <h2
-            id="whats-included-heading"
-            className="font-sans font-bold text-[clamp(1.75rem,4.5vw,2.85rem)] text-[#461E2D] tracking-tight leading-[1.1] mb-4"
+        {/* ── Header ─────────────────────────────────────────────────────────── */}
+        <div ref={headerRef} className="mb-20 lg:mb-18">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="font-satoshi text-sm font-bold tracking-[0.22em] uppercase text-center mb-6"
+            style={{ color: "rgba(232,98,64,0.85)" }}
           >
-            What&apos;s Included In A Xeriscaping Project?
-          </h2>
+            What's Included In A Xeriscape Project
+          </motion.p>
 
-          <p className="font-satoshi text-base sm:text-lg lg:text-xl text-[#4C2733]/80 leading-relaxed font-semibold max-w-2xl">
-            Everything designed to reduce maintenance, lower water use, and
-            create a yard that actually looks good year-round.
-          </p>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.78, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="font-sans font-black text-center leading-[1.05] mb-7"
+            style={{
+              color: "#F4DEBF",
+              fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
+              letterSpacing: "-0.028em",
+            }}
+          >
+            What's Included In A{" "}
+            <span style={{ color: "#E86240" }}>Xeriscaping</span> Project?
+          </motion.h2>
 
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={isHeaderInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.65, delay: 0.25 }}
+            className="flex justify-center mb-7"
+            style={{ transformOrigin: "center" }}
+          >
+            <div
+              className="h-px w-20"
+              style={{ background: "linear-gradient(90deg, transparent, #E86240, transparent)" }}
+            />
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.65, delay: 0.3 }}
+            className="font-satoshi font-medium text-center max-w-2xl mx-auto leading-relaxed"
+            style={{
+              color: "rgba(244,222,191,0.55)",
+              fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
+            }}
+          >
+            Everything designed to reduce maintenance, lower water use, and create
+            a yard that actually looks good year-round.
+          </motion.p>
         </div>
 
-        {/* Bento grid */}
-        <div className={styles.bento}>
-          {INCLUDED_ITEMS.map((item, i) => (
-            <BentoCard key={item.id} item={item} delay={60 + i * 50} />
-          ))}
-        </div>
-
-        {/* Conversion CTA */}
-        <Reveal delay={380}>
-          <div className={styles.ctaBar}>
-            <p className="font-satoshi text-[15px] sm:text-base text-[#4C2733]/85 font-semibold leading-snug max-w-xl">
-              <span className="font-bold text-[#461E2D]">
-                Ready to see what&apos;s possible on your property?
-              </span>{" "}
-              We&apos;ll map out a custom xeriscape plan during your free
-              consultation.
-            </p>
-            <Link
-              href="#consultation"
-              className={`font-satoshi ${styles.ctaPrimary} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E86240] focus-visible:ring-offset-2`}
-            >
-              Book Free Consultation
-              <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </Link>
+        {/* ── BLOCK 1: Hero service — full width ─────────────────────────────── */}
+        <div className="mb-6 lg:mb-7">
+          <SectionDivider label="Service 01" />
+          <div className="mt-5">
+            <HeroServiceBlock service={heroService} index={0} />
           </div>
-        </Reveal>
+        </div>
+
+        {/* ── BLOCK 2: Before / After — full width ────────────────────────────── */}
+        <div className="mb-6 lg:mb-7">
+          <div className="mt-5">
+            <BeforeAfterBlock
+              beforeImage={img("beforeLawn", "Before — Traditional Grass Lawn")}
+              afterImage={img("afterXeri", "After — Xeriscape Conversion")}
+              index={1}
+            />
+          </div>
+        </div>
+
+        {/* ── BLOCK 3: Two standard cards side by side ────────────────────────── */}
+        <div className="mb-6 lg:mb-7">
+          <SectionDivider label="Services 03 – 04" />
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
+            {standardServices.map((s, i) => (
+              <StandardServiceCard key={s.number} service={s} index={i + 2} />
+            ))}
+          </div>
+        </div>
+
+        {/* ── BLOCK 4: Two wide landscape cards stacked ───────────────────────── */}
+        <div className="mb-0">
+          <SectionDivider label="Services 05 – 06" />
+          <div className="mt-5 flex flex-col gap-5 lg:gap-6">
+            {wideServices.map((s, i) => (
+              <WideServiceCard key={s.number} service={s} index={i + 4} />
+            ))}
+          </div>
+        </div>
+
+        {/* ── Trust Strip ────────────────────────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="mt-20 lg:mt-16 flex flex-col items-center gap-8"
+        >
+          <div
+            className="w-full max-w-sm h-px"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, rgba(244,222,191,0.14), transparent)",
+            }}
+          />
+          <div className="flex flex-wrap justify-center gap-10 lg:gap-20">
+            {[
+              { value: "Up to 60%", label: "Water Savings" },
+              { value: "100%", label: "Colorado Native Focus" },
+              { value: "Year-Round", label: "Curb Appeal" },
+            ].map(({ value, label }, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 + i * 0.12 }}
+                className="flex flex-col items-center gap-1.5"
+              >
+                <span
+                  className="font-sans font-black leading-none"
+                  style={{
+                    color: "#E86240",
+                    fontSize: "clamp(1.5rem, 3vw, 2.1rem)",
+                  }}
+                >
+                  {value}
+                </span>
+                <span
+                  className="font-satoshi text-xs font-semibold tracking-widest uppercase"
+                  style={{ color: "rgba(244,222,191,0.38)" }}
+                >
+                  {label}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

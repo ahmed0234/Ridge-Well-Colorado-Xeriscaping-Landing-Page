@@ -16,6 +16,7 @@ import {
   PiShieldCheckLight,
 } from "react-icons/pi";
 import ConsultationForm from "./ConsultationForm";
+import { useIsLg } from "../hooks/useIsLg";
 
 // ─── Font imports (add to your layout.tsx / globals.css) ──────────────────
 // @import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap');
@@ -179,6 +180,7 @@ function FeatureItem({ icon: Icon, title, body, delay }) {
 export default function HeroSection() {
   const containerRef = useRef(null);
   const shouldReduce = useReducedMotion();
+  const isLg = useIsLg();
 
   const { scrollY } = useScroll();
   const bgY = useTransform(
@@ -198,7 +200,7 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-screen overflow-hidden flex items-stretch font-satoshi "
+      className="relative w-full min-h-0 lg:min-h-screen overflow-hidden flex items-stretch font-satoshi pt-4 pb-12 lg:pb-0"
       style={{ background: C.sandLight }}
     >
       {/* ══ BACKGROUND PHOTO WITH PARALLAX ══════════════════════════════ */}
@@ -265,7 +267,7 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="absolute right-[5%] top-[8%] z-20 hidden lg:block">
+      <div className="absolute right-[5%] top-[8%] z-20 hidden lg:hidden">
         <InsightCard
           icon={PiSunLight}
           title="Climate-optimized design"
@@ -278,7 +280,7 @@ export default function HeroSection() {
 
       {/* ══ CONTENT GRID ═════════════════════════════════════════════════ */}
       <div
-        className="relative z-20 w-full mx-auto flex flex-col lg:flex-row items-center lg:items-stretch justify-between min-h-screen"
+        className="relative z-20 w-full mx-auto flex flex-col lg:flex-row items-center lg:items-stretch justify-between min-h-0 lg:min-h-screen"
         style={{
           maxWidth: "1560px",
           padding: "0 clamp(24px, 4vw, 56px)",
@@ -401,7 +403,7 @@ export default function HeroSection() {
 
               {/* razor sharp moving glaze */}
               <motion.div
-                className="absolute top-0 bottom-0 w-20"
+                className="absolute top-0 bottom-0 w-20 hidden"
                 animate={{
                   x: ["-150%", "420%"],
                 }}
@@ -514,7 +516,7 @@ export default function HeroSection() {
             >
               {/* moving razor glaze */}
               <motion.div
-                className="absolute inset-y-0 w-24"
+                className="absolute inset-y-0 w-24 hidden"
                 animate={{
                   x: ["-180%", "420%"],
                 }}
@@ -614,14 +616,14 @@ export default function HeroSection() {
                 </span>
 
                 <span
-                  className="text-base"
+                  className="text-base font-sans"
                   style={{
                     color: C.deepPlum,
                     fontWeight: 700,
                     textShadow: "0 1px 0 rgba(255,255,255,0.45)",
                   }}
                 >
-                  Call Ridgewell Landscape & Design
+                  +(1) 720-882-5772
                 </span>
               </span>
             </motion.a>
@@ -656,21 +658,23 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* ── RIGHT COLUMN — FORM ───────────────────────────────────────── */}
-        <motion.div
-          id="consultation"
-          className="flex items-center justify-center w-full pt-0 lg:pt-[clamp(10px,8vh,100px)] scroll-mt-24"
-          style={{
-            width: "clamp(340px, 36vw, 500px)",
-            flexShrink: 0,
-            paddingBottom: "clamp(60px, 8vh, 100px)",
-          }}
-          initial={{ opacity: 0, y: 36, x: 18 }}
-          animate={{ opacity: 1, y: 0, x: 0 }}
-          transition={{ duration: 0.9, delay: 0.55, ease }}
-        >
-          <ConsultationForm />
-        </motion.div>
+        {/* ── RIGHT COLUMN — FORM (desktop only) ─────────────────────────── */}
+        {isLg && (
+          <motion.div
+            id="consultation"
+            className="flex items-center justify-center w-full pt-0 lg:pt-[clamp(10px,8vh,100px)] scroll-mt-24"
+            style={{
+              width: "clamp(340px, 36vw, 500px)",
+              flexShrink: 0,
+              paddingBottom: "clamp(60px, 8vh, 100px)",
+            }}
+            initial={{ opacity: 0, y: 36, x: 18 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.55, ease }}
+          >
+            <ConsultationForm />
+          </motion.div>
+        )}
       </div>
 
       {/* ══ SCROLL INDICATOR ═════════════════════════════════════════════ */}

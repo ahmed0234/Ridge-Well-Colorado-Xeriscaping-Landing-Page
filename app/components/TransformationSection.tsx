@@ -70,8 +70,8 @@ function CactusBorder() {
 /* ── Data ───────────────────────────────────────────────────────────────── */
 const transformations = [
   {
-    beforeImage: "/beforeandafter/before_1.png",
-    afterImage: "/beforeandafter/after_1.png",
+    beforeImage: "/beforeandafter/after_1.png",
+    afterImage: "/beforeandafter/before_1.png",
     beforeAlt: "Dry patchy lawn before xeriscaping",
     afterAlt: "Modern xeriscape with gravel and native plants",
     title: "Desert Oasis Residence",
@@ -79,8 +79,8 @@ const transformations = [
     waterSaved: "-62% Water",
   },
   {
-    beforeImage: "/beforeandafter/before_1.png",
-    afterImage: "/beforeandafter/after_1.png",
+    beforeImage: "/beforeandafter/after_2.png",
+    afterImage: "/beforeandafter/before_2.png",
     beforeAlt: "Overgrown backyard before redesign",
     afterAlt: "Elegant courtyard with succulents and fire pit",
     title: "Mesa Verde Courtyard",
@@ -88,8 +88,8 @@ const transformations = [
     waterSaved: "-55% Water",
   },
   {
-    beforeImage: "/beforeandafter/before_1.png",
-    afterImage: "/beforeandafter/after_1.png",
+    beforeImage: "/beforeandafter/after_3.png",
+    afterImage: "/beforeandafter/before_3.png",
     beforeAlt: "Bare entrance with dead grass",
     afterAlt: "Architectural desert garden with ornamental grasses",
     title: "Saguaro Estate Gardens",

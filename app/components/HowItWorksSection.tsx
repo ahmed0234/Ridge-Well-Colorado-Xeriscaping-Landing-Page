@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import styles from "./how-it-works.module.css";
+import DesertHorizonEdge from "./Deserthorizon";
 
 function Reveal({
   children,
@@ -160,6 +161,7 @@ export default function HowItWorksSection() {
       aria-labelledby="how-it-works-heading"
       className={styles.section}
     >
+      <DesertHorizonEdge />
       {/* Warm atmospheric depth */}
       <div className={styles.ambient} aria-hidden="true">
         <div className={`${styles.ambient} ${styles.ambientGrain}`} />

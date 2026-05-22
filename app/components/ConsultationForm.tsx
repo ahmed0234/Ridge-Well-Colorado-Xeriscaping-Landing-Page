@@ -528,7 +528,7 @@ export default function ConsultationForm() {
 
                       {/* razor sharp moving glaze */}
                       <motion.div
-                        className="absolute top-0 bottom-0 w-20"
+                        className="absolute top-0 bottom-0 w-20 hidden"
                         animate={{
                           x: ["-150%", "420%"],
                         }}

@@ -133,7 +133,7 @@ const CityCard = ({ city, index }) => {
               <PinIcon />
             </motion.div>
             <span
-              className="font-sans font-bold tracking-wide text-lg leading-none"
+              className="font-sans font-bold tracking-wide text-xl leading-none"
               style={{ color: "#F4DEBF" }}
             >
               {city.name}
