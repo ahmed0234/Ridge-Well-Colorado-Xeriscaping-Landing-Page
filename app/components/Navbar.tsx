@@ -140,7 +140,7 @@ function BrandMark() {
           transition={{ duration: 0.35 }}
         />
         <Image
-          src="/Navlogo.png"
+          src="/Nav.png"
           alt="Ridgewell logo"
           fill
           className="object-contain"
