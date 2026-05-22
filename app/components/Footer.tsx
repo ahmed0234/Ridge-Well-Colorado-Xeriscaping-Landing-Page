@@ -3,79 +3,26 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import {
-  PiInstagramLogoBold,
-  PiFacebookLogoBold,
-  PiPinterestLogoBold,
-  PiYoutubeLogoBold,
   PiPhoneCallFill,
   PiLeafFill,
   PiArrowUpRightBold,
   PiMapPinLineBold,
+  PiEnvelopeSimpleBold,
 } from "react-icons/pi";
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
 const SAND = "#F4DEBF";
-const PLUM = "#4C2733";
 const DEEP = "#461E2D";
 const TERRA = "#E86240";
 
 const PHONE_DISPLAY = "720-882-5772";
 const PHONE_HREF = "tel:+17208825772";
+const ADDRESS_LINE1 = "16575 E Hialeah Dr";
+const ADDRESS_LINE2 = "Centennial, CO 80015";
+const EMAIL = "info@ridgewellcolorado.com";
+const EMAIL_HREF = "mailto:info@ridgewellcolorado.com";
 
 const NOISE = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
-
-const SOCIALS = [
-  { icon: PiInstagramLogoBold, label: "Instagram", href: "#" },
-  { icon: PiFacebookLogoBold, label: "Facebook", href: "#" },
-  { icon: PiPinterestLogoBold, label: "Pinterest", href: "#" },
-  { icon: PiYoutubeLogoBold, label: "YouTube", href: "#" },
-];
-
-// ─── Social button ────────────────────────────────────────────────────────────
-function SocialBtn({
-  icon: Icon,
-  label,
-  href,
-}: {
-  icon: React.ElementType;
-  label: string;
-  href: string;
-}) {
-  return (
-    <motion.a
-      href={href}
-      aria-label={label}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="relative flex items-center justify-center w-10 h-10 rounded-2xl group overflow-hidden focus-visible:outline-none focus-visible:ring-2"
-      style={{
-        background: "rgba(244,222,191,0.06)",
-        border: "1px solid rgba(244,222,191,0.11)",
-      }}
-      whileHover={{ scale: 1.12, y: -3 }}
-      whileTap={{ scale: 0.92 }}
-      transition={{ type: "spring", stiffness: 420, damping: 22 }}
-    >
-      {/* Terra fill on hover */}
-      <motion.span
-        className="absolute inset-0 rounded-2xl"
-        style={{ background: `rgba(232,98,64,0.22)` }}
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.18 }}
-      />
-      {/* Top highlight */}
-      <span
-        className="pointer-events-none absolute top-0 left-[20%] right-[20%] h-px opacity-20 rounded-full"
-        style={{ background: SAND }}
-      />
-      <Icon
-        size={17}
-        style={{ color: `${SAND}88`, position: "relative", zIndex: 1 }}
-      />
-    </motion.a>
-  );
-}
 
 // ─── Call CTA button ──────────────────────────────────────────────────────────
 function CallButton() {
@@ -142,11 +89,81 @@ function CallButton() {
       </span>
       <PiArrowUpRightBold
         size={14}
-        color="rgba(255,255,255,0.60)"
+        color="rgba(255,255,255,0.55)"
         className="ml-auto flex-shrink-0"
       />
     </motion.a>
   );
+}
+
+// ─── Contact info row ─────────────────────────────────────────────────────────
+function ContactRow({
+  icon: Icon,
+  label,
+  line1,
+  line2,
+  href,
+}: {
+  icon: React.ElementType;
+  label: string;
+  line1: string;
+  line2?: string;
+  href?: string;
+}) {
+  const Inner = (
+    <div className="flex items-start gap-3.5 group">
+      {/* Icon bubble */}
+      <div
+        className="flex items-center justify-center w-9 h-9 rounded-xl flex-shrink-0 mt-0.5 transition-colors duration-200"
+        style={{
+          background: "rgba(244,222,191,0.06)",
+          border: "1px solid rgba(244,222,191,0.10)",
+        }}
+      >
+        <Icon size={15} style={{ color: `${TERRA}cc` }} />
+      </div>
+      {/* Text */}
+      <div className="flex flex-col gap-0.5">
+        <span
+          className="font-satoshi font-bold uppercase tracking-[0.16em]"
+          style={{ fontSize: "9.5px", color: `${SAND}40` }}
+        >
+          {label}
+        </span>
+        <span
+          className="font-satoshi font-semibold leading-snug transition-colors duration-150"
+          style={{
+            fontSize: "13.5px",
+            color: href ? `${SAND}cc` : `${SAND}bb`,
+          }}
+        >
+          {line1}
+        </span>
+        {line2 && (
+          <span
+            className="font-satoshi font-medium"
+            style={{ fontSize: "12.5px", color: `${SAND}66` }}
+          >
+            {line2}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+
+  if (href) {
+    return (
+      <motion.a
+        href={href}
+        className="focus-visible:outline-none"
+        whileHover={{ x: 3 }}
+        transition={{ type: "spring", stiffness: 380, damping: 24 }}
+      >
+        {Inner}
+      </motion.a>
+    );
+  }
+  return <div>{Inner}</div>;
 }
 
 // ─── Leaf divider ─────────────────────────────────────────────────────────────
@@ -191,7 +208,7 @@ export default function Footer() {
           backgroundSize: "24px 24px",
         }}
       />
-      {/* Top terra glow */}
+      {/* Top terra glow line */}
       <div
         aria-hidden
         className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px"
@@ -199,6 +216,7 @@ export default function Footer() {
           background: `linear-gradient(to right, transparent, ${TERRA}50, transparent)`,
         }}
       />
+      {/* Top terra radial bloom */}
       <div
         aria-hidden
         className="pointer-events-none absolute -top-28 left-1/2 -translate-x-1/2 w-[500px] h-56 rounded-full opacity-[0.06]"
@@ -208,11 +226,13 @@ export default function Footer() {
       />
 
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
-        {/* ── MAIN BODY ────────────────────────────────────────────────── */}
-        <div className="pt-16 pb-14 sm:pt-20 sm:pb-16 grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-0">
-          {/* ── LEFT — Brand ── */}
+        {/* ════════════════════════════════════════════════════════════
+            MAIN BODY — 3-column on desktop: left | divider | right
+        ════════════════════════════════════════════════════════════ */}
+        <div className="pt-16 pb-14 sm:pt-20 sm:pb-16 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-12 lg:gap-0">
+          {/* ── LEFT — Brand + Contact info ── */}
           <motion.div
-            className="flex flex-col gap-7"
+            className="flex flex-col gap-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -261,7 +281,7 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Headline copy — large, bold, impactful */}
+            {/* Headline copy */}
             <div className="flex flex-col gap-2">
               <h2
                 className="font-clash font-bold leading-[1.1] tracking-[-0.02em]"
@@ -272,35 +292,46 @@ export default function Footer() {
                 <span style={{ color: TERRA }}>Last. Not to Water.</span>
               </h2>
               <p
-                className="font-satoshi leading-relaxed max-w-[320px]"
-                style={{ fontSize: "13.5px", color: `${SAND}90` }}
+                className="font-satoshi leading-relaxed max-w-[300px]"
+                style={{ fontSize: "13.5px", color: `${SAND}85` }}
               >
                 Xeriscape design rooted in Colorado's climate where beauty and
                 sustainability grow side by side.
               </p>
             </div>
 
-            {/* Location pill */}
-            <div
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 self-start"
-              style={{
-                background: "rgba(244,222,191,0.055)",
-                border: "1px solid rgba(244,222,191,0.10)",
-              }}
-            >
-              <PiMapPinLineBold size={12} style={{ color: `${TERRA}cc` }} />
-              <span
-                className="font-satoshi text-[11.5px] font-semibold tracking-wide"
-                style={{ color: `${SAND}85` }}
-              >
-                Serving Greater Denver, Colorado
-              </span>
+            {/* Contact info rows */}
+            <div className="flex flex-col gap-5">
+              <ContactRow
+                icon={PiMapPinLineBold}
+                label="Our Location"
+                line1={ADDRESS_LINE1}
+                line2={ADDRESS_LINE2}
+                href={`https://maps.google.com/?q=${ADDRESS_LINE1} ${ADDRESS_LINE2}`}
+              />
+              <ContactRow
+                icon={PiEnvelopeSimpleBold}
+                label="Our Email"
+                line1={EMAIL}
+                href={EMAIL_HREF}
+              />
             </div>
           </motion.div>
 
-          {/* ── RIGHT — Social + CTA ── */}
+          {/* ── CENTER — Vertical divider ── */}
+          <div className="hidden lg:flex items-stretch justify-center px-14 xl:px-20">
+            <div
+              className="w-px self-stretch"
+              style={{
+                background:
+                  "linear-gradient(to bottom, transparent 0%, rgba(244,222,191,0.12) 18%, rgba(244,222,191,0.12) 82%, transparent 100%)",
+              }}
+            />
+          </div>
+
+          {/* ── RIGHT — CTA block ── */}
           <motion.div
-            className="flex flex-col justify-center gap-9 lg:items-end"
+            className="flex flex-col justify-center gap-8 lg:items-end"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -310,62 +341,51 @@ export default function Footer() {
               ease: [0.22, 1, 0.36, 1],
             }}
           >
-            {/* Social block */}
-            <div className="flex flex-col gap-3.5 lg:items-end">
+            {/* Eyebrow */}
+            <div className="flex flex-col gap-1.5 lg:items-end">
               <span
                 className="font-satoshi font-bold uppercase tracking-[0.2em]"
-                style={{ fontSize: "10px", color: `${SAND}40` }}
+                style={{ fontSize: "13px", color: `${SAND}90` }}
               >
-                Follow the Transformation
+                Start Your Project
               </span>
-              <div className="flex items-center gap-2.5">
-                {SOCIALS.map((s) => (
-                  <SocialBtn
-                    key={s.label}
-                    icon={s.icon}
-                    label={s.label}
-                    href={s.href}
-                  />
-                ))}
-              </div>
+              {/* CTA headline */}
+              <h3
+                className="font-clash font-bold leading-[1.12] tracking-[-0.02em] lg:text-right"
+                style={{
+                  fontSize: "clamp(1.45rem, 2.5vw, 1.85rem)",
+                  color: SAND,
+                }}
+              >
+                Ready to transform
+                <br />
+                <span style={{ color: TERRA }}>your yard?</span>
+              </h3>
+              <p
+                className="font-satoshi lg:text-right max-w-[260px] lg:ml-auto"
+                style={{
+                  fontSize: "14px",
+                  color: `${SAND}85`,
+                  lineHeight: 1.65,
+                }}
+              >
+                One call is all it takes. We'll walk you through the vision, the
+                process, and what's possible for your space.
+              </p>
             </div>
 
-            {/* Thin rule */}
-            <div
-              className="w-full lg:w-56 h-px"
-              style={{ background: "rgba(244,222,191,0.07)" }}
-            />
-
-            {/* CTA block */}
-            <div className="flex flex-col gap-3.5 lg:items-end w-full">
-              <div className="flex flex-col gap-1 lg:items-end">
-                <span
-                  className="font-clash font-bold"
-                  style={{
-                    fontSize: "17px",
-                    color: SAND,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Ready to transform your yard?
-                </span>
-                <span
-                  className="font-satoshi text-[12.5px]"
-                  style={{ color: `${SAND}55` }}
-                >
-                  One call. No pressure. Just clarity.
-                </span>
-              </div>
+            {/* Button */}
+            <div className="flex flex-col gap-3 w-full">
               <CallButton />
               {/* Trust signal */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 lg:justify-end">
                 <span
                   className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                   style={{ background: "#5DBE7A" }}
                 />
                 <span
-                  className="font-satoshi text-[15px]"
-                  style={{ color: `${SAND}90` }}
+                  className="font-satoshi"
+                  style={{ fontSize: "15px", color: `${SAND}85` }}
                 >
                   Free consultation &middot; No obligation
                 </span>
@@ -380,7 +400,7 @@ export default function Footer() {
         <div className="py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p
             className="font-satoshi text-center sm:text-left"
-            style={{ fontSize: "11px", color: `${SAND}35` }}
+            style={{ fontSize: "11px", color: `${SAND}32` }}
           >
             © {year} Ridgewell Landscaping &amp; Design, LLC. All rights
             reserved.
@@ -391,12 +411,12 @@ export default function Footer() {
                 key={item}
                 href="#"
                 className="font-satoshi transition-colors duration-150"
-                style={{ fontSize: "11px", color: `${SAND}35` }}
+                style={{ fontSize: "11px", color: `${SAND}32` }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = `${SAND}80`)
+                  (e.currentTarget.style.color = `${SAND}75`)
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = `${SAND}35`)
+                  (e.currentTarget.style.color = `${SAND}32`)
                 }
               >
                 {item}
