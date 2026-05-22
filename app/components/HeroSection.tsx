@@ -311,7 +311,7 @@ export default function HeroSection() {
               className="text-[11.5px] 2xl:text-sm font-bold tracking-[0.18em] uppercase font-satoshi"
               style={{ color: C.deepPlum }}
             >
-              Colorado's Premier Xeriscaping Studio
+              Colorado's Premier Xeriscaping Company
             </span>
           </motion.div>
 

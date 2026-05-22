@@ -8,6 +8,7 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
+import FAQBottomEdge from "./Faqbottomedge";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface FAQItem {
@@ -157,7 +158,7 @@ function FAQSection() {
   return (
     <section
       ref={ref}
-      className="relative bg-[#461E2D] py-[100px] px-6 overflow-hidden"
+      className="relative bg-[#461E2D] pt-[100px] px-6 overflow-hidden"
       aria-labelledby="faq-title"
     >
       {/* Background glows */}
@@ -178,7 +179,7 @@ function FAQSection() {
         }}
       />
 
-      <div className="relative z-10 max-w-[760px] mx-auto">
+      <div className="relative z-10 max-w-[760px] mx-auto pb-[100px]">
         {/* Label */}
         <motion.p
           initial={{ opacity: 0, x: -12 }}
@@ -215,6 +216,83 @@ function FAQSection() {
             <FAQRow key={item.id} item={item} index={i} />
           ))}
         </motion.ul>
+      </div>
+
+      {/* ── Bottom curly border — arches hang downward into the next section ── */}
+      <div
+        aria-hidden="true"
+        style={{ lineHeight: 0, marginBottom: "-1px" }}
+      >
+        <svg
+          viewBox="0 0 1440 96"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          style={{ display: "block", width: "100%", height: "clamp(48px, 7vw, 96px)" }}
+        >
+          <defs>
+            <filter id="crest-glow" x="-5%" y="-80%" width="110%" height="260%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/*
+            Filled shape: starts at top-left (0,0) → top-right (1440,0),
+            then the curly arches hang DOWN (control points push toward y=96),
+            then fills back up to close. Curves droop into the next section.
+          */}
+          <path
+            d="
+              M0,0 L1440,0
+              C1360,0 1320,88 1200,88
+              C1080,88 1060,36 940,36
+              C820,36 800,92 680,92
+              C560,92 540,40 420,40
+              C300,40 280,96 180,96
+              C80,96 60,4 0,0
+              Z
+            "
+            fill="#461E2D"
+          />
+
+          {/* Crest accent — rides the bottom silhouette edge */}
+          <path
+            d="
+              M1440,0
+              C1360,0 1320,88 1200,88
+              C1080,88 1060,36 940,36
+              C820,36 800,92 680,92
+              C560,92 540,40 420,40
+              C300,40 280,96 180,96
+              C80,96 60,4 0,0
+            "
+            fill="none"
+            stroke="#E86240"
+            strokeOpacity="0.3"
+            strokeWidth="1.2"
+            filter="url(#crest-glow)"
+          />
+
+          {/* Echo line for depth */}
+          <path
+            d="
+              M1440,3
+              C1362,3 1322,91 1200,91
+              C1078,91 1058,39 940,39
+              C822,39 802,95 680,95
+              C558,95 538,43 420,43
+              C302,43 282,99 180,99
+              C78,99 58,7 0,3
+            "
+            fill="none"
+            stroke="#F4DEBF"
+            strokeOpacity="0.07"
+            strokeWidth="0.7"
+          />
+        </svg>
       </div>
     </section>
   );
@@ -272,7 +350,7 @@ function CTASection() {
         className="absolute inset-[-10%] bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')",
+            "url('https://st.hzcdn.com/simgs/b351ae5703c29ba6_14-7164/home-design.jpg')",
           y: bgY,
           filter: "saturate(0.75)",
         }}
@@ -416,7 +494,6 @@ export default function RidgewellFAQCTA() {
   return (
     <>
       <FAQSection />
-      <TrustStrip />
       <CTASection />
     </>
   );

@@ -137,7 +137,11 @@ const HeroServiceBlock = ({ service, index }) => {
       initial={{ opacity: 0, y: 36 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.8,
+        delay: index * 0.08,
+        ease: [0.22, 1, 0.36, 1],
+      }}
       className="group relative w-full overflow-hidden rounded-3xl"
       style={{
         height: "clamp(380px, 55vw, 620px)",
@@ -167,7 +171,6 @@ const HeroServiceBlock = ({ service, index }) => {
       {/* Content — bottom left */}
       <div className="absolute bottom-0 left-0 right-0 z-[2] p-8 lg:p-12 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
         <div className="flex flex-col gap-4 max-w-xl">
-          <AccentPill>{service.accent}</AccentPill>
           <h3
             className="font-sans font-black leading-tight"
             style={{
@@ -448,21 +451,13 @@ const BeforeAfterBlock = ({ beforeImage, afterImage, index }) => {
       initial={{ opacity: 0, y: 36 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.85, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full"
+      transition={{
+        duration: 0.85,
+        delay: index * 0.08,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="w-full pt-4"
     >
-      {/* Section label above */}
-      <div className="flex items-center gap-4 mb-7">
-        <div className="h-px w-8" style={{ background: "#E86240", opacity: 0.5 }} />
-        <span
-          className="font-satoshi text-xs font-bold tracking-[0.2em] uppercase"
-          style={{ color: "rgba(232,98,64,0.8)" }}
-        >
-          Service 02
-        </span>
-        <div className="h-px flex-1" style={{ background: "rgba(244,222,191,0.07)" }} />
-      </div>
-
       {/* Title row */}
       <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
@@ -483,8 +478,9 @@ const BeforeAfterBlock = ({ beforeImage, afterImage, index }) => {
               fontSize: "clamp(0.88rem, 1.5vw, 1rem)",
             }}
           >
-            Still paying to water grass you barely use? We replace traditional lawns with
-            beautiful low-maintenance landscapes designed to thrive in Colorado.
+            Still paying to water grass you barely use? We replace traditional
+            lawns with beautiful low-maintenance landscapes designed to thrive
+            in Colorado.
           </p>
         </div>
         <AccentPill>Before → After</AccentPill>
@@ -518,7 +514,8 @@ const BeforeAfterBlock = ({ beforeImage, afterImage, index }) => {
           <span className="text-[#F4DEBF]/45 uppercase text-xs tracking-widest font-bold mr-2">
             Before
           </span>
-          High-water grass lawn — ongoing cost, seasonal maintenance, patchy results.
+          High-water grass lawn ongoing cost, seasonal maintenance, patchy
+          results.
         </p>
         <p
           className="font-satoshi font-semibold text-sm leading-snug sm:text-right"
@@ -527,54 +524,10 @@ const BeforeAfterBlock = ({ beforeImage, afterImage, index }) => {
           <span className="text-[#E86240] uppercase text-xs tracking-widest font-bold mr-2">
             After
           </span>
-          Water-smart xeriscape — beautiful year-round, low maintenance, built for Colorado.
+          Water smart xeriscape beautiful year round, low maintenance, built for
+          Colorado.
         </p>
       </div>
-
-      {/* Transformation callout strip */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.35 }}
-        className="mt-5 flex flex-wrap items-center justify-center sm:justify-between gap-4 px-6 py-4 rounded-2xl"
-        style={{
-          background: "rgba(76,39,51,0.35)",
-          border: "1px solid rgba(244,222,191,0.07)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-        }}
-      >
-        {[
-          { stat: "Up to 60%", label: "Less Water" },
-          { stat: "Zero", label: "Seasonal Reseeding" },
-          { stat: "Year-Round", label: "Curb Appeal" },
-          { stat: "One Time", label: "Professional Install" },
-        ].map(({ stat, label }, i) => (
-          <div key={i} className="flex items-center gap-3">
-            {i !== 0 && (
-              <div
-                className="hidden sm:block w-px h-6 self-center"
-                style={{ background: "rgba(244,222,191,0.1)" }}
-              />
-            )}
-            <div className="flex flex-col items-center sm:items-start gap-0.5">
-              <span
-                className="font-sans font-black leading-none"
-                style={{ color: "#E86240", fontSize: "clamp(1rem, 2vw, 1.2rem)" }}
-              >
-                {stat}
-              </span>
-              <span
-                className="font-satoshi text-xs font-semibold tracking-widest uppercase"
-                style={{ color: "rgba(244,222,191,0.38)" }}
-              >
-                {label}
-              </span>
-            </div>
-          </div>
-        ))}
-      </motion.div>
     </motion.div>
   );
 };
@@ -586,55 +539,57 @@ const StandardServiceCard = ({ service, index }) => (
     initial={{ opacity: 0, y: 32 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-70px" }}
-    transition={{ duration: 0.72, delay: index * 0.09, ease: [0.22, 1, 0.36, 1] }}
-    className="group relative overflow-hidden rounded-2xl flex flex-col"
+    transition={{
+      duration: 0.72,
+      delay: index * 0.09,
+      ease: [0.22, 1, 0.36, 1],
+    }}
+    className="group relative overflow-hidden rounded-2xl"
     style={{
+      height: "clamp(320px, 42vw, 520px)",
       boxShadow: "0 12px 48px rgba(0,0,0,0.38)",
       border: "1px solid rgba(244,222,191,0.06)",
     }}
   >
-    {/* Photo */}
-    <div
-      className="relative overflow-hidden"
-      style={{ height: "clamp(200px, 26vw, 320px)" }}
-    >
-      <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]">
-        <Photo src={service.image.src} alt={service.image.alt} />
-      </div>
-      <div className="absolute inset-0" style={{ background: IMG_OVERLAY }} />
-
-      {/* Number watermark */}
-      <div
-        className="absolute top-4 right-5 font-sans font-black leading-none select-none"
-        style={{
-          color: "rgba(244,222,191,0.07)",
-          fontSize: "4.5rem",
-          letterSpacing: "-0.04em",
-        }}
-      >
-        {service.number}
-      </div>
-
-      {/* Accent pill bottom-left of image */}
-      <div className="absolute bottom-4 left-4">
-        <AccentPill>{service.accent}</AccentPill>
-      </div>
-
-      {/* Hover glow line */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"
-        style={{ background: "linear-gradient(90deg, #E86240, transparent)" }}
-      />
+    {/* Photo — fills the entire card */}
+    <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]">
+      <Photo src={service.image.src} alt={service.image.alt} />
     </div>
 
-    {/* Text content */}
+    {/* Existing image overlay */}
+    <div className="absolute inset-0" style={{ background: IMG_OVERLAY }} />
+
+    {/* Deep gradient scrim anchored to the bottom — gives text a clean stage */}
     <div
-      className="flex flex-col gap-3 p-6 flex-1"
+      className="absolute inset-0"
       style={{
-        background: "rgba(76,39,51,0.5)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
+        background:
+          "linear-gradient(to top, rgba(76,39,51,0.7) 0%, rgba(76,39,51,0.5) 32%, rgba(76,39,51,0.1) 58%, transparent 20%)",
       }}
+    />
+
+    {/* Number watermark — top-right, same as before */}
+    <div
+      className="absolute top-4 right-5 font-sans font-black leading-none select-none"
+      style={{
+        color: "rgba(244,222,191,0.07)",
+        fontSize: "4.5rem",
+        letterSpacing: "-0.04em",
+      }}
+    >
+      {service.number}
+    </div>
+
+    {/* Hover glow line — bottom edge */}
+    <div
+      className="absolute bottom-0 left-0 right-0 h-0.5 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"
+      style={{ background: "linear-gradient(90deg, #E86240, transparent)" }}
+    />
+
+    {/* Text content — overlaid at the bottom of the image */}
+    <div
+      className="absolute bottom-0 left-0 right-0 flex flex-col gap-3"
+      style={{ padding: "clamp(1.25rem, 3vw, 1.75rem)" }}
     >
       <h3
         className="font-sans font-bold leading-tight"
@@ -646,13 +601,21 @@ const StandardServiceCard = ({ service, index }) => (
         {service.title}
       </h3>
 
-      <div className="w-8 h-px" style={{ background: "rgba(232,98,64,0.45)" }} />
+      <div
+        className="w-8 h-px"
+        style={{ background: "rgba(232,98,64,0.55)" }}
+      />
 
       <p
         className="font-satoshi font-medium leading-relaxed"
         style={{
-          color: "rgba(244,222,191,0.58)",
+          color: "rgba(244,222,191,0.72)",
           fontSize: "clamp(0.83rem, 1.4vw, 0.93rem)",
+          /* Clamp to two lines on small cards so text never crowds the image */
+          display: "-webkit-box",
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
         }}
       >
         {service.body}
@@ -666,84 +629,96 @@ const StandardServiceCard = ({ service, index }) => (
     />
   </motion.div>
 );
-
 // ─── BLOCK 4 — Wide landscape card (full-width single service) ───────────────
 
-const WideServiceCard = ({ service, index }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 32 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-70px" }}
-    transition={{ duration: 0.78, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-    className="group relative w-full overflow-hidden rounded-2xl grid grid-cols-1 lg:grid-cols-2"
-    style={{
-      background: "rgba(76,39,51,0.45)",
-      backdropFilter: "blur(20px)",
-      WebkitBackdropFilter: "blur(20px)",
-      border: "1px solid rgba(244,222,191,0.07)",
-      boxShadow: "0 16px 56px rgba(0,0,0,0.38)",
-      minHeight: "clamp(200px, 24vw, 300px)",
-    }}
-  >
-    {/* Image — right side on desktop, top on mobile */}
-    <div className="order-1 lg:order-2 relative overflow-hidden" style={{ minHeight: "220px" }}>
-      <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]">
-        <Photo src={service.image.src} alt={service.image.alt} />
-      </div>
-      <div
-        className="absolute inset-0 lg:hidden"
-        style={{ background: "linear-gradient(to top, rgba(76,39,51,1) 0%, rgba(76,39,51,0.1) 100%)" }}
-      />
-      {/* Desktop: fade left into content panel */}
-      <div
-        className="absolute inset-0 hidden lg:block"
-        style={{ background: IMG_OVERLAY_SIDE }}
-      />
-      {/* Number */}
-      <div
-        className="absolute bottom-4 right-5 font-sans font-black leading-none select-none"
-        style={{
-          color: "rgba(244,222,191,0.06)",
-          fontSize: "5.5rem",
-          letterSpacing: "-0.04em",
-        }}
-      >
-        {service.number}
-      </div>
-    </div>
+// const WideServiceCard = ({ service, index }) => (
+//   <motion.div
+//     initial={{ opacity: 0, y: 32 }}
+//     whileInView={{ opacity: 1, y: 0 }}
+//     viewport={{ once: true, margin: "-70px" }}
+//     transition={{
+//       duration: 0.78,
+//       delay: index * 0.08,
+//       ease: [0.22, 1, 0.36, 1],
+//     }}
+//     className="group relative w-full overflow-hidden rounded-2xl grid grid-cols-1 lg:grid-cols-2"
+//     style={{
+//       background: "rgba(76,39,51,0.45)",
+//       backdropFilter: "blur(20px)",
+//       WebkitBackdropFilter: "blur(20px)",
+//       border: "1px solid rgba(244,222,191,0.07)",
+//       boxShadow: "0 16px 56px rgba(0,0,0,0.38)",
+//       minHeight: "clamp(200px, 24vw, 300px)",
+//     }}
+//   >
+//     {/* Image — right side on desktop, top on mobile */}
+//     <div
+//       className="order-1 lg:order-2 relative overflow-hidden"
+//       style={{ minHeight: "220px" }}
+//     >
+//       <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]">
+//         <Photo src={service.image.src} alt={service.image.alt} />
+//       </div>
+//       <div
+//         className="absolute inset-0 lg:hidden"
+//         style={{
+//           background:
+//             "linear-gradient(to top, rgba(76,39,51,1) 0%, rgba(76,39,51,0.1) 100%)",
+//         }}
+//       />
+//       {/* Desktop: fade left into content panel */}
+//       <div
+//         className="absolute inset-0 hidden lg:block"
+//         style={{ background: IMG_OVERLAY_SIDE }}
+//       />
+//       {/* Number */}
+//       <div
+//         className="absolute bottom-4 right-5 font-sans font-black leading-none select-none"
+//         style={{
+//           color: "rgba(244,222,191,0.06)",
+//           fontSize: "5.5rem",
+//           letterSpacing: "-0.04em",
+//         }}
+//       >
+//         {service.number}
+//       </div>
+//     </div>
 
-    {/* Text — left on desktop, bottom on mobile */}
-    <div className="order-2 lg:order-1 flex flex-col justify-center gap-4 p-7 lg:p-10">
-      <AccentPill>{service.accent}</AccentPill>
-      <h3
-        className="font-sans font-bold leading-tight"
-        style={{
-          color: "#F4DEBF",
-          fontSize: "clamp(1.28rem, 2.2vw, 2rem)",
-          letterSpacing: "-0.015em",
-        }}
-      >
-        {service.title}
-      </h3>
-      <div className="w-8 h-px" style={{ background: "rgba(232,98,64,0.45)" }} />
-      <p
-        className="font-satoshi font-medium leading-relaxed max-w-sm"
-        style={{
-          color: "rgba(244,222,191,0.58)",
-          fontSize: "clamp(0.85rem, 1.5vw, 0.96rem)",
-        }}
-      >
-        {service.body}
-      </p>
-    </div>
+//     {/* Text — left on desktop, bottom on mobile */}
+//     <div className="order-2 lg:order-1 flex flex-col justify-center gap-4 p-7 lg:p-10">
+//       <AccentPill>{service.accent}</AccentPill>
+//       <h3
+//         className="font-sans font-bold leading-tight"
+//         style={{
+//           color: "#F4DEBF",
+//           fontSize: "clamp(1.28rem, 2.2vw, 2rem)",
+//           letterSpacing: "-0.015em",
+//         }}
+//       >
+//         {service.title}
+//       </h3>
+//       <div
+//         className="w-8 h-px"
+//         style={{ background: "rgba(232,98,64,0.45)" }}
+//       />
+//       <p
+//         className="font-satoshi font-medium leading-relaxed max-w-sm"
+//         style={{
+//           color: "rgba(244,222,191,0.58)",
+//           fontSize: "clamp(0.85rem, 1.5vw, 0.96rem)",
+//         }}
+//       >
+//         {service.body}
+//       </p>
+//     </div>
 
-    {/* Hover border */}
-    <div
-      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-      style={{ border: "1px solid rgba(232,98,64,0.3)" }}
-    />
-  </motion.div>
-);
+//     {/* Hover border */}
+//     <div
+//       className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+//       style={{ border: "1px solid rgba(232,98,64,0.3)" }}
+//     />
+//   </motion.div>
+// );
 
 // ─── Section header ───────────────────────────────────────────────────────────
 
@@ -762,7 +737,10 @@ const SectionDivider = ({ label, index }) => (
     >
       {label}
     </span>
-    <div className="h-px flex-1" style={{ background: "rgba(244,222,191,0.07)" }} />
+    <div
+      className="h-px flex-1"
+      style={{ background: "rgba(244,222,191,0.07)" }}
+    />
   </motion.div>
 );
 
@@ -821,9 +799,6 @@ export default function ServicesSection({
       accent: "Native + Thriving",
       image: img("plants", "Drought Resistant Native Plants"),
     },
-  ];
-
-  const wideServices = [
     {
       number: "05",
       title: "Smart Irrigation Systems",
@@ -840,11 +815,13 @@ export default function ServicesSection({
     },
   ];
 
+
   return (
     <section
       className="relative w-full overflow-hidden"
       style={{
-        background: "linear-gradient(155deg, #4C2733 0%, #461E2D 45%, #3a1825 100%)",
+        background:
+          "linear-gradient(155deg, #4C2733 0%, #461E2D 45%, #3a1825 100%)",
       }}
     >
       <TopoLines />
@@ -854,29 +831,23 @@ export default function ServicesSection({
         aria-hidden="true"
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[420px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse, rgba(232,98,64,0.09) 0%, transparent 65%)",
+          background:
+            "radial-gradient(ellipse, rgba(232,98,64,0.09) 0%, transparent 65%)",
           filter: "blur(40px)",
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-28 lg:py-22">
-
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-28 lg:py-12">
         {/* ── Header ─────────────────────────────────────────────────────────── */}
-        <div ref={headerRef} className="mb-20 lg:mb-18">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="font-satoshi text-sm font-bold tracking-[0.22em] uppercase text-center mb-6"
-            style={{ color: "rgba(232,98,64,0.85)" }}
-          >
-            What's Included In A Xeriscape Project
-          </motion.p>
-
+        <div ref={headerRef} className="mb-20 lg:mb-12">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.78, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.78,
+              delay: 0.1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="font-sans font-black text-center leading-[1.05] mb-7"
             style={{
               color: "#F4DEBF",
@@ -897,28 +868,16 @@ export default function ServicesSection({
           >
             <div
               className="h-px w-20"
-              style={{ background: "linear-gradient(90deg, transparent, #E86240, transparent)" }}
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, #E86240, transparent)",
+              }}
             />
           </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.65, delay: 0.3 }}
-            className="font-satoshi font-medium text-center max-w-2xl mx-auto leading-relaxed"
-            style={{
-              color: "rgba(244,222,191,0.55)",
-              fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
-            }}
-          >
-            Everything designed to reduce maintenance, lower water use, and create
-            a yard that actually looks good year-round.
-          </motion.p>
         </div>
 
         {/* ── BLOCK 1: Hero service — full width ─────────────────────────────── */}
         <div className="mb-6 lg:mb-7">
-          <SectionDivider label="Service 01" />
           <div className="mt-5">
             <HeroServiceBlock service={heroService} index={0} />
           </div>
@@ -937,7 +896,6 @@ export default function ServicesSection({
 
         {/* ── BLOCK 3: Two standard cards side by side ────────────────────────── */}
         <div className="mb-6 lg:mb-7">
-          <SectionDivider label="Services 03 – 04" />
           <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
             {standardServices.map((s, i) => (
               <StandardServiceCard key={s.number} service={s} index={i + 2} />
@@ -946,14 +904,13 @@ export default function ServicesSection({
         </div>
 
         {/* ── BLOCK 4: Two wide landscape cards stacked ───────────────────────── */}
-        <div className="mb-0">
-          <SectionDivider label="Services 05 – 06" />
+        {/* <div className="mb-0">
           <div className="mt-5 flex flex-col gap-5 lg:gap-6">
             {wideServices.map((s, i) => (
               <WideServiceCard key={s.number} service={s} index={i + 4} />
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* ── Trust Strip ────────────────────────────────────────────────────── */}
         <motion.div

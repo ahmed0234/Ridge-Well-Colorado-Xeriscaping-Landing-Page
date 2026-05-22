@@ -4,14 +4,14 @@ import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 
 const cities = [
-  { name: "Denver", note: "Metro Hub" },
-  { name: "Arvada", note: "Northwest" },
-  { name: "Aurora", note: "East Metro" },
-  { name: "Brighton", note: "North Range" },
-  { name: "Broomfield", note: "North Metro" },
-  { name: "Centennial", note: "South Metro" },
-  { name: "Parker", note: "Southeast" },
-  { name: "Lakewood", note: "West Metro" },
+  { name: "Denver" },
+  { name: "Arvada" },
+  { name: "Aurora" },
+  { name: "Brighton" },
+  { name: "Broomfield" },
+  { name: "Centennial" },
+  { name: "Parker" },
+  { name: "Lakewood" },
 ];
 
 const TopoLines = () => (
@@ -53,12 +53,12 @@ const TopoLines = () => (
 
 const PinIcon = () => (
   <svg
-    width="14"
-    height="14"
+    width="15"
+    height="15"
     viewBox="0 0 14 14"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="flex-shrink-0"
+    className="shrink-0"
   >
     <path
       d="M7 1C4.79 1 3 2.79 3 5c0 3.25 4 8 4 8s4-4.75 4-8c0-2.21-1.79-4-4-4z"
@@ -69,113 +69,84 @@ const PinIcon = () => (
   </svg>
 );
 
-const CityCard = ({ city, index }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 32, scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{
-        duration: 0.6,
-        delay: index * 0.08,
-        ease: [0.22, 1, 0.36, 1],
+const CityCard = ({ city, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 28, scale: 0.97 }}
+    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{
+      duration: 0.6,
+      delay: index * 0.07,
+      ease: [0.22, 1, 0.36, 1],
+    }}
+    whileHover={{
+      y: -5,
+      transition: { duration: 0.22, ease: "easeOut" },
+    }}
+    className="group relative cursor-default"
+  >
+    {/* Bottom glow on hover */}
+    <div
+      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 110%, rgba(232,98,64,0.2) 0%, transparent 70%)",
+        filter: "blur(10px)",
+        transform: "translateY(6px) scaleX(0.88)",
       }}
-      whileHover={{
-        y: -6,
-        scale: 1.03,
-        transition: { duration: 0.25, ease: "easeOut" },
+    />
+
+    {/* Card surface */}
+    <div
+      className="relative rounded-2xl flex items-center gap-4 transition-all duration-300"
+      style={{
+        padding: "clamp(1rem, 2vw, 1.35rem) clamp(1.1rem, 2.5vw, 1.6rem)",
+        background: "rgba(76, 39, 51, 0.42)",
+        backdropFilter: "blur(18px)",
+        WebkitBackdropFilter: "blur(18px)",
+        border: "1px solid rgba(244, 222, 191, 0.08)",
+        boxShadow:
+          "0 4px 28px rgba(0,0,0,0.22), inset 0 1px 0 rgba(244,222,191,0.06)",
       }}
-      className="group relative cursor-default"
     >
-      {/* Glow layer */}
+      {/* Hover border */}
       <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 100%, rgba(232,98,64,0.22) 0%, transparent 70%)",
-          filter: "blur(8px)",
-          transform: "translateY(4px) scaleX(0.9)",
-        }}
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        style={{ border: "1px solid rgba(232,98,64,0.38)" }}
       />
 
-      {/* Card */}
-      <div
-        className="relative rounded-2xl px-6 py-5 flex flex-col gap-2 transition-all duration-300"
+      {/* Animated pin */}
+      <motion.div
+        animate={{ y: [0, -2.5, 0] }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: index * 0.28,
+        }}
+        className="flex items-center justify-center w-8 h-8 rounded-xl shrink-0"
         style={{
-          background: "rgba(76, 39, 51, 0.45)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          border: "1px solid rgba(244, 222, 191, 0.10)",
-          boxShadow: "0 4px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(244,222,191,0.07)",
+          background: "rgba(232,98,64,0.1)",
+          border: "1px solid rgba(232,98,64,0.18)",
         }}
       >
-        {/* Hover border highlight */}
-        <div
-          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{
-            border: "1px solid rgba(232,98,64,0.45)",
-            pointerEvents: "none",
-          }}
-        />
+        <PinIcon />
+      </motion.div>
 
-        {/* Top row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <motion.div
-              animate={{ y: [0, -2, 0] }}
-              transition={{
-                duration: 2.8,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: index * 0.3,
-              }}
-            >
-              <PinIcon />
-            </motion.div>
-            <span
-              className="font-sans font-bold tracking-wide text-xl leading-none"
-              style={{ color: "#F4DEBF" }}
-            >
-              {city.name}
-            </span>
-          </div>
-
-          {/* Direction badge */}
-          <span
-            className="font-satoshi text-xs font-semibold px-2 py-1 rounded-full tracking-widest uppercase"
-            style={{
-              color: "#E86240",
-              background: "rgba(232,98,64,0.12)",
-              border: "1px solid rgba(232,98,64,0.2)",
-            }}
-          >
-            {city.note}
-          </span>
-        </div>
-
-        {/* Divider */}
-        <div
-          className="w-full h-px"
-          style={{ background: "rgba(244,222,191,0.08)" }}
-        />
-
-        {/* Bottom */}
-        <div className="flex items-center gap-1.5">
-          <div
-            className="w-1.5 h-1.5 rounded-full"
-            style={{ background: "#E86240", opacity: 0.7 }}
-          />
-          <span
-            className="font-satoshi text-xs font-medium tracking-wide"
-            style={{ color: "rgba(244,222,191,0.5)" }}
-          >
-            Xeriscape Services Available
-          </span>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+      {/* City name */}
+      <span
+        className="font-sans font-bold tracking-tight leading-none"
+        style={{
+          color: "#F4DEBF",
+          fontSize: "clamp(1.05rem, 2vw, 1.4rem)",
+          letterSpacing: "-0.01em",
+        }}
+      >
+        {city.name}
+      </span>
+    </div>
+  </motion.div>
+);
 
 export default function AreasServed() {
   const sectionRef = useRef(null);
@@ -187,7 +158,6 @@ export default function AreasServed() {
       className="relative w-full overflow-hidden"
       style={{ background: "#461E2D" }}
     >
-      {/* Topographic background */}
       <TopoLines />
 
       {/* Ambient top glow */}
@@ -195,62 +165,12 @@ export default function AreasServed() {
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[320px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 0%, rgba(232,98,64,0.12) 0%, transparent 70%)",
+            "radial-gradient(ellipse at 50% 0%, rgba(232,98,64,0.1) 0%, transparent 70%)",
           filter: "blur(20px)",
         }}
       />
 
-      {/* Ambient bottom glow */}
-      <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 100%, rgba(76,39,51,0.8) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="relative z-10 max-w-8xl mx-auto px-6 sm:px-10 lg:px-16 py-28 lg:py-36">
-
-        {/* Expanding badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="flex justify-center mb-8"
-        >
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-            style={{
-              background: "rgba(232,98,64,0.12)",
-              border: "1px solid rgba(232,98,64,0.3)",
-            }}
-          >
-            <motion.div
-              animate={{ scale: [1, 1.4, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-2 h-2 rounded-full"
-              style={{ background: "#E86240" }}
-            />
-            <span
-              className="font-satoshi text-xs font-bold tracking-[0.18em] uppercase"
-              style={{ color: "#E86240" }}
-            >
-              Expanding Across Colorado
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Label */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, delay: 0.1 }}
-          className="font-satoshi text-center text-sm font-semibold tracking-[0.22em] uppercase mb-5"
-          style={{ color: "rgba(232,98,64,0.85)" }}
-        >
-          Areas Served
-        </motion.p>
-
+      <div className="relative z-10 max-w-8xl mx-auto px-6 sm:px-10 lg:px-16 py-28 lg:py-20">
         {/* Headline */}
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -282,7 +202,7 @@ export default function AreasServed() {
           initial={{ scaleX: 0, opacity: 0 }}
           animate={isInView ? { scaleX: 1, opacity: 1 } : {}}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="flex justify-center mb-7"
+          className="flex justify-center mb-12"
           style={{ transformOrigin: "center" }}
         >
           <div
@@ -294,23 +214,8 @@ export default function AreasServed() {
           />
         </motion.div>
 
-        {/* Subheading */}
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="font-satoshi text-center font-medium leading-relaxed max-w-2xl mx-auto mb-16 lg:mb-20"
-          style={{
-            color: "rgba(244,222,191,0.6)",
-            fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
-          }}
-        >
-          Delivering water-smart xeriscape design, native plant installations,
-          and sustainable outdoor living across Colorado's Front Range communities.
-        </motion.p>
-
         {/* City Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5 mb-16 lg:mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4 mb-16">
           {cities.map((city, i) => (
             <CityCard key={city.name} city={city} index={i} />
           ))}
@@ -324,7 +229,6 @@ export default function AreasServed() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex flex-col items-center gap-4"
         >
-          {/* Thin top rule */}
           <div
             className="w-full max-w-xs h-px"
             style={{
@@ -334,7 +238,6 @@ export default function AreasServed() {
           />
 
           <div className="flex items-center gap-3">
-            {/* Leaf accent */}
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <path
                 d="M9 2C5 2 2 6 2 10c0 2 1 3.5 2.5 4.5C5.5 15.5 7 16 9 16s3.5-.5 4.5-1.5C15 13.5 16 12 16 10c0-4-3-8-7-8z"

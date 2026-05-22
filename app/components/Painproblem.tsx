@@ -364,18 +364,6 @@ export default function PainProblemSection() {
       <div className="relative z-10 max-w-[1200px] mx-auto px-5 sm:px-8 lg:px-12">
         {/* ── EYEBROW ────────────────────────────────────────── */}
         <div ref={headRef}>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={headInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-8
-                       border border-[#461E2D]/20 bg-[#461E2D]/5"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#E86240] flex-shrink-0" />
-            <span className="text-sm font-bold uppercase tracking-wide text-[#461E2D]/80 font-sans">
-              The Real Problem
-            </span>
-          </motion.div>
 
           {/* ── MAIN HEADLINE ─────────────────────────────────── */}
           <div className="mb-8">

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import styles from "./how-it-works.module.css";
-import DesertHorizonEdge from "./Deserthorizon";
+
 
 function Reveal({
   children,
@@ -161,7 +161,6 @@ export default function HowItWorksSection() {
       aria-labelledby="how-it-works-heading"
       className={styles.section}
     >
-      <DesertHorizonEdge />
       {/* Warm atmospheric depth */}
       <div className={styles.ambient} aria-hidden="true">
         <div className={`${styles.ambient} ${styles.ambientGrain}`} />
@@ -175,37 +174,9 @@ export default function HowItWorksSection() {
       <div className={`${styles.inner} relative z-10`}>
         <Reveal>
           <header className={styles.header}>
-            <span className={`font-sans ${styles.eyebrow}`}>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E86240] shrink-0" />
-              Your path forward
-            </span>
-
             <h2 id="how-it-works-heading" className={`font-sans ${styles.headline}`}>
               Here&apos;s How It Works
             </h2>
-
-            <p className={`font-satoshi ${styles.subheadline}`}>
-              Simple process. Clear communication. No contractor chaos.
-            </p>
-
-            <p className={`font-satoshi ${styles.headerSupport}`}>
-              Three clear steps from your first visit to a finished yard you
-              love.
-            </p>
-
-            <ul className={styles.reassuranceRow} role="list">
-              {[
-                "Simple process",
-                "Clear communication",
-                "No contractor chaos",
-              ].map((label) => (
-                <li key={label}>
-                  <span className={`font-satoshi ${styles.reassurancePill}`}>
-                    {label}
-                  </span>
-                </li>
-              ))}
-            </ul>
           </header>
         </Reveal>
 
@@ -249,7 +220,7 @@ export default function HowItWorksSection() {
               </span>
               <p className={`font-satoshi ${styles.ctaCopy}`}>
                 <strong>Ready when you are.</strong> Tell us about your property
-                and we&apos;ll walk you through the process — no pressure, no
+                and we&apos;ll walk you through the process no pressure, no
                 surprises.
               </p>
             </div>
