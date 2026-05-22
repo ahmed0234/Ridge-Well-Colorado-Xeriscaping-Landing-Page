@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Phone } from "lucide-react";
 import { motion } from "motion/react";
 
-const PHONE_DISPLAY = "+(1)720-882-5772";
+const PHONE_DISPLAY = "720-882-5772";
 const PHONE_HREF = "tel:+17208825772";
 
 /* ─────────────────────────────────────────────────────────
@@ -140,7 +140,7 @@ function BrandMark() {
           transition={{ duration: 0.35 }}
         />
         <Image
-          src="/NavLogo.png"
+          src="/Navlogo.png"
           alt="Ridgewell logo"
           fill
           className="object-contain"

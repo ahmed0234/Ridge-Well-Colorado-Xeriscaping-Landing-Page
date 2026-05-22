@@ -361,7 +361,7 @@ function WhatsIncluded({
             Inside your {service.title.toLowerCase()} project
           </h4>
         </div>
-        <p
+        <p~
           className={`font-satoshi text-sm sm:text-[15px] max-w-sm leading-relaxed ${
             dark ? "text-[#F4DEBF]/55" : "text-[#4C2733]/65"
           }`}

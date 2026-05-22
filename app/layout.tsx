@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { clashDisplay, satoshi } from "@/src/lib/fonts";
 import "./globals.css";
 import OpeningAnimation from "./components/OpeningAnimation";
+import FloatingCallCTA from "./components/FloatingCta";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         <OpeningAnimation />
         <main id="main-content" className="flex-1 flex flex-col">
           {children}
+          <FloatingCallCTA />
         </main>
       </body>
     </html>

@@ -54,6 +54,7 @@ function InsightCard({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       style={{ willChange: "transform" }}
+      className="hidden"
     >
       <motion.div
         animate={
@@ -200,7 +201,7 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-0 lg:min-h-screen overflow-hidden flex items-stretch font-satoshi pt-4 pb-12 lg:pb-0"
+      className="relative w-full min-h-0 lg:min-h-screen overflow-hidden flex items-stretch font-satoshi pt-4 pb-12 lg:pb-0 "
       style={{ background: C.sandLight }}
     >
       {/* ══ BACKGROUND PHOTO WITH PARALLAX ══════════════════════════════ */}
@@ -307,7 +308,7 @@ export default function HeroSection() {
           >
             <PiLeafLight size={14} style={{ color: C.terra }} />
             <span
-              className="text-[11.5px] font-bold tracking-[0.18em] uppercase font-satoshi"
+              className="text-[11.5px] 2xl:text-sm font-bold tracking-[0.18em] uppercase font-satoshi"
               style={{ color: C.deepPlum }}
             >
               Colorado's Premier Xeriscaping Studio
@@ -320,14 +321,13 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={reveal(1)}
             style={{
-              fontSize: "clamp(2.4rem, 6vw, 4.8rem)",
               lineHeight: 1,
               letterSpacing: "-0.03em",
               color: C.deepPlum,
               marginBottom: "1.1rem",
               maxWidth: "850px",
             }}
-            className="font-sans font-extrabold"
+            className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
           >
             Beautiful Colorado{" "}
             <span style={{ color: C.terra }}>Landscaping</span> Without Constant
@@ -614,7 +614,7 @@ export default function HeroSection() {
                 >
                   Prefer to talk?
                 </span>
-
+              <a href="tel:+17208825772">
                 <span
                   className="text-base font-sans"
                   style={{
@@ -623,8 +623,9 @@ export default function HeroSection() {
                     textShadow: "0 1px 0 rgba(255,255,255,0.45)",
                   }}
                 >
-                  +(1) 720-882-5772
+                  720-882-5772
                 </span>
+              </a>
               </span>
             </motion.a>
           </motion.div>
