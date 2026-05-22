@@ -19,8 +19,8 @@ const page = () => {
       <WhatsIncludedSection />
       <TransformationSection />
       <HowItWorksSection />
-      <PainProblemSection />
       <AreasServed />
+      <PainProblemSection />
       <TrustBar />
       <ReviewsSection />
       <RidgewellFAQCTA />
