@@ -4,6 +4,44 @@
   --background: #efd3ab;
   --foreground: rgb(66, 31, 44);
 }
+@layer base {
+  html {
+    /* Standard CSS for Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #efd3ab #461e2d; /* thumb track */
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+
+    /* Bioluminescent Theme Colors */
+    background-color: #efd3ab;
+    color: #461e2d; 
+  }
+
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* WebKit Scrollbar (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 12px; /* Overall width of the scrollbar */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(66, 31, 44); /* Abyssal Shadow track */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(66, 31, 44); /* Muted Teal idle state */
+    border-radius: 9999px; /* Fully rounded capsule */
+    border: 3px solid #0a1128; /* Creates a floating effect by matching track color */
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(66, 31, 44); /* Neon Aqua active state */
+  }
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -16,8 +54,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #F4DEBF;
-    --foreground: #461E2D;
+    --background: #f4debf;
+    --foreground: #461e2d;
   }
 }
 
