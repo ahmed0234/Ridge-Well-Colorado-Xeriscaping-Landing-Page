@@ -478,7 +478,7 @@ function CTASection() {
                   fontFamily: "inherit"
                 }}
               >
-                +<span className="not-italic">(1)</span> 720-882-5772
+                <span className="not-italic">720-882-5772</span>
               </span>
             </span>
           </motion.a>

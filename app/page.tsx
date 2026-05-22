@@ -9,6 +9,7 @@ import AreasServed from "./components/Areasserved";
 import RidgewellFAQCTA from "./components/Faq";
 import ReviewsSection from "./components/Review";
 import MobileConsultationSection from "./components/MobileConsultationSection";
+import Footer from "./components/Footer";
 
 const page = () => {
   return (
@@ -23,6 +24,7 @@ const page = () => {
       <TrustBar />
       <ReviewsSection />
       <RidgewellFAQCTA />
+      <Footer />
       <MobileConsultationSection />
     </>
   );
