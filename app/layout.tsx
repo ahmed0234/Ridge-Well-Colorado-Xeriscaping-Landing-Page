@@ -31,7 +31,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${clashDisplay.variable} ${satoshi.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <OpeningAnimation />
+        {/* <OpeningAnimation /> */}
         <main id="main-content" className="flex-1 flex flex-col">
           {children}
           <FloatingCallCTA />

@@ -330,7 +330,7 @@ export default function HeroSection() {
               marginBottom: "1.1rem",
               maxWidth: "850px",
             }}
-            className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
+            className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-6xl"
           >
             Beautiful Colorado{" "}
             <span style={{ color: C.terra }}>Landscaping</span> Without Constant
@@ -348,7 +348,7 @@ export default function HeroSection() {
               marginBottom: "1rem",
               maxWidth: "48ch",
             }}
-            className="font-satoshi font-bold text-lg lg:text-2xl"
+            className="font-satoshi font-bold text-lg lg:text-xl"
           >
             Lower water bills, less upkeep, and a yard that actually looks good
             year round.
@@ -363,12 +363,26 @@ export default function HeroSection() {
               lineHeight: 1.6,
               color: C.plum,
               marginBottom: "1rem",
-              maxWidth: "48ch",
+              maxWidth: "60ch",
             }}
-            className="font-satoshi font-bold italic text-lg lg:text-2xl"
+            className="font-satoshi font-bold italic text-lg lg:text-lg"
           >
-            Ridgewell Landscape &amp; Design creates custom xeriscapes built
-            specifically for Colorado homes and climate.
+            Ridgewell Landscape & Design helps Denver homeowners transform high maintenance yards into beautiful outdoor spaces that need less water, less upkeep, and still look amazing year round
+          </motion.p>
+
+                    <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reveal(3)}
+            style={{
+              lineHeight: 1.6,
+              color: C.plum,
+              marginBottom: "1rem",
+              maxWidth: "60ch",
+            }}
+            className="font-satoshi font-bold italic text-lg lg:text-lg"
+          >
+            Through custom xeriscaping, drought-tolerant plants, decorative stone, smart irrigation, and premium outdoor features, we create landscapes built specifically for Colorado homes and climate
           </motion.p>
 
           {/* CTA Row */}
