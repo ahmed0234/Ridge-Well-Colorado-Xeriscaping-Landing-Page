@@ -792,28 +792,28 @@ export default function ServicesSection({
   const standardServices = [
     {
       number: "03",
-      title: "Decorative Rock & Gravel Landscaping",
+      title: "Decorative Rock & Gravel Installation",
       body: "Replace patchy grass with decorative stone and clean, modern landscaping that stays beautiful year-round.",
       accent: "Permanent Beauty",
       image: img("rockGravel", "Decorative Rock and Gravel"),
     },
     {
       number: "04",
-      title: "Drought Resistant Plants",
+      title: "Low Water Colorado Plants",
       body: "A low-water yard doesn't have to look boring. We install Colorado-friendly plants that thrive with less water while keeping your landscaping beautiful.",
       accent: "Native + Thriving",
       image: img("plants", "Drought Resistant Native Plants"),
     },
     {
       number: "05",
-      title: "Smart Irrigation Systems",
+      title: "Water Saving Irrigation system",
       body: "Use less water without sacrificing healthy plants. Efficient drip systems help reduce waste and simplify maintenance.",
       accent: "Water Smart",
       image: img("irrigation", "Smart Drip Irrigation System"),
     },
     {
       number: "06",
-      title: "Walkways & Outdoor Features",
+      title: "Walkways, Patios, Outdoor Features",
       body: "We can incorporate walkways, patios, edging, and outdoor features that blend naturally into your xeriscape.",
       accent: "Finishing Touch",
       image: img("walkway", "Walkway and Outdoor Features"),
