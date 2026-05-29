@@ -34,9 +34,9 @@ const TRUST_ITEMS = [
   },
   {
     id: "04", icon: FaMapMarkerAlt,
-    label: "Denver & Beyond",
-    sub: "Serving the entire Front Range",
-    pill: "50-mi radius",
+    label: "Locally Trusted",
+    sub: "Serving Colorado homeowners statewide",
+    pill: "Denver & Front Range",
   },
   {
     id: "05", icon: FaAward,
@@ -263,7 +263,7 @@ export default function TrustBar() {
                 animation: "shimmer 3.5s linear infinite",
               }}
             >
-              Xeriscape Studio
+              Xeriscape Company
             </em>
           </h2>
           <p className="mt-4 lg:mt-6 text-[14px] lg:text-[18px] font-light text-[#F4DEBF]/60 tracking-[0.06em]">

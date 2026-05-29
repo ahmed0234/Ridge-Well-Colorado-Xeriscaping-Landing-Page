@@ -226,7 +226,7 @@ export default function HowItWorksSection() {
             </div>
             <div className={styles.ctaActions}>
               <Link
-                href="#consultation"
+                href="#Form"
                 className={`font-satoshi ${styles.ctaPrimary} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E86240] focus-visible:ring-offset-2 focus-visible:ring-offset-[#2a1018]`}
               >
                 Get Your Free Design Consultation

@@ -571,7 +571,7 @@ export default function ReviewsSection() {
           </p>
 
           <motion.a
-            href="#"
+            href="#Form"
             whileHover={{
               y: -2,
               boxShadow:

@@ -21,30 +21,35 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     id: 1,
+    question: "What Is Xeriscaping?",
+    answer: "Xeriscaping is a landscaping approach designed to reduce water use and maintenance without sacrificing curb appeal. It combines drought-tolerant plants, decorative stone, efficient irrigation, and Colorado-friendly materials to create beautiful landscapes that are easier to maintain."
+  },
+  {
+    id: 2,
     question: "How much does xeriscaping cost in Denver?",
     answer:
       "Every project is different depending on size, materials, and design. We provide free consultations so you know exactly what makes sense for your property and budget.",
   },
   {
-    id: 2,
+    id: 3,
     question: "Does xeriscaping really reduce maintenance?",
     answer:
       "Yes. Most homeowners spend significantly less time watering, mowing, and maintaining their landscaping.",
   },
   {
-    id: 3,
+    id: 4,
     question: "Can xeriscaping still look beautiful?",
     answer:
       "Absolutely. Modern xeriscaping combines decorative stone, premium plants, and thoughtful design to create landscaping that looks clean and attractive year-round.",
   },
   {
-    id: 4,
+    id: 5,
     question: "How long does a xeriscaping project take?",
     answer:
       "Most projects are completed within days depending on project size.",
   },
   {
-    id: 5,
+    id: 6,
     question: "Do you also build patios and walkways?",
     answer:
       "Yes. We can incorporate patios, walkways, and outdoor features into your xeriscape design.",
@@ -423,7 +428,7 @@ function CTASection() {
         >
           {/* Primary CTA */}
           <motion.a
-            href="#"
+            href="#Form"
             whileHover={{
               y: -2,
               scale: 1.012,

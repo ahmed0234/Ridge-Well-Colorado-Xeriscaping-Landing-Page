@@ -147,7 +147,10 @@ export default function BeforeAfterSlider({
         </div>
 
         {/* AFTER label */}
-        <div className="absolute top-4 right-4 z-20">
+        <div
+          className="absolute top-4 z-20 pointer-events-none"
+          style={{ left: `calc(${position}% + 16px)` }}
+        >
           <span
             className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.22em] font-semibold backdrop-blur-md"
             style={{ background: "#E86240", color: "#fff" }}

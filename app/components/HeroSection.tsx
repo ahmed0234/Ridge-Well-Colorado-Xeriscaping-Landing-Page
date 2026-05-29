@@ -663,7 +663,7 @@ export default function HeroSection() {
             />
             <FeatureItem
               icon={PiStarLight}
-              title="5 Star Rated Local Company"
+              title="5-Star Rated Local Company"
               body="Highly rated by your neighbors in Denver and the Front Range."
               delay={1.35}
             />

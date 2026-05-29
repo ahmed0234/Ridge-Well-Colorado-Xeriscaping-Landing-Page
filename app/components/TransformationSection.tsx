@@ -15,7 +15,7 @@ const transformations = [
     afterImage: "/beforeandafter/before_1.png",
     beforeAlt: "Dry patchy lawn before xeriscaping",
     afterAlt: "Modern xeriscape with gravel and native plants",
-    title: "Xeriscaping with Smart Water Saving Irrigation",
+    title: "Water Saving irrigation system",
     location: "Denver, CO",
     waterSaved: "-62% Water",
   },
@@ -33,7 +33,7 @@ const transformations = [
     afterImage: "/beforeandafter/before_3.png",
     beforeAlt: "Bare entrance with dead grass",
     afterAlt: "Architectural desert garden with ornamental grasses",
-    title: "Drought Resistant Plants and Walkways",
+    title: "Low water colorado plants",
     location: "Aurora, CO",
     waterSaved: "-71% Water",
   },
@@ -42,7 +42,7 @@ const transformations = [
     afterImage: "/beforeandafter/before_4.png",
     beforeAlt: "Bare entrance with dead grass",
     afterAlt: "Architectural desert garden with ornamental grasses",
-    title: "Paver Patios with Premium Outdoor Features",
+    title: "Walkways, Patios, Outdoor Features",
     location: "Broomfield, CO",
     waterSaved: "-71% Water",
   },
@@ -241,7 +241,7 @@ export default function TransformationSection() {
 
             {/* CTA button */}
             <motion.a
-              href="#quote"
+              href="#Form"
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
               className="group relative inline-flex items-center justify-center gap-3 px-10 py-4.5 rounded-full text-sm font-semibold tracking-wide text-white overflow-hidden shadow-2xl shadow-[#E86240]/25"
