@@ -14,6 +14,9 @@ import {
   PiSunLight,
   PiPlantLight,
   PiShieldCheckLight,
+  PiMedalLight,
+  PiStarLight,
+  PiMountainsLight,
 } from "react-icons/pi";
 import ConsultationForm from "./ConsultationForm";
 import { useIsLg } from "../hooks/useIsLg";
@@ -639,21 +642,21 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 1.1 }}
           >
             <FeatureItem
-              icon={PiDropLight}
-              title="Water Smart Design"
-              body="Reduce water usage without sacrificing beauty."
+              icon={PiMedalLight}
+              title="15+ Years of Experience"
+              body="Proven craftsmanship and expert landscape design across Colorado."
               delay={1.25}
             />
             <FeatureItem
-              icon={PiSunLight}
-              title="Climate Ready"
-              body="Built for harsh summers and cold winters."
+              icon={PiStarLight}
+              title="5 Star Rated Local Company"
+              body="Highly rated by your neighbors in Denver and the Front Range."
               delay={1.35}
             />
             <FeatureItem
-              icon={PiShieldCheckLight}
-              title="Low Maintenance"
-              body="Beautiful landscaping with less upkeep."
+              icon={PiMountainsLight}
+              title="Built For Colorado’s Climate"
+              body="Drought-resilient xeriscaping designed to thrive year-round."
               delay={1.45}
             />
           </motion.div>
