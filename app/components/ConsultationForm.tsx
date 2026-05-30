@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useId } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { PiCheckCircle, PiLeafLight } from "react-icons/pi";
 
@@ -209,6 +210,7 @@ function Textarea({
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function ConsultationForm() {
   const uid = useId();
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -268,40 +270,17 @@ export default function ConsultationForm() {
 
     const payload = buildPayload(form);
     setErrors({});
-    setLoading(true);
 
-    try {
-      const res = await fetch(CONSULTATION_API, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    // Fire the API call without awaiting — redirect immediately
+    fetch(CONSULTATION_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch(() => {
+      // Silently swallow network errors — user is already on /thankyou
+    });
 
-      const data = (await res.json().catch(() => ({}))) as {
-        success?: boolean;
-        message?: string;
-        errors?: Record<string, string>;
-      };
-
-      if (!res.ok) {
-        if (data.errors && typeof data.errors === "object") {
-          setErrors(data.errors);
-        }
-        setSubmitError(
-          data.message ??
-            "We couldn't send your request. Please try again or call us directly.",
-        );
-        return;
-      }
-
-      setSubmitted(true);
-    } catch {
-      setSubmitError(
-        "Network error — please check your connection and try again.",
-      );
-    } finally {
-      setLoading(false);
-    }
+    router.push("/thankyou");
   };
 
   return (
